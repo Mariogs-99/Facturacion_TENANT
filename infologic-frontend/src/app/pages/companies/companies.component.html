@@ -1,0 +1,177 @@
+<div class="card">
+  <app-module-header
+    title="Gestión de Instituciones"
+    subtitle=""
+    buttonIcon="add"
+    buttonLabel="Agregar"
+    buttonColor="accent"
+    component="CompaniesComponent"
+    action="open"
+    [button]="true"
+  ></app-module-header>
+
+  <div class="login-box card-body">
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="w-100">
+          <mat-label>Filtro</mat-label>
+          <input matInput (keyup)="applyFilterCompanies($event)" placeholder="" #input />
+        </mat-form-field>
+      </div>
+      <button
+        mat-fab
+        color="primary"
+        class="fab-toggler"
+        (click)="exportXlsx()"
+        matTooltip="Exportar Excel"
+        matTooltipPosition="right"
+      >
+        <img
+          alt="desc cnr fin recreativo"
+          src="../../../assets/images/icon/excel.svg"
+          height="25px"
+          alt=""
+        />
+      </button>
+    </div>
+
+    <div class="mat-elevation-z8 crud-table-container m-4">
+      <table
+        mat-table
+        matTableResponsive
+        class="full-width"
+        [dataSource]="dataSource"
+        aria-label="informacion de empresas ordenable"
+      >
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <app-table-header
+              rowHeight="45px"
+              title="Acciones"
+              column="acciones"
+              [sort]="false"
+              [search]="false"
+              tableName="tablaEmpresas"
+            ></app-table-header>
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <button
+              mat-icon-button
+              (click)="navigateTo('branch')"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Sucursales"
+            >
+              <i class="material-icons" style="color: navy">login</i>
+            </button>
+            <button
+              mat-icon-button
+              (click)="editar(element)"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Editar"
+            >
+              <i class="material-icons" style="color: blue">create</i>
+            </button>
+            <button
+              mat-icon-button
+              (click)="eliminar(element, i)"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Eliminar"
+            >
+              <i class="material-icons" style="color: red">delete</i>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="logo">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            style="text-align: center; width: 200px"
+          >
+            Logo.
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <img
+              alt="desc cnr fin recreativo"
+              id="logo"
+              width="80px"
+              [src]="'assets/images/cnr.png'"
+              alt=""
+              (error)="updateUrl($event)"
+            />
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <app-table-header
+              rowHeight="45px"
+              title="Descripción"
+              column="nombre"
+              [sort]="true"
+              [search]="true"
+              tableName="tablaEmpresas"
+            ></app-table-header>
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class=""
+            style="text-align: left; width: 500px"
+          >
+            <b>Nombre: </b>{{ element.nameCompany }} <br />
+            <b> Descripción:</b> {{ element.descriptionCompany }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <app-table-header
+              rowHeight="45px"
+              title="Dirección"
+              column="address"
+              [sort]="true"
+              [search]="true"
+              tableName="tablaEmpresas"
+            ></app-table-header>
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class=""
+            style="text-align: left"
+          >
+            {{ element.addressCompany }} <br />
+            <span style="font-weight: 600; font-style: italic">
+              {{ element.emailCompany }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="9999">
+            No hay informaci&#0243;n que mostrar
+          </td>
+        </tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns; let i = index"
+          class="highlight"
+          [tabindex]="i"
+        ></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      </table>
+
+      <mat-paginator
+        [length]="totalRecords"
+        [pageSize]="paginationSize"
+        [pageSizeOptions]="paginationSizeOptions"
+        (page)="paginate($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,266 @@
+.mat-column-customer, .mat-column-numeroDTE, .mat-column-codigoGeneracion{
+  min-width: 350px;
+  width: auto;
+}
+
+
+.derecha {
+  display: flex;
+  justify-content: right;
+  align-items: right;
+}
+
+.izquierda {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+}
+.centrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.centrado_texto{
+
+  text-align: center !important;
+}
+.cabecera {
+  background: #3C4557 !important;
+  /* background: linear-gradient(to right, #456098, #3C4557) !important; */
+  margin-bottom: 20px;
+}
+.blanco {
+  color: white;
+  font-weight: 400;
+}
+.ico_pers {
+  width: 5%;
+}
+
+.accordion-action-buttons {
+  padding-bottom: 20px;
+}
+
+.accordion-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-headers-align .mat-mdc-form-field+.mat-mdc-form-field {
+  margin-left: 8px;
+}
+
+.mat-expansion-panel-header-indicator {
+  color: white !important;
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-indicator::after {
+  color: white !important;
+}
+
+.mat-expansion-indicator {
+  color: white !important;
+}
+
+
+.example-card {
+  max-width: 400px;
+}
+
+.gridTitle {
+  text-align-last: center;
+
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  display: flex !important;
+}
+
+.head-card{
+  /* width: 95%; */
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  /* background: linear-gradient(to right, #5c5967, #3f598e) !important; */
+  background-color: #686A83;
+  color: white !important;
+  border-radius: 5px 5px 0 0 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24) !important;
+  height: 25px;
+  margin-bottom: 10px;
+}
+
+
+
+.mat-mdc-tab-body-content {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+
+
+.centrado {
+position: relative !important;
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+}
+.centrado_horizontal {
+  display: block !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+  }
+
+.modal-footer {
+margin-top: auto;
+}
+
+.alert-primary {
+  color: #114e7e;
+  background-color: #d3eafd;
+  border-color: #c1e2fc;
+}
+
+.alert-primary hr {
+  border-top-color: #a9d7fb;
+}
+
+.alert-primary .alert-link {
+  color: #0b3251;
+}
+
+.alert-secondary {
+  color: #383d41;
+  background-color: #e2e3e5;
+  border-color: #d6d8db;
+}
+
+.alert-secondary hr {
+  border-top-color: #c8cbcf;
+}
+
+.alert-secondary .alert-link {
+  color: #202326;
+}
+
+.alert-success {
+  color: #285b2a;
+  background-color: #dbefdc;
+  border-color: #cde9ce;
+}
+
+.alert-success hr {
+  border-top-color: #bbe1bd;
+}
+
+.alert-success .alert-link {
+  color: #18381a;
+}
+
+.alert-info {
+  color: #00626e;
+  background-color: #ccf2f6;
+  border-color: #b8ecf3;
+}
+
+.alert-info hr {
+  border-top-color: #a2e6ef;
+}
+
+.alert-info .alert-link {
+  color: #00353b;
+}
+
+.alert-warning {
+  color: #857a1f;
+  background-color: #fffbd8;
+  border-color: #fff9c8;
+}
+
+.alert-warning hr {
+  border-top-color: #fff6af;
+}
+
+.alert-warning .alert-link {
+  color: #5c5415;
+}
+
+.alert-danger {
+  color: #7f231c;
+  background-color: #fdd9d7;
+  border-color: #fccac7;
+}
+
+.alert-danger hr {
+  border-top-color: #fbb3af;
+}
+
+.alert-danger .alert-link {
+  color: #551713;
+}
+
+.alert-light {
+  color: #818182;
+  background-color: #fefefe;
+  border-color: #fdfdfe;
+}
+
+.alert-light hr {
+  border-top-color: #ececf6;
+}
+
+.alert-light .alert-link {
+  color: #686868;
+}
+
+.alert-dark {
+  color: #1b1e21;
+  background-color: #d6d8d9;
+  border-color: #c6c8ca;
+}
+
+.alert-dark hr {
+  border-top-color: #b9bbbe;
+}
+
+.alert-dark .alert-link {
+  color: #040505;
+}
+
+
+.large-toggle {
+  transform: scale(1.5); /* Ajusta el valor para el tamaño deseado */
+  transform-origin: left top; /* Asegura que el toggle se escale desde la esquina superior izquierda */
+  display: inline-block;
+  margin-top: 10px; /* Ajusta el margen superior si es necesario */
+}
+
+
+/* comprobante.component.css */
+::ng-deep .cp-button {
+  margin-top: 20px;
+  color: rgb(60, 56, 56);
+}
+
+
+.cp-button {
+  background-color: #042a53 !important; /* Cambia este valor por el color que desees */
+  color: #fff !important; /* Cambia este valor por el color del texto que desees */
+}
+
+.cp-button:disabled {
+  background-color: #ccc !important; /* Color del botón cuando está deshabilitado */
+  color: #666 !important; /* Color del texto cuando el botón está deshabilitado */
+}
+
+
+.input-error {
+  border: 2px solid red;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}

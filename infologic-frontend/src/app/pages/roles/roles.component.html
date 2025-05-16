@@ -1,0 +1,81 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <app-module-header
+            title="Gestion de Roles"
+            subtitle=""
+            [button]="!permissionsArrRoles.includes('Agregar')"
+            buttonLabel="Agregar"
+            buttonColor="accent"
+            buttonIcon="add"
+            component="RolesComponent"
+            action="open"
+          ></app-module-header>
+
+          <div class="card-body">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-label="informacion de roles ordenable">
+              <ng-container matColumnDef="nameRole">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.nameRole }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="descriptionRole">
+                <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.descriptionRole }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <button
+                    color="accent"
+                    mat-icon-button
+                    (click)="update(element, i)"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Editar"
+                  >
+                    <i class="material-icons">create</i>
+                  </button>
+                  <button
+                    [hidden]="!permissionsArrRoles.includes('Eliminar')"
+                    color="primary"
+                    mat-icon-button
+                    (click)="deleteRoles(element, i)"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Eliminar"
+                  >
+                    <i class="material-icons">delete</i>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="9999">
+                  No hay información que mostrar
+                </td>
+              </tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <mat-paginator
+              class="mat-elevation-z8"
+              [length]="totalRecordsRoles"
+              [pageSize]="paginationSizeRoles"
+              [pageSizeOptions]="paginationSizeOptionsRoles"
+              (page)="paginate($event)"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

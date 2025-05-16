@@ -1,0 +1,29 @@
+export interface Cliente {
+    idCliente?: number;
+    esConsumidorFinal?: boolean;
+    esExtranjero?: boolean;
+    esGobierno?: boolean;
+    esGranContribuyente?: boolean;
+    porcentajeDescuento?: number;
+    createdAt?: string;
+    deletedAt?: string;
+    updatedAt?: string;
+    nrcCustomer?: string;
+    nitCustomer?: string;
+    numeroDocumento?: string;
+    nombreCliente: string;
+    nombreComercial?: string;
+    direccion?: string;
+    email: string;
+    actividadEconomica?: number;
+    departamento?: string;
+    descripcionDescuento?: string;
+    municipio?: string;
+    pais?: string;
+    telefono: string;
+    tipoDocumento?: string;
+    colonia?: string;
+    calle?: string;
+    apartamentoLocal?: string;
+    numeroCasa?: string;
+  }

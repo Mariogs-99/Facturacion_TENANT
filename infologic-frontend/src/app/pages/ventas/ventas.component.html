@@ -1,0 +1,2291 @@
+<div class="card">
+  <app-module-header title="Emisor de Documentos Tributarios" subtitle="" buttonIcon="add" buttonLabel="Generar DTE"
+    buttonColor="accent" component="VentasComponent" action="open"
+    [button]="!permissionsArr.includes('Agregar')"></app-module-header>
+
+
+  <div class="card-body">
+
+    <div class="row">
+      <div [hidden]="view != 'index'">
+        <!-- <div class="row">
+          <div class="col-12 col-sm-10">
+            <mat-form-field class="w-100">
+              <mat-label>Filtro</mat-label>
+              <input matInput (keyup)="applyCustomFilter($event)" placeholder="" #input>
+            </mat-form-field>
+          </div>
+        </div> -->
+        <div class="mat-elevation-z8" style="width: 100%">
+          <div class="table-responsive">
+            <table aria-label="informacion de ventas tbl uno ordenable" #tableBranch mat-table [dataSource]="dataSource"
+              (matSortChange)="announceSortChange($event)" matSort>
+
+              <ng-container matColumnDef="fechaTransaccion">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                  <app-table-header rowHeight="45px" title="Fecha." column="fechaTransaccion" alignment="text-start"
+                    [sort]="true" [search]="true" [mascara]="'d0-M0-0000'"
+                    tableName="VentascomponentTable"></app-table-header>
+
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ horaElSalvador(element.fechaTransaccion) }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="customer">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                  <app-table-header rowHeight="45px" title="Cliente" column="cliente" alignment="text-start"
+                    [sort]="true" [search]="true" tableName="VentascomponentTable"></app-table-header>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.cliente.nombre | uppercase }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="type_transaction">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;" width="700px">
+                  <app-table-header rowHeight="45px" title="Tipo" column="tipoDTE" alignment="text-start" [sort]="true"
+                    [search]="true" [type]="'select'" [data]="[{value: '01',
+                    name: 'FACTURA',
+                    },{
+                  value: '03',
+                    name: 'COMPROBANTE_CREDITO_FISCAL',
+                    },{
+                  value: '04',
+                    name: 'NOTA_REMISION',
+                    },{
+                  value: '05',
+                    name: 'NOTA_CREDITO',
+                    },{
+                  value: '06',
+                    name: 'NOTA_DEBITO',
+                    },{
+                  value: '07',
+                    name: 'COMPROBANTE_RETENCION',
+                    },{
+                  value: '08',
+                    name: 'COMPROBANTE_LIQUIDACION',
+                    },{
+                  value: '09',
+                    name: 'DOCUMENTO_CONTABLE_LIQUIDACION',
+                    },{
+                  value: '11',
+                    name: 'FACTURAS_EXPORTACION',
+                    },{
+                  value: '14',
+                    name: 'FACTURA_SUJETO_EXCLUIDO',
+                    },{
+                  value: '15',
+                    name: 'COMPROBANTE_DONACION',
+                    }]" tableName="VentascomponentTable"></app-table-header>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <span style="display: inline-block; width: 400px;">{{ this.tipo_DTE(element.tipoDTE) | uppercase
+                    }}</span>
+
+
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="numeroDTE">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                  <app-table-header rowHeight="45px" title="Número DTE" column="numeroDTE" alignment="text-center"
+                    [sort]="true" [search]="true" tableName="VentascomponentTable"></app-table-header>
+
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.numeroDTE | uppercase }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="codigoGeneracion">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                  <app-table-header rowHeight="45px" title="Código de Generación" column="codigoGeneracion"
+                    alignment="text-center" [sort]="true" [search]="true"
+                    tableName="VentascomponentTable"></app-table-header>
+
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.codigoGeneracion | uppercase }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="state">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                  <app-table-header rowHeight="45px" title="Estado" column="status" alignment="text-center"
+                    [sort]="true" [search]="true" [type]="'select'" [data]="[{name:'NA', value:0 },
+                    {name:'ERROR', value:1 },
+                    {name:'APROBADO', value:2 },
+                    {name:'RECHAZADO', value:3 },
+                    {name:'PENDIENTE', value:4 },
+                    {name:'MARCADO_CONTINGENCIA', value:5 },
+                    {name:'APROBADO_CONTINGENCIA', value:6 },
+                    {name:'ANULADO', value:7},]" tableName="VentascomponentTable"></app-table-header>
+                </th>
+                <td mat-cell style="text-align: center; cursor: pointer; min-width: 130px" 
+                      *matCellDef="let element"
+                      (click)="showFactura(element)" 
+                      (keydown.enter)="showFactura(element)" 
+                      (keydown.space)="showFactura(element)"
+                      tabindex="0"
+                      data-toggle="tooltip" data-placement="top" title="PDF">
+                    <span style="
+                        min-width: 130px;
+                        font-size: 0.9rem;
+                        font-weight: lighter;
+                      " [ngClass]="
+                        'p-2 badge bg-' +
+                        (element.status == 'PENDIENTE' ? 'dark ' : '') +
+                        (element.status == null ? 'danger ' : '') +
+                        (element.status == 'RECHAZADO' ? 'danger ' : '') +
+                        (element.status == 'ERROR' ? 'danger ' : '') +
+                        (element.status == 'NA' ? 'danger ' : '') +
+                        (element.status == 'ANULADO' ? 'warning ' : '') +
+                        (element.status == 'APROBADO' ? 'primary ' : '') +
+                        (element.status == 'APROBADO_CONTINGENCIA' ? 'success ' : '') +
+                        (!element.status ? 'danger' : '') +
+                        (element.status == 'MARCADO_CONTINGENCIA' ? 'secondary ' : '') +
+                        (element.status == '1720' ? 'light text-dark ' : '')
+                      ">
+                      {{ element.status ?? 'NO ENVIADO' }}
+                    </span>
+                  </td>
+
+              </ng-container>
+
+              <ng-container matColumnDef="total">
+               
+                <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                  Total
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <span style="display: inline-block; width: 100px; text-align: right;">
+                    {{ ((element.tipoDTE =='14')? (element.totalTransaccion - element.rentaRetenido):
+                    (element.tipoDTE =='07'? element.ivaRetenido:
+                    (element.tipoDTE =='01'?(element.totalTransaccion-element.ivaRetenido - element.totalNosujeto) :
+                    element.totalTransaccion+element.totalIva-element.ivaRetenido)) )| currency : "USD" }}
+                  </span>
+
+
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                  Acciones
+                </th>
+                <td mat-cell style="text-align: center; cursor: pointer; min-width: 130px" *matCellDef="let element"
+                  data-toggle="tooltip" data-placement="top" title="PDF">
+                  <div class="d-flex justify-content-start ml-4">
+                    <button mat-icon-button (click)="showFactura(element)" data-toggle="tooltip" data-placement="top"
+                      title="PDF">
+                      <mat-icon style="
+                          font-size: 24px;
+                          color: black;
+                          transform: scaleX(-1);
+                        ">search</mat-icon>
+                    </button>
+                    <button style="align-items: center; cursor: default" mat-icon-button data-toggle="tooltip"
+                      data-placement="center" [title]="
+                        !element.invalid_stamp
+                          ? (this.idsDocumentosAsociados.includes(element.idTransaccion)?'DTE Asociado':'QR Generado')
+                          : 'Documento invalidado'
+                      ">
+                      <span
+                        *ngIf="element.status != 'RECHAZADO' && element.status != 'ANULADO' && element.status != 'MARCADO_CONTINGENCIA'">
+                        <mat-icon
+                          *ngIf="!element.invalid_stamp && !this.idsDocumentosAsociados.includes(element.idTransaccion)"
+                          style="color: green">check_circle</mat-icon>
+                        <mat-icon
+                          *ngIf="!element.invalid_stamp && this.idsDocumentosAsociados.includes(element.idTransaccion)"
+                          style="color: orange">lock</mat-icon>
+
+                      </span>
+                      <span *ngIf="element.status == 'MARCADO_CONTINGENCIA'">
+                        <mat-icon *ngIf="!element.invalid_stamp" style="color: #6C757D">report_problem</mat-icon>
+                      </span>
+                      <span *ngIf="element.status == 'RECHAZADO'">
+                        <mat-icon *ngIf="!element.invalid_stamp" style="color: red">report_problem</mat-icon>
+                      </span>
+                      <span *ngIf="element.status == 'ANULADO'">
+                        <mat-icon *ngIf="!element.invalid_stamp" style="color: orange">check_circle</mat-icon>
+                      </span>
+                      <mat-icon *ngIf="element.invalid_stamp" style="color: orange; align-items: center">info</mat-icon>
+                    </button>
+                    <!-- <span*ngIf="element.status != 'RECHAZADO' && element.status != 'ANULADO' && element.status != 'MARCADO_CONTINGENCIA'"> -->
+                    <span *ngIf="
+                        element.status != 'RECHAZADO' &&
+                        element.status != 'ANULADO' &&
+                        element.status != 'MARCADO_CONTINGENCIA' &&
+                        !this.idsDocumentosAsociados.includes(element.idTransaccion)
+                      ">
+
+                      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="anular(element)">
+                          <mat-icon style="color: chocolate">warning</mat-icon>
+                          <span>Invalidar DTE</span>
+
+                        </button>
+                        <div *ngIf="
+                            element.id_type_transaction == '36' ||
+                            element.id_type_transaction == '40'
+                          ">
+                          <button mat-menu-item (click)="addNote(element.id, 1)">
+                            <mat-icon style="color: indigo">event_note</mat-icon>
+                            <span>Nota de Crédito</span>
+                          </button>
+                          <button mat-menu-item (click)="addNote(element.id, 2)">
+                            <mat-icon style="color: midnightblue">note_add</mat-icon>
+                            <span>Nota de Débito</span>
+                          </button>
+                        </div>
+                      </mat-menu>
+                    </span>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="9999">No hay información que mostrar</td>
+              </tr>
+            </table>
+          </div>
+          <mat-paginator #branchPaginator [length]="totalRecords" [pageSize]="paginationSize"
+            [pageSizeOptions]="paginationSizeOptions" (page)="paginate($event)" showFirstLastButtons
+            aria-label="test 0">
+          </mat-paginator>
+        </div>
+      </div>
+
+      <div *ngIf="view == 'forms'">
+        <div class="accordion-action-buttons derecha mt-4">
+          <button mat-button (click)="accordion.openAll()">Mostrar Todo</button>
+          <button mat-button (click)="accordion.closeAll()">
+            Ocultar Todo
+          </button>
+        </div>
+        <mat-accordion class="accordion-headers-align" multi>
+
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header class="cabecera blanco">
+              <mat-panel-title class="blanco">
+                DATOS GENERALES
+              </mat-panel-title>
+              <mat-panel-description class="blanco">
+                TIPO DE FACTURA Y DATOS DEL
+                {{ this.opcion == "1" ? "CLIENTE" : "PROVEEDOR" }}
+                <mat-icon class="blanco">account_circle</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+              <div *ngIf="departamento == '80'" class="col-10 col-md-5 col-lg-3">
+                <mat-form-field class="" style="width: 100%" appearance="outline" *ngIf="noteType == 0">
+                  <mat-label>Tipo de Documento</mat-label>
+                  <mat-select [compareWith]="compareObjects" [(ngModel)]="transaction.id_doc_transaction_type"
+                    (selectionChange)="seleccionFacturaCredito($event.value)">
+                    <mat-option [value]="35">
+                      FACTURA
+                    </mat-option>
+                    <mat-option [value]="36">
+                      COMPROBANTE DE CRÉDITO FISCAL
+                    </mat-option>
+                    <mat-option [value]="38">
+                      NOTA DE CRÉDITO
+                    </mat-option>
+                    <mat-option [value]="39">
+                      NOTA DE DÉBITO
+                    </mat-option>
+                    <mat-option [value]="44">
+                      FACTURA DE SUJETO EXCLUIDO
+                    </mat-option>
+                    <mat-option [value]="40">
+                      COMPROBANTE DE RETENCIÓN
+                    </mat-option>
+                    <mat-option [value]="43">
+                      FACTURA DE EXPORTACIÓN
+                    </mat-option>
+                    <mat-option [value]="41">
+                      COMPROBANTE DE LIQUIDACIÓN
+                    </mat-option>
+                    <mat-option [value]="41">
+                      VENTA A TERCEROS
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="departamento != '80'" class="col-10 col-md-5 col-lg-3">
+                <mat-form-field class="" style="width: 100%" appearance="outline" *ngIf="noteType == 0">
+                  <mat-label>Tipo de Documento</mat-label>
+                  <mat-select [compareWith]="compareObjects" [(ngModel)]="transaction.id_doc_transaction_type"
+                    (selectionChange)="seleccionFacturaCredito($event.value)">
+                    <mat-option [value]="35">
+                      FACTURA
+                    </mat-option>
+                    <mat-option [value]="36">
+                      COMPROBANTE DE CRÉDITO FISCAL
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-10 col-md-5 col-lg-3" *ngIf="this.transaction.id_doc_transaction_type == '40'">
+                <mat-form-field class="" style="width: 100%" appearance="outline">
+
+                  <mat-label>Tipo de Documento</mat-label>
+                  <mat-select [compareWith]="compareObjects" (selectionChange)="seleccionCR($event.value)">
+                    <mat-option [value]="1">
+                      MANUAL RECIBIDOS 1%
+                    </mat-option>
+                    <mat-option [value]="2">
+                      DE SUJETO EXCLUIDO 13%
+                    </mat-option>
+
+                  </mat-select>
+
+
+
+
+                </mat-form-field>
+              </div>
+              <div class="col-10 col-md-5 col-lg-3" *ngIf="this.noteType == 1 || this.noteType == 2">
+                <mat-form-field class="" style="width: 100%" appearance="outline"
+                  *ngIf="this.noteType == 1 || this.noteType == 2">
+                  <mat-label>Tipo de Documento</mat-label>
+                  <mat-select [(ngModel)]="transaction.id_doc_transaction_type">
+                    <mat-option value="38" *ngIf="this.noteType == 1">
+                      NOTA DE CRÉDITO
+                    </mat-option>
+                    <mat-option value="39" *ngIf="this.noteType == 2">
+                      NOTA DE DÉBITO</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-10 col-md-5 col-lg-3" style="display: none">
+                <mat-form-field class="" style="width: 100%" appearance="outline">
+                  <mat-label>Condición de Pago</mat-label>
+                  <mat-select [compareWith]="compareObjects" [(ngModel)]="transaction.id_payment_cond"
+                    (selectionChange)="onPayemendCondSelected($event.value)">
+                    <mat-option value="457"> CONTADO</mat-option>
+                    <mat-option value="458"> CRÉDITO</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-10 col-md-5 col-lg-3" *ngIf="transaction.id_customer != 'add' && opcion == '2'"
+                appearance="outline">
+                <mat-form-field style="width: 100%" *ngIf="transaction.id_customer != 'add' && opcion == '2'"
+                  appearance="outline">
+                  <mat-label>Proveedor</mat-label>
+                  <input type="text" placeholder="Escoge un proveedor" aria-label="proveedor" matInput
+                    [(ngModel)]="inputChange" [matAutocomplete]="autoProveedor" (ngModelChange)="filtervalues($event)"
+                    required />
+                  <mat-autocomplete (optionSelected)="selectChange($event, 5, 1)" autoActiveFirstOption
+                    #autoProveedor="matAutocomplete">
+                    <mat-option value="{{ option.id }}" *ngFor="let option of filteredOptions.proveedors">
+                      {{ option.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-error *ngIf="inputChange == ''">
+                    Nombre del Proveedor es <strong>requerido</strong>
+                  </mat-error>
+                  <mat-icon matSuffix>mode_edit</mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-10 col-md-5 col-lg-3" *ngIf="
+                  transaction.id_customer != 'add' &&
+                  opcion != '2' &&
+                  this.noteType != 0
+                ">
+                <mat-form-field style="width: 100%" *ngIf="
+                    transaction.id_customer != 'add' &&
+                    opcion != '2' &&
+                    this.noteType != 0
+                  " appearance="outline">
+                  <mat-label>Cliente</mat-label>
+
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Roles</mat-label>
+                    <mat-select formControlName="clientes">
+                      <mat-option *ngFor="
+                          let option of filteredOptions.clientes;
+                          let i = index
+                        " [value]="option.id">
+                        {{ option.nombreConcatenado }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-error *ngIf="inputChange == ''">
+                    Nombre del Cliente es <strong>requerido</strong>
+                  </mat-error>
+                  <mat-icon matSuffix>mode_edit</mat-icon>
+                </mat-form-field>
+              </div>
+
+              <div class="col" *ngIf="
+                  transaction.id_customer != 'add' &&
+                  opcion != '2' &&
+                  this.transaction.id_doc_transaction_type!='40' &&
+                  this.transaction.id_doc_transaction_type!='41' &&
+                  this.noteType == 0 &&
+                  transaction.id_customer != 'add2'
+                ">
+                <mat-form-field style="width: 100%"
+                  *ngIf="transaction.id_customer != 'add' && opcion != '2' && this.noteType == 0" appearance="outline">
+                  <mat-label>Cliente</mat-label>
+                  <input type="text" placeholder="Escoge un cliente" aria-label="cliente" matInput class="w-100"
+                    [(ngModel)]="inputChange" [matAutocomplete]="auto" (ngModelChange)="filtervalues($event)"
+                    required />
+                  <mat-autocomplete (optionSelected)="selectChange($event.option, 2, 1)" autoActiveFirstOption
+                    #auto="matAutocomplete">
+                    <mat-option [value]="option.name" *ngFor="let option of filteredOptions.clientes">
+                      {{ option.nombreConcatenado }}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-error *ngIf="inputChange == ''">
+                    Nombre del Cliente es <strong>requerido</strong>
+                  </mat-error>
+                  <mat-icon matSuffix>mode_edit</mat-icon>
+                </mat-form-field>
+
+              </div>
+
+              <div class="col-lg-1 col-md-12" *ngIf="transaction.id_customer != 'add2'">
+                <div class="d-flex justify-content-center">
+                  <button style="display:none" mat-fab type="button" (click)="abrirModalClientes()"
+                    class="mat-elevation-z8" matTooltipPosition="right" mat-raised-above matTooltip="Búsqueda Avanzada">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                </div>
+
+              </div>
+
+              <div class="col-lg-1 col-md-12" *ngIf="
+                  transaction.id_customer != 'add' &&
+                  this.noteType == 0 &&
+                  !updatingNotes
+                " style="display: none">
+                <div class="d-flex justify-content-center">
+                  <button mat-fab type="button" *ngIf="
+                      transaction.id_customer != 'add' &&
+                      this.noteType == 0 &&
+                      !updatingNotes
+                    " (click)="transaction.id_customer = 'add'" class="mat-elevation-z8" matTooltipPosition="right"
+                    mat-raised-above matTooltip="Agregar Nuevo">
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-2 col-md-2 col-lg-2" *ngIf="
+                  transaction.id_customer != 'add' &&
+                  this.noteType == 0 &&
+                  !updatingNotes
+                ">
+                <button mat-button *ngIf="
+                    transaction.id_customer != 'add' &&
+                    this.noteType == 0 &&
+                    !updatingNotes
+                  " (click)="transaction.id_customer = 'add'" matTooltipPosition="right" mat-raised-above
+                  matTooltip="Agregar Nuevo" class="crear" class="align-items-center" style="display: none">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+              <div>
+                <form *ngIf="transaction.id_customer == 'add2'" [formGroup]="registerForm2" class="row">
+                  <div class="col-8 col-sm-8">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Nombre </mat-label>
+                      <input style="text-align: center" type="" formControlName="name" matInput required
+                        maxlength="200" />
+                      <mat-error *ngIf="
+                          this.registerForm2.controls['name'].hasError(
+                            'required'
+                          )
+                        ">
+                        Nombre de cliente es <strong>requerido</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>NIT o DUI</mat-label>
+                      <input style="text-align: center" type="text" formControlName="NIT" [maxLength]="17" matInput
+                        required (keypress)="onKeyPressNumbers($event)" />
+                      <mat-error *ngIf="
+                          registerForm2.controls['NIT'].hasError('required')
+                        ">Campo requerido</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Correo </mat-label>
+                      <input style="text-align: center" type="" formControlName="email" matInput class="lowerCase"
+                        (input)="toLower($event)" maxlength="240" />
+                      <mat-error *ngIf="
+                          this.registerForm2.controls['email'].hasError(
+                            'pattern'
+                          )
+                        ">
+                        EL formato del correo electronico es
+                        <strong>invalido</strong>
+                      </mat-error>
+                      <mat-error *ngIf="
+                          this.registerForm2.controls['email'].hasError(
+                            'required'
+                          )
+                        ">
+                        Email es <strong>requerido</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>Telefono </mat-label>
+                      <input style="text-align: center" type="text" formControlName="phone" [maxLength]="8" matInput
+                        required (keypress)="onKeyPressNumbers($event)" />
+
+                      <mat-error *ngIf="
+                          this.registerForm2.controls['phone'].hasError(
+                            'required'
+                          )
+                        ">
+                        Telefono de cliente es <strong>requerido</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                      <mat-label>NRC</mat-label>
+                      <input style="text-align: center" type="text" formControlName="NRC" [maxLength]="17" matInput
+                        (keypress)="onKeyPressNumbers($event)" />
+                    </mat-form-field>
+                  </div>
+
+
+                  <div class="col-md-4">
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label> COLONIA/BARRIO/RESIDENCIAL/REPARTO</mat-label>
+                      <input style="text-align: center" matInput formControlName="colonia" maxlength="200">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label> CALLE/AVENIDA/PASAJE/POLIGONO/BLOCK</mat-label>
+                      <input style="text-align: center" matInput formControlName="calle" maxlength="200">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-2">
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label> NUMERO DE CASA</mat-label>
+                      <input style="text-align: center" matInput formControlName="numeroCasa" maxlength="200">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-2">
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label> APARTAMENTO/LOCAL</mat-label>
+                      <input style="text-align: center" matInput formControlName="apartamentoLocal" maxlength="200">
+                    </mat-form-field>
+                  </div>
+
+
+                  <div class="col-md-8">
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>COMPLEMENTO DIRECCIÓN</mat-label>
+                      <input style="text-align: center" matInput formControlName="address" maxlength="200">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-4">
+                    <mat-form-field class="full-width-input centrado_texto" appearance="outline" style="width: 100%;">
+                      <mat-label>Municipio (*)</mat-label>
+                      <input type="text" placeholder="Digite el Municipio" aria-label="municipio" matInput
+                        (keypress)="onKeyPressLetras($event)" formControlName="nombreMunicipio" [matAutocomplete]="auto"
+                        (ngModelChange)="filtervaluesMunicipio($event)" (focus)="resetOptions()">
+                      <mat-autocomplete (optionSelected)="selectChangeMunicipio($event)" autoActiveFirstOption
+                        #auto="matAutocomplete">
+                        <mat-option value="{{option.name}}" *ngFor="let option of filteredOptions.municipios">
+                          {{option.name}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-12">
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>Giro Actividad economica </mat-label>
+                      <input style="text-align: center" type="text" placeholder="Escoge un Giro" aria-label="Giro"
+                        matInput formControlName="giro_name" [matAutocomplete]="auto_giro"
+                        (ngModelChange)="filtervalues($event, 5)" (keypress)="onKeyPressNoNumeros($event)"
+                        (focus)="resetOptions()" />
+                      <mat-error *ngIf="
+                          this.registerForm.controls[
+                            'giro_name'
+                          ].hasError('required')
+                        ">
+                        Giro actividad economica es
+                        <strong>requerido</strong>
+                      </mat-error>
+                      <mat-autocomplete autoActiveFirstOption #auto_giro="matAutocomplete">
+                        <mat-option value="{{ option.name }}" *ngFor="
+                            let option of filteredOptions.actividad_economica
+                          ">
+                          {{ option.name }}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div
+              *ngIf="this.cliente && transaction.id_customer != 'add2' && transaction.id_doc_transaction_type != '41' && transaction.id_doc_transaction_type != '40'"
+              class="contanier">
+              <mat-expansion-panel [expanded]="true">
+                <mat-expansion-panel-header class="cabecera blanco">
+                  <mat-panel-title class="blanco">
+                    DATOS GENERALES
+                  </mat-panel-title>
+                  <mat-panel-description class="blanco">
+                    DATOS DEL RECEPTOR
+                    <mat-icon class="blanco">remove_circle</mat-icon>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div class="container">
+
+                  <div class="row pt-3">
+                    <div class="col">
+                      <form [formGroup]="registerForm" class="row">
+                        <div class="col-12 col-sm-6">
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Nombre </mat-label>
+                            <input style="text-align: center" type="" formControlName="name" matInput value="" required
+                              (keypress)="onKeyPressNoNumeros($event)" maxlength="200" [readonly]="clienteDisable" />
+                            <mat-error *ngIf="
+                                this.registerForm.controls['name'].hasError(
+                                  'required'
+                                )
+                              ">
+                              Nombre de cliente es <strong>requerido</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+
+                        <div class="col-12 col-sm-6">
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Nombre Comercial </mat-label>
+                            <input style="text-align: center" type="" formControlName="comercial_name" matInput value=""
+                              required maxlength="200" (keypress)="onKeyPressNoSignos($event)"
+                              [readonly]="clienteDisable" />
+                            <mat-error *ngIf="
+                                this.registerForm.controls[
+                                  'comercial_name'
+                                ].hasError('required')
+                              ">
+                              Nombre comercial es <strong>requerido</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-12">
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Giro Actividad economica </mat-label>
+                            <input style="text-align: center" type="text" placeholder="Escoge un Giro" aria-label="Giro"
+                              matInput formControlName="giro_name" [matAutocomplete]="auto_giro"
+                              (ngModelChange)="filtervalues($event, 5)" (keypress)="onKeyPressNoNumeros($event)"
+                              (focus)="resetOptions()" [readonly]="clienteDisable" />
+                            <mat-error *ngIf="
+                                this.registerForm.controls[
+                                  'giro_name'
+                                ].hasError('required')
+                              ">
+                              Giro actividad economica es
+                              <strong>requerido</strong>
+                            </mat-error>
+                            <mat-autocomplete autoActiveFirstOption #auto_giro="matAutocomplete">
+                              <mat-option value="{{ option.name }}" *ngFor="
+                                  let option of filteredOptions.actividad_economica
+                                ">
+                                {{ option.name }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4">
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>DUI</mat-label>
+                            <input style="text-align: center" type="" simpleMask="99999999-9" formControlName="DUI"
+                              matInput value="" [readonly]="true" />
+                            <mat-error *ngIf="
+                                this.registerForm.controls['DUI'].hasError(
+                                  'required'
+                                )
+                              ">
+                              Numero de documento <strong>requerido</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4">
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>NIT</mat-label>
+                            <input style="text-align: center" type="" simpleMask="9999-999999-999-9"
+                              formControlName="NIT" matInput value="" [readonly]="true" />
+                            <mat-error *ngIf="
+                                this.registerForm.controls['NIT'].hasError(
+                                  'required'
+                                )
+                              ">
+                              Numero de documento <strong>requerido</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-md-4">
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>NRC</mat-label>
+                            <input style="text-align: center" type="" formControlName="NRC" matInput value=""
+                              maxlength="20" (keypress)="onKeyPressNumbersAndHyphens($event)" [readonly]="true" />
+
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Correo </mat-label>
+                            <input style="text-align: center" type="" formControlName="email" matInput value=""
+                              class="lowerCase" (input)="toLower($event)" maxlength="240" [readonly]="clienteDisable" />
+                            <mat-error *ngIf="
+                                this.registerForm.controls['email'].hasError(
+                                  'pattern'
+                                )
+                              ">
+                              EL formato del correo electronico es
+                              <strong>invalido</strong>
+                            </mat-error>
+                            <mat-error *ngIf="
+                                this.registerForm.controls['email'].hasError(
+                                  'required'
+                                )
+                              ">
+                              Email es <strong>requerido</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Telefono </mat-label>
+                            <input style="text-align: center" type="" simpleMask="9999-9999" formControlName="phone"
+                              (keypress)="onKeyPressNumbers($event)" maxlength="8" matInput value="" required
+                              [readonly]="clienteDisable" />
+                            <mat-error *ngIf="
+                                this.registerForm.controls['phone'].hasError(
+                                  'required'
+                                )
+                              ">
+                              Telefono de cliente es <strong>requerido</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-xl">
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Direccion</mat-label>
+                            <input style="text-align: center" matInput formControlName="address" maxlength="200"
+                              [readonly]="clienteDisable" />
+                          </mat-form-field>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Tipo de contribuyente</mat-label>
+                            <input matInput style="text-align: center"
+                              [value]="this.cliente.name != '' ? ((contribuyente ? contribuyente : 'PEQUEÑO').toUpperCase()): ''"
+                              readonly />
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-6 col-sm-3">
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Sujeto de Retención</mat-label>
+                            <input matInput style="text-align: center"
+                              [value]="this.cliente.name != '' ? (aplica_retencion === 'S' ? 'APLICAR RETENCIÓN 1%' : 'NO APLICAR RETENCIÓN'): ''"
+                              readonly />
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-6 col-sm-3">
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Departamento</mat-label>
+                            <mat-select (selectionChange)="filterValuesDepartamentos($event.value)"
+                              formControlName="departamento" name="departamento" [compareWith]="compareFn">
+                              <mat-option *ngFor="let departamento of departamentosArr" [value]="departamento.id_mh">
+                                {{departamento.departamento}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col-6 col-sm-3">
+                          <mat-form-field [disable]="true" class="w-100" appearance="outline">
+                            <mat-label>Municipio</mat-label>
+                            <mat-select (selectionChange)="filterValuesMunicipios($event.value)"
+                              formControlName="municipio" name="municipio">
+                              <mat-option *ngFor="let municipio of municipiosArrFiltered" [value]="municipio.id_mh">
+                                {{municipio.municipio}}
+                              </mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+
+
+
+                        <div class="col-6 col-sm-3">
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Aplica a Descuento</mat-label>
+                            <input matInput style="text-align: center"
+                              [value]="(this.cliente.descuento != null && this.cliente.descuento != '' && this.cliente.descuento != 0) ? this.cliente.descuento + ' %' : ''"
+                              readonly />
+                          </mat-form-field>
+                        </div>
+
+
+                        <div class="centrado_texto">
+                          <div *ngIf="!clienteDisable"
+                            class="alert alert-info d-flex justify-content-center align-items-center"
+                            style="height: 45px" role="alert">
+                            <mat-icon style="margin-right: 8px !important">help</mat-icon>
+
+                            <span>Los datos incluidos en ésta sección reemplazarán
+                              los del cliente en el DTE generado.</span>
+                          </div>
+                          <div class="col-12">
+                            <button *ngIf="clienteDisable" mat-raised-button
+                              (click)="clienteDisable = false;habilitarFRM()" color="accent">
+                              Habilitar Modificar Datos
+                            </button>
+                          </div>
+
+                          <div class="col-12">
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel [expanded]="true" *ngIf="transaction.id_doc_transaction_type == '38'">
+            <mat-expansion-panel-header class="cabecera blanco">
+              <mat-panel-title class="blanco">
+                Nota de Crédito
+              </mat-panel-title>
+              <mat-panel-description>
+                DOCUMENTOS EMITIDOS ASOCIADOS A LA NOTA DE CRÉDITO
+                <div class="derecha">
+                  <button mat-button (click)="manageField(4)" class="mat-mini-fab" style="color: rgb(60, 56, 56)">
+                    <i class="material-icons" style="color: white">add_circle</i>
+                  </button>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-card class="cardsAmple">
+              <mat-card-content>
+                <div class="alert alert-info d-flex justify-content-center align-items-center" style="height: 45px"
+                  role="alert">
+                  <mat-icon style="margin-right: 8px !important">help</mat-icon>
+
+                  <span>Agregar los Comprobantes de Crédito Fiscal que se asociarán
+                    a ésta Nota de Crédito.</span>
+
+                  <div class="col-lg-1 col-md-12">
+                    <div class="d-flex justify-content-center">
+                      <button mat-fab type="button" (click)="abrirModalVentas()" class="mat-elevation-z8"
+                        matTooltipPosition="right" mat-raised-above matTooltip="Agregar Transacciones">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table aria-label="informacion de ventas tbl dos ordenable" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sel.</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col" class="centrado_texto">Cliente</th>
+                        <th scope="col" class="centrado_texto">Subtotal</th>
+                        <th scope="col" class="centrado_texto">Iva</th>
+                        <th scope="col" class="centrado_texto">Retención (-)</th>
+                        <th scope="col" class="centrado_texto">Total</th>
+                        <th scope="col" class="centrado_texto">-</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let object of transacciones; let i = index">
+                        <td>
+                          <section class="example-section">
+                            <mat-checkbox class="example-margin"></mat-checkbox>
+                          </section>
+                        </td>
+                        <td>
+                          {{ formatTimestamp(transacciones[i].fecha) }}
+                        </td>
+                        <td class="centrado_texto">
+                          {{ transacciones[i].nombre }}
+                        </td>
+
+                        <td style="
+                            text-align: center;
+                            vertical-align: middle;
+                            width: 100px;
+                            font-size: 400;
+                          " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].subTotal) }}
+                          </h4>
+                        </td>
+                        <td style="
+                        text-align: center;
+                        vertical-align: middle;
+                        width: 100px;
+                        font-size: 400;
+                      " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].iva) }}
+                          </h4>
+                        </td>
+                        <td style="
+                        text-align: center;
+                        vertical-align: middle;
+                        width: 100px;
+                        font-size: 400;
+                      " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].ivaRetenido) }}
+                          </h4>
+                        </td>
+                        <td style="
+                    text-align: center;
+                    vertical-align: middle;
+                    width: 100px;
+                    font-size: 400;
+                  " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].totalTransaccion) }}
+                          </h4>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                          <button mat-icon-button (click)="manageItems(5, i)" data-toggle="tooltip" data-placement="top"
+                            title="Eliminar">
+                            <i class="material-icons" style="color: red">delete</i>
+                          </button>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel [expanded]="true" *ngIf="transaction.id_doc_transaction_type == '39'">
+            <mat-expansion-panel-header class="cabecera blanco">
+              <mat-panel-title class="blanco"> Nota de Débito </mat-panel-title>
+              <mat-panel-description>
+                DOCUMENTOS EMITIDOS ASOCIADOS A LA NOTA DE DÉBITO
+                <div class="derecha">
+                  <button mat-button (click)="manageField(4)" class="mat-mini-fab" style="color: rgb(60, 56, 56)">
+                    <i class="material-icons" style="color: white">add_circle</i>
+                  </button>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-card class="cardsAmple">
+              <mat-card-content>
+                <div class="alert alert-info d-flex justify-content-center align-items-center" style="height: 45px"
+                  role="alert">
+                  <mat-icon style="margin-right: 8px !important">help</mat-icon>
+
+                  <span>Agregar los Comprobantes de Documentos DTE que se asociarán
+                    a ésta Nota de Débito.</span>
+
+                  <div class="col-lg-1 col-md-12">
+                    <div class="d-flex justify-content-center">
+                      <button mat-fab type="button" (click)="abrirModalVentas()" class="mat-elevation-z8"
+                        matTooltipPosition="right" mat-raised-above matTooltip="Agregar Transacciones">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table aria-label="informacion de ventas tbl tres ordenable" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sel.</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col" class="centrado_texto">Cliente</th>
+                        <th scope="col" class="centrado_texto">Subtotal</th>
+                        <th scope="col" class="centrado_texto">Iva</th>
+                        <th scope="col" class="centrado_texto">Retención (-)</th>
+                        <th scope="col" class="centrado_texto">Total</th>
+                        <th scope="col" class="centrado_texto">-</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let object of transacciones; let i = index">
+                        <td>
+                          <section class="example-section">
+                            <mat-checkbox class="example-margin"></mat-checkbox>
+                          </section>
+                        </td>
+                        <td>
+                          {{ formatTimestamp(transacciones[i].fecha) }}
+                        </td>
+                        <td class="centrado_texto">
+                          {{ transacciones[i].nombre }}
+                        </td>
+
+                        <td style="
+                            text-align: center;
+                            vertical-align: middle;
+                            width: 100px;
+                            font-size: 400;
+                          " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].subTotal) }}
+                          </h4>
+                        </td>
+                        <td style="
+                        text-align: center;
+                        vertical-align: middle;
+                        width: 100px;
+                        font-size: 400;
+                      " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].iva) }}
+                          </h4>
+                        </td>
+                        <td style="
+                        text-align: center;
+                        vertical-align: middle;
+                        width: 100px;
+                        font-size: 400;
+                      " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].ivaRetenido) }}
+                          </h4>
+                        </td>
+                        <td style="
+                    text-align: center;
+                    vertical-align: middle;
+                    width: 100px;
+                    font-size: 400;
+                  " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].totalTransaccion) }}
+                          </h4>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                          <button mat-icon-button (click)="manageItems(5, i)" data-toggle="tooltip" data-placement="top"
+                            title="Eliminar">
+                            <i class="material-icons" style="color: red">delete</i>
+                          </button>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </mat-expansion-panel>
+
+
+
+          <mat-expansion-panel [expanded]="true"
+            *ngIf="transaction.id_doc_transaction_type == '40' && this.CR_manual != true">
+            <mat-expansion-panel-header class="cabecera blanco">
+              <mat-panel-title class="blanco">
+                Comprobante de Retención
+              </mat-panel-title>
+              <mat-panel-description>
+                DOCUMENTOS EMITIDOS ASOCIADOS AL COMPROBANTE DE RETENCIÓN
+                <div class="derecha">
+                  <button mat-button (click)="manageField(4)" class="mat-mini-fab" style="color: rgb(60, 56, 56)">
+                    <i class="material-icons" style="color: white">add_circle</i>
+                  </button>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-card class="cardsAmple">
+              <mat-card-content>
+                <div class="alert alert-info d-flex justify-content-center align-items-center" style="height: 45px"
+                  role="alert">
+                  <mat-icon style="margin-right: 8px !important">help</mat-icon>
+
+                  <span>Agregar los Documentos que se asociarán
+                    al Comprobante de Retención.</span>
+
+                  <div class="col-lg-1 col-md-12">
+                    <div class="d-flex justify-content-center">
+                      <button mat-fab type="button" (click)="abrirModalVentas()" class="mat-elevation-z8"
+                        matTooltipPosition="right" mat-raised-above matTooltip="Agregar Transacciones">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table aria-label="informacion de ventas tbl cuatro ordenable" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sel.</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col" class="centrado_texto">Cliente</th>
+                        <th scope="col" class="centrado_texto">Descripción</th>
+                        <th scope="col" class="centrado_texto">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let object of transacciones; let i = index">
+                        <td>
+                          <section class="example-section">
+                            <mat-checkbox class="example-margin"></mat-checkbox>
+                          </section>
+                        </td>
+                        <td>
+                          {{ formatTimestamp(transacciones[i].fecha) }}
+                        </td>
+                        <td class="centrado_texto">
+                          {{ transacciones[i].nombre }}
+                        </td>
+                        <td class="centrado_texto">
+                          {{ transacciones[i].items[0].nombre2 }}
+                        </td>
+
+                        <td colspan="2" style="
+                            text-align: center;
+                            vertical-align: middle;
+                            width: 100px;
+                            font-size: 400;
+                          " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].totalTransaccion) }}
+                          </h4>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                          <button mat-icon-button (click)="manageItems(5, i)" data-toggle="tooltip" data-placement="top"
+                            title="Eliminar">
+                            <i class="material-icons" style="color: red">delete</i>
+                          </button>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </mat-expansion-panel>
+
+
+          <mat-expansion-panel [expanded]="true" *ngIf="transaction.id_doc_transaction_type == '41'">
+            <mat-expansion-panel-header class="cabecera blanco">
+              <mat-panel-title class="blanco">
+                Comprobante de Liquidación
+              </mat-panel-title>
+              <mat-panel-description>
+                DOCUMENTOS EMITIDOS ASOCIADOS AL COMPROBANTE DE LIQUIDACIÓN
+                <div class="derecha">
+                  <button mat-button (click)="manageField(4)" class="mat-mini-fab" style="color: rgb(60, 56, 56)">
+                    <i class="material-icons" style="color: white">add_circle</i>
+                  </button>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-card class="cardsAmple">
+              <mat-card-content>
+                <div class="alert alert-info d-flex justify-content-center align-items-center" style="height: 45px"
+                  role="alert">
+                  <mat-icon style="margin-right: 8px !important">help</mat-icon>
+
+                  <span>Agregar los Comprobantes de Crédito Fiscal que se asociarán
+                    al Comprobante de Liquidación.</span>
+
+                  <div class="col-lg-1 col-md-12">
+                    <div class="d-flex justify-content-center">
+                      <button mat-fab type="button" (click)="abrirModalVentas()" class="mat-elevation-z8"
+                        matTooltipPosition="right" mat-raised-above matTooltip="Agregar Transacciones">
+                        <mat-icon>add</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table aria-label="informacion de ventas tbl cinco ordenable" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Sel.</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col" class="centrado_texto">Cliente</th>
+                        <th scope="col" class="centrado_texto">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let object of transacciones; let i = index">
+                        <td>
+                          <section class="example-section">
+                            <mat-checkbox class="example-margin"></mat-checkbox>
+                          </section>
+                        </td>
+                        <td>
+                          {{ formatTimestamp(transacciones[i].fecha) }}
+                        </td>
+                        <td class="centrado_texto">
+                          {{ transacciones[i].nombre }}
+                        </td>
+
+                        <td colspan="2" style="
+                            text-align: center;
+                            vertical-align: middle;
+                            width: 100px;
+                            font-size: 400;
+                          " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(transacciones[i].monto) }}
+                          </h4>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                          <button mat-icon-button (click)="manageItems(5, i)" data-toggle="tooltip" data-placement="top"
+                            title="Eliminar">
+                            <i class="material-icons" style="color: red">delete</i>
+                          </button>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </mat-expansion-panel>
+
+
+
+          <mat-expansion-panel [expanded]="true"
+            *ngIf="transaction.id_doc_transaction_type != '41' && transaction.id_doc_transaction_type != '40'">
+            <mat-expansion-panel-header class="cabecera blanco">
+              <mat-panel-title class="blanco"> DETALLE </mat-panel-title>
+              <mat-panel-description>
+                PRODUCTOS Y CANTIDADES
+                <div class="derecha">
+                  <button mat-button (click)="addProduct($event)" class="mat-mini-fab" style="color: rgb(60, 56, 56)">
+                    <i class="material-icons" style="color: white">add_circle</i> <span
+                      style="color: white; font-weight: bold;"> Agregar Item</span>
+                  </button>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-card class="cardsAmple">
+              <mat-card-content>
+                <div class="table-responsive">
+                  <table aria-label="informacion de ventas tbl seis ordenable" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 50%">Producto</th>
+                        <th scope="col" class="centrado_texto">{{this.transaction.id_doc_transaction_type!='44'?
+                          'Cantidad':'Retenciones'}}</th>
+
+                        <th scope="col" class="centrado_texto" *ngIf="transaction.id_doc_transaction_type=='44'">
+                          {{this.transaction.id_doc_transaction_type=='44'?
+                          'Cantidad':'Retenciones'}}</th>
+
+                        <th scope="col" class="centrado_texto">{{this.transaction.id_doc_transaction_type!='44'? 'Precio
+                          ($)':'Precio IVA ($)'}}</th>
+                        <th scope="col" class="centrado_texto">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let object of campos; let i = index">
+                        <td>
+                          <mat-form-field class="" style="width: 100%" appearance="outline" *ngIf="this.opcion != '3'">
+                            <input *ngIf="this.opcion == '3'" type="text"
+                              placeholder="Digite un producto o Servicio eeeeeeeeeee" aria-label="Producto" matInput
+                              (change)="manageField(1)" [(ngModel)]="campos[i].item"
+                              (ngModelChange)="filtervalues($event, 2, i)" />
+
+                            <input type="text" placeholder="Escoge un producto" aria-label="Producto" matInput
+                              (change)="manageField(1)" [(ngModel)]="campos[i].item" [matAutocomplete]="auto2"
+                              (ngModelChange)="filtervalues($event, 2, i)" />
+
+                            <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selectChange($event, 1, i)"
+                              autoActiveFirstOption #auto="matAutocomplete">
+                              <div *ngFor="let option of filteredOptions.productos">
+                                <mat-option value="{{ option.codigo_producto }}">
+                                  {{ option.codigo_producto }} -
+                                  {{ option.nombre }}
+                                </mat-option>
+                                <mat-option value="{{ option.codigo_producto }}" *ngIf="this.opcion == '2'">
+                                  {{ option.codigo_producto }} -
+                                  {{ option.nombre }}
+                                </mat-option>
+                              </div>
+                            </mat-autocomplete>
+                          </mat-form-field>
+
+                          <mat-form-field class="" style="width: 100%" appearance="outline" *ngIf="this.opcion == '3'">
+                            <input type="text" placeholder="Digite un producto o Servicio." aria-label="Producto"
+                              matInput (change)="manageField(1)" [(ngModel)]="campos[i].item"
+                              (ngModelChange)="filtervalues($event, 2, i)" />
+
+                            <input *ngIf="this.opcion != '3'" type="text" placeholder="Escoge un producto"
+                              aria-label="Producto" matInput (change)="manageField(1)" [(ngModel)]="campos[i].item"
+                              [matAutocomplete]="auto2" (ngModelChange)="filtervalues($event, 2, i)" />
+
+                            <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selectChange($event, 1, i)"
+                              autoActiveFirstOption #auto="matAutocomplete">
+                              <div *ngFor="let option of filteredOptions.productos">
+                                <mat-option value="{{ option.id }}">
+                                  {{ option.codigo_producto }} -
+                                  {{ option.nombre }}
+                                </mat-option>
+                                <mat-option value="{{ option.id }}" *ngIf="this.opcion == '3'">
+                                  {{ option.codigo_producto }} -
+                                  {{ option.nombre }}
+                                </mat-option>
+                              </div>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </td>
+                        <td class="centrado_texto">
+
+                          <mat-form-field appearance="outline" style="width: 100px; text-align: center"
+                            *ngIf="transaction.id_doc_transaction_type!='44'">
+                            <input *ngIf="this.opcion == '1'" [(ngModel)]="campos[i].cantidad"
+                              style="text-align: center" (ngModelChange)="
+                                  subtotalChange($event, i); checkValue($event, i)
+                                " (change)="manageField(1)" class="center_txt" type="number" matInput value="" min="1"
+                              (focus)="resetOptions()" max="{{ campos[i].existencia_producto }}"
+                              (input)="onInputChange($event, i)" required />
+                            <input *ngIf="this.opcion == '3' || this.opcion == '2'" [(ngModel)]="campos[i].cantidad"
+                              (ngModelChange)="subtotalChange($event, i)" (change)="manageField(1)" class="center_txt"
+                              type="number" matInput min="1" (focus)="resetOptions()" required />
+                          </mat-form-field>
+
+
+
+                          <div class="col centrado_texto" *ngIf="transaction.id_doc_transaction_type=='44'">
+                            <mat-label>Renta 10%</mat-label>
+                            <mat-slide-toggle id="renta1" [checked]="campos[i].renta1" [(ngModel)]="campos[i].renta1"
+                              (change)="aplicarIVA($event, i)" class="example-margin large-toggle"></mat-slide-toggle>
+                            <br>
+                            <br>
+                          </div>
+                          <div class="col centrado" *ngIf="transaction.id_doc_transaction_type=='44'">
+                            <mat-label class="centrado">IVA 13% </mat-label>
+                            <mat-slide-toggle id="renta13" [checked]="campos[i].renta13" [(ngModel)]="campos[i].renta13"
+                              (change)="aplicarIVA($event, i)" class="example-margin large-toggle"></mat-slide-toggle>
+                            <br>
+                            <br>
+                          </div>
+
+                        </td>
+
+                        <td class="centrado_texto" *ngIf="transaction.id_doc_transaction_type=='44'">
+
+                          <mat-form-field appearance="outline" style="width: 100px; text-align: center"
+                            *ngIf="transaction.id_doc_transaction_type=='44'">
+                            <input *ngIf="this.opcion == '1'" [(ngModel)]="campos[i].cantidad"
+                              style="text-align: center" (ngModelChange)="
+                                  subtotalChange($event, i); checkValue($event, i)
+                                " (change)="manageField(1)" class="center_txt" type="number" matInput value="" min="1"
+                              (focus)="resetOptions()" max="{{ campos[i].existencia_producto }}"
+                              (input)="onInputChange($event, i)" required />
+                            <input *ngIf="this.opcion == '3' || this.opcion == '2'" [(ngModel)]="campos[i].cantidad"
+                              (ngModelChange)="subtotalChange($event, i)" (change)="manageField(1)" class="center_txt"
+                              type="number" matInput min="1" (focus)="resetOptions()" required />
+                          </mat-form-field>
+
+
+
+                          <div class="col centrado_texto" *ngIf="transaction.id_doc_transaction_type!='44'">
+                            <mat-label>Renta 10%</mat-label>
+                            <mat-slide-toggle id="renta1" [checked]="campos[i].renta1" [(ngModel)]="campos[i].renta1"
+                              (change)="aplicarIVA($event, i)" class="example-margin large-toggle"></mat-slide-toggle>
+                            <br>
+                            <br>
+                          </div>
+                          <div class="col centrado" *ngIf="transaction.id_doc_transaction_type!='44'">
+                            <mat-label class="centrado">IVA 13% </mat-label>
+                            <mat-slide-toggle id="renta13" [checked]="campos[i].renta13" [(ngModel)]="campos[i].renta13"
+                              (change)="aplicarIVA($event, i)" class="example-margin large-toggle"></mat-slide-toggle>
+                            <br>
+                            <br>
+                          </div>
+
+                        </td>
+                        <td class="centrado_texto">
+                          <mat-form-field appearance="outline" style="width: 100px; text-align: center">
+                            <input *ngIf="isCreditoFiscal" [(ngModel)]="campos[i].precio" (change)="manageField(1)"
+                              [readonly]="
+                                campos[i].editable == 'S' || this.opcion == '3' || this.transaction.id_doc_transaction_type == '38' || this.transaction.id_doc_transaction_type == '39'
+                                  ? false
+                                  : true
+                              " style="text-align: center" (ngModelChange)="subtotalChange($event, i, true)"
+                              type="number" matInput value="" min="0" required />
+                            <input *ngIf="isFactura" [(ngModel)]="campos[i].precioiva" (change)="manageField(1)"
+                              [readonly]="
+                                campos[i].editable == 'S' || this.opcion == '3' || this.transaction.id_doc_transaction_type == '38' || this.transaction.id_doc_transaction_type == '39'
+                                  ? false
+                                  : true
+                              " style="text-align: center" (ngModelChange)="subtotalChange($event, i)" type="number"
+                              matInput value="" min="0" required />
+                          </mat-form-field>
+                        </td>
+                        <td colspan="2" style="
+                            text-align: center;
+                            vertical-align: middle;
+                            width: 100px;
+                            font-size: 400;
+                          " class="centrado_texto">
+                          <h4 appearance="outline">
+                            {{ formatUSD(campos[i].subtotal) }}
+                          </h4>
+                        </td>
+                        <td style="text-align: center; vertical-align: middle">
+                          <button mat-icon-button (click)="manageItems(2, i)" data-toggle="tooltip" data-placement="top"
+                            title="Eliminar">
+                            <i class="material-icons" style="color: red">delete</i>
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </mat-expansion-panel>
+
+
+          <mat-expansion-panel [expanded]="true"
+            *ngIf="transaction.id_doc_transaction_type == '40' && this.CR_manual == true">
+            <mat-expansion-panel-header class="cabecera blanco">
+              <mat-panel-title class="blanco"> DETALLE </mat-panel-title>
+              <mat-panel-description>
+                DETALLE DE COMPROBANTES DE RETENCIÓN
+                <div class="derecha">
+                  <button mat-button (click)="addProductCR($event)" class="mat-mini-fab" style="color: rgb(60, 56, 56)">
+                    <i class="material-icons" style="color: white">add_circle</i> <span
+                      style="color: white; font-weight: bold;"> Agregar Item</span>
+                  </button>
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <mat-card class="cardsAmple">
+              <mat-card-content>
+                <div class="table-responsive">
+
+                  <table aria-label="informacion de ventas tbl siete ordenable" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="centrado_texto">Documento Relacionado</th>
+                        <th scope="col" class="centrado_texto">Número de Documento</th>
+                        <th scope="col" class="centrado_texto">Iva Retenido</th>
+                        <th scope="col" class="centrado_texto">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let object of docAsociado; let i = index">
+                        <td class="">
+
+                      <tr>
+                        <td>
+
+                          <mat-form-field class="" appearance="outline">
+                            <mat-label>Tipo de DTE</mat-label>
+                            <mat-select [(ngModel)]="docAsociado[i].tipoDte">
+                              <mat-option value="14">
+                                SUJETO EXCLUIDO
+                              </mat-option>
+                              <mat-option value="03">
+                                CRÉDITO FISCAL</mat-option>
+                              <mat-option value="01">
+                                FACTURA CONSUMIDOR FINAL</mat-option>
+                            </mat-select>
+
+                          </mat-form-field>
+                        </td>
+
+                        <td class="centrado_texto">
+                          <mat-form-field class="" appearance="outline">
+                            <mat-label>Tipo de Documento</mat-label>
+                            <mat-select [(ngModel)]="docAsociado[i].tipoGeneracion">
+                              <mat-option value="02">
+                                ELECTRÓNICO </mat-option>
+                              <mat-option value="01">
+                                MANUAL</mat-option>
+                            </mat-select>
+
+                          </mat-form-field>
+                        </td>
+
+
+
+                        <td class="centrado_texto">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Fecha</mat-label>
+                            <input [(ngModel)]="docAsociado[i].fechaEmision" matInput [matDatepicker]="myDatepicker">
+                            <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                            <mat-datepicker #myDatepicker></mat-datepicker>
+                          </mat-form-field>
+                        </td>
+
+                        <td>
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Monto Sujeto</mat-label>
+                            <input type="text" placeholder="Digite el montoSujeto." aria-label="Producto" matInput
+                              (ngModelChange)="subtotalChangeDocAsociado($event, i)"
+                              [(ngModel)]="docAsociado[i].monto" />
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="centrado_texto" colspan=4>
+                          <div class="">
+                            <mat-form-field class="w-100" appearance="outline">
+                              <textarea matInput [(ngModel)]="docAsociado[i].descripcion" class="w-100"
+                                style="text-align: center" placeholder="Conceptos detallados del Documento"
+                                rows="4"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </td>
+                      </tr>
+                      </td>
+
+
+                      <!--
+
+                      <td class="centrado_texto" style=" width: 400px;">
+                        <mat-form-field appearance="outline" style="text-align: center; width:100%">
+                          <mat-label>Código de Generación</mat-label>
+                          <input (change)="manageField(1)" [(ngModel)]="docAsociado[i].codigoGeneracion" class="w-100"
+                            (input)="util.capitalize($event)" style="text-align: center" type="text" [maxLength]="36"
+                            size="36" matInput value="" required />
+                        </mat-form-field>
+                      </td>
+                    -->
+
+
+                      <td class="centrado_texto" style=" width: 400px;">
+                        <mat-form-field appearance="outline" style="text-align: center; width:100%">
+                          <mat-label>Número de Documento</mat-label>
+                          <input (change)="manageField(1)" [(ngModel)]="docAsociado[i].nroDocumento" class="w-100"
+                            (input)="util.capitalize($event)" style="text-align: center" type="text" [maxLength]="36"
+                            size="36" matInput value="" required />
+                        </mat-form-field>
+                      </td>
+
+
+
+                      <td style="
+                            text-align: center;
+                            vertical-align: middle;
+                            width: 200px;
+                            font-size: 400;
+                          " class="centrado_texto">
+                        <h4 appearance="outline">
+                          {{ formatUSD(docAsociado[i].ivaRetenido) }}
+                        </h4>
+                      </td>
+                      <td style="text-align: center; vertical-align: middle">
+                        <button mat-icon-button (click)="manageItems(2, i)" data-toggle="tooltip" data-placement="top"
+                          title="Eliminar">
+                          <i class="material-icons" style="color: red">delete</i>
+                        </button>
+                      </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header class="cabecera blanco">
+              <mat-panel-title class="blanco"> TOTALES </mat-panel-title>
+              <mat-panel-description>
+                NOTAS Y TOTALES
+                <mat-icon>local_atm</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="container">
+              <div class="row w-100">
+
+
+
+
+
+                <div class="col-sm-8">
+                  <mat-card class="cardsAmple">
+                    <mat-form-field class="w-100" appearance="outline">
+                      <textarea matInput [(ngModel)]="transaction.notas" class="w-100" style="text-align: center"
+                        placeholder="Digite notas Adicionales" rows="3"></textarea>
+                    </mat-form-field>
+                  </mat-card>
+
+                  <div class="col-12 w-100 mt-4" style="vertical-align: bottom"
+                    *ngIf="![38, 39, 40, 41].includes(+this.transaction.id_doc_transaction_type)">
+                    <h2 class="ml-2">Forma de Pago</h2>
+
+                    <div *ngIf="transaction.id_payment_cond == '458'" class="w-100">
+                      <mat-form-field class="col-6 w-100" appearance="outline">
+                        <mat-label>Cantidad </mat-label>
+                        <input type="text" placeholder="Ingresa la cantidad" matInput style="text-align: center"
+                          [(ngModel)]="transaction.credit_time" required />
+                      </mat-form-field>
+                      <mat-form-field class="col-6 w-100" appearance="outline">
+                        <mat-label>Plazo</mat-label>
+                        <mat-select [compareWith]="compareObjects" [(ngModel)]="transaction.id_credit_time"
+                          style="text-align: center">
+                          <mat-option value="474">DIAS </mat-option>
+                          <mat-option value="475">MES</mat-option>
+                          <mat-option value="476">AÑO</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <mat-form-field class="col W-100 mt-2" style="padding-left: 10px" appearance="outline">
+                      <mat-label>Tipo de pago</mat-label>
+                      <mat-select [(ngModel)]="transaction.payment_type" (selectionChange)="selectChange($event, 3, 1)"
+                        required>
+                        <mat-option *ngFor="let option of filteredOptions.formaDePago" [value]="option.name">
+                          {{ option.name }}
+                        </mat-option>
+                      </mat-select>
+                      <mat-icon matSuffix>mode_edit</mat-icon>
+                    </mat-form-field>
+
+
+                    <div class="container" *ngIf="[35, 36].includes(+this.transaction.id_doc_transaction_type)">
+                      <form [formGroup]="comprobanteForm" (ngSubmit)="addComprobante()">
+                        <mat-form-field appearance="outline" class="w-100">
+                          <mat-label>Número de Comprobante</mat-label>
+                          <input matInput formControlName="comprobante" (keypress)="onKeyPressNumbers($event)"
+                            placeholder="Ingrese el número de comprobante" />
+                          <button mat-button type="submit" [disabled]="comprobanteForm.invalid" class=""
+                            class="cp-button">Validar y Agregar</button>
+                        </mat-form-field>
+                        <div *ngIf="!comprobanteValueVacio && comprobanteForm.get('comprobante')?.value"
+                          class="error-message">
+                          El comprobante debe ser Validado antes de continuar. Presione el botón "Validar y Agregar"
+                        </div>
+                      </form>
+
+                      <div class="comprobantes-list">
+                        <h4>Comprobantes Agregados:</h4>
+                        <ul>
+                          <li *ngFor="let comprobante of transaction.comprobantes; let i = index">
+                            {{ comprobante.numeroComprobante }}
+                            <button mat-icon-button (click)="removeComprobante(i)" data-toggle="tooltip"
+                              data-placement="top" title="Eliminar">
+                              <i class="material-icons" style="font-size: 16px; color: red;">delete</i>
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm">
+                  <mat-card-content>
+                    <div class="row" *ngIf="this.transaction.id_doc_transaction_type != '44'
+                                          && this.transaction.id_doc_transaction_type != '41'
+                                          && this.transaction.id_doc_transaction_type != '43'
+                                          && this.transaction.id_doc_transaction_type != '40'
+                                            ">
+                      <div class="col" style="text-align: right">
+                        <p style="font-size: 15px">
+                          <strong>V. Gravadas:</strong>
+                        </p>
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%">
+                        <p style="font-size: 15px">
+                          <strong>{{ formatUSD(calculos.Gravadas) }} </strong>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="
+                        this.transaction.id_doc_transaction_type != '44' &&
+                        this.transaction.id_doc_transaction_type != '43' &&
+                        this.transaction.id_doc_transaction_type != '41' &&
+                        this.transaction.id_doc_transaction_type != '40'
+                      ">
+                      <div class="col" style="text-align: right">
+                        <p style="font-size: 15px">
+                          <strong>V. No Sujetas:</strong>
+                        </p>
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%">
+                        <p style="font-size: 15px">
+                          <strong>{{ formatUSD(calculos.Sujetas) }} </strong>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="
+                        this.transaction.id_doc_transaction_type != '44' &&
+                        this.transaction.id_doc_transaction_type != '43' &&
+                        this.transaction.id_doc_transaction_type != '41' &&
+                        this.transaction.id_doc_transaction_type != '40'
+                      ">
+                      <div class="col" style="text-align: right">
+                        <p style="font-size: 15px">
+                          <strong>V. Exentas:</strong>
+                        </p>
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%">
+                        <p style="font-size: 15px">
+                          <strong>{{ formatUSD(calculos.Exentas) }} </strong>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="
+                        this.x100_descuento_aplicar &&
+                        this.transaction.id_doc_transaction_type != '44' &&
+                        this.transaction.id_doc_transaction_type != '41' &&
+                        this.transaction.id_doc_transaction_type != '40'
+                      ">
+                      <div class="col" style="text-align: right">
+                        <p style="font-size: 15px">
+                          <strong>
+                            DESCUENTO {{ this.x100_descuento_aplicar }}%
+                            :</strong>
+                        </p>
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%">
+                        <p style="font-size: 15px">
+                          <strong>{{ formatUSD(this.calculos.DESCUENTO) }}
+                          </strong>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col" style="text-align: right">
+                        <p style="font-size: 15px">
+                          <strong>SUB-TOTAL:</strong>
+                        </p>
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%">
+                        <p style="font-size: 15px">
+                          <strong *ngIf=" !(transaction.id_doc_transaction_type == '40' && this.CR_manual == true)">{{
+                            formatUSD(
+                            calculos.SUBTOTAL
+                            )
+                            }}
+                          </strong>
+
+
+
+
+                          <strong *ngIf="transaction.id_doc_transaction_type == '40' && this.CR_manual == true">
+                            {{ (this.totalItemsCR| number:'1.2-2') }}
+                          </strong>
+
+
+
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="this.transaction.id_doc_transaction_type != '43' &&
+                        this.transaction.id_doc_transaction_type != '41' &&
+                        this.transaction.id_doc_transaction_type != '40' &&
+                        this.transaction.id_doc_transaction_type != '44' &&
+                       this.transaction.id_doc_transaction_type != '35'">
+                      <div class="col" style="text-align: right">
+                        <p style="font-size: 15px"><strong>IVA 13%:</strong></p>
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%">
+                        <p style="font-size: 15px">
+                          <strong>{{ formatUSD(this.calculos.IMPUESTOS ) }} </strong>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="
+                        this.transaction.id_doc_transaction_type != '41' &&
+                        this.transaction.id_doc_transaction_type == '44' ||
+                        this.transaction.id_doc_transaction_type == '43'
+                      ">
+                      <div class="col" style="text-align: right">
+                        <p style="font-size: 15px">
+                          <strong>RENTA 10%:</strong>
+                        </p>
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%">
+                        <p style="font-size: 15px">
+                          <strong>{{ formatUSD(calculos.RENTA) }} </strong>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="this.calculos.PERCEPCION != 0.0 ||
+                    this.transaction.id_doc_transaction_type == '40' ">
+                      <div class="col" style="text-align: right">
+                        <p style="font-size: 15px">
+                          <strong>
+
+                            {{this.transaction.id_doc_transaction_type=='40'||this.transaction.id_doc_transaction_type=='44'?
+                            'IVA RETENIDO':'RETENCIÓN 1%'}}:</strong>
+                        </p>
+
+
+
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%">
+                        <p style="font-size: 15px">
+                          <strong *ngIf="!(transaction.id_doc_transaction_type == '40' && this.CR_manual == true)">
+
+                            {{ formatUSD(this.calculos.PERCEPCION) }} </strong>
+
+                          <strong *ngIf="transaction.id_doc_transaction_type == '40' && this.CR_manual == true">
+                            {{ formatUSD(this.totalIvaRetenidoCR)}}
+                          </strong>
+
+
+
+                        </p>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <mat-accordion class="accordion-headers-align w-100" multi style="display: none">
+                        <mat-expansion-panel [expanded]="true">
+                          <mat-expansion-panel-header class="head-card blanco">
+                            <mat-panel-title class="blanco">
+                              <mat-icon>add_box</mat-icon>
+                            </mat-panel-title>
+                            <mat-panel-description class="blanco" style="font-weight: 400">
+                              IMPUESTOS
+                            </mat-panel-description>
+                          </mat-expansion-panel-header>
+
+                          <mat-form-field style="
+                              width: -webkit-outline-available;
+                              display: none;
+                            " appearance="outline">
+                            <div class="col mr-2" style="text-align: right; width: 80%">
+                              <input type="text" placeholder="escoge un impuesto" aria-label="Producto" matInput
+                                [(ngModel)]="impuestotext" [matAutocomplete]="autoimp"
+                                (ngModelChange)="filtervalues($event, 6)" />
+                              <mat-autocomplete #autoimp="matAutocomplete" (optionSelected)="selectChange($event, 4, 4)"
+                                autoActiveFirstOption>
+                                <div *ngFor="
+                                    let option of filteredOptions.impuestos
+                                  ">
+                                  <mat-option *ngIf="option.ALTERNO != null" value="{{ option.id_catalogo }}">
+                                    {{ option.VALOR }}
+                                  </mat-option>
+                                </div>
+                              </mat-autocomplete>
+                            </div>
+                          </mat-form-field>
+
+                          <div class="mt-4 row" *ngFor="let imp of impuestos_array; let i = index">
+                            <div class="col-8" style="text-align: right">
+                              <h4 style="font-size: 12px">
+                                <strong>{{ imp.VALOR }} (${{
+                                  imp.subtotal | number : "1.2-2"
+                                  }})</strong>
+                              </h4>
+                            </div>
+                            <div class="col-4" style="text-align: center; display: none">
+                              <button mat-icon-button data-toggle="tooltip" data-placement="top" (click)="deleteimp(i)"
+                                title="Eliminar">
+                                <i class="material-icons" style="color: red">delete</i>
+                              </button>
+                            </div>
+                          </div>
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                    </div>
+                    <div class="row"></div>
+
+                    <div class="row cabecera centrado" style="height: 100px">
+                      <div class="col" style="text-align: center; color: white">
+                        <p style="font-size: 15px" class="blanco">
+                          <strong>TOTAL:</strong>
+                        </p>
+                      </div>
+                      <div class="col mr-2" style="text-align: right; width: 80%; color: white">
+                        <p style="font-size: 15px" class="blanco">
+                          <strong *ngIf="!(transaction.id_doc_transaction_type == '40')">
+                            {{ formatUSD(calculos.total) }} </strong>
+                          <strong *ngIf="transaction.id_doc_transaction_type == '40' && this.CR_manual == true">
+                            {{ formatUSD(this.totalIvaRetenidoCR)}}
+
+                          </strong>
+
+                          <strong *ngIf="(transaction.id_doc_transaction_type == '40' && this.CR_manual != true)">
+                            {{ formatUSD(calculos.PERCEPCION) }} </strong>
+
+                        </p>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </div>
+              </div>
+            </div>
+            <div class="row row-cols-2">
+              <div class="row">
+                <div class="col-6"></div>
+
+                <div class="col-6">
+                  <mat-card class=""> </mat-card>
+
+
+                </div>
+
+                <div class="row mt-2 pt-2 w-100">
+                  <div class="col-12 w-100"></div>
+                </div>
+              </div>
+              <br />
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+
+        <div *ngIf="false">
+          <mat-grid-list cols="6" rowHeight="100px">
+            <mat-grid-tile colspan="2">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label>Producto</mat-label>
+                <input type="text" placeholder="Escoge un producto" aria-label="Producto" matInput
+                  [(ngModel)]="item['item']" [matAutocomplete]="auto2" (ngModelChange)="filtervalues($event)" />
+                <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="selectChange($event, 1, 1)"
+                  autoActiveFirstOption #auto="matAutocomplete">
+                  <mat-option value="{{ option.id }}" *ngFor="let option of filtered_prods">
+                    {{ option.name }}
+                  </mat-option>
+                  <mat-option value="add"> Nuevo Producto</mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div class="derecha">
+                <button mat-button (click)="openModal('product')" class="crear">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-form-field class="full-width-input">
+                <mat-label>Cantidad </mat-label>
+                <input [(ngModel)]="item['cantidad']" type="number" matInput value="" required />
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <mat-form-field disabled="true" class="full-width-input">
+                <mat-label>Precio unitario </mat-label>
+                <input [(ngModel)]="item['precio']" type="number" matInput value="" required />
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+              <button mat-raised-button (click)="manageItems(1)" color="primary">
+                Añadir producto
+              </button>
+            </mat-grid-tile>
+          </mat-grid-list>
+
+          <div class="mat-elevation-z8" style="width: 100%">
+            <div class="table-responsive">
+              <table aria-label="informacion de ventas tbl ocho ordenable" #table mat-table style="width: 100%"
+                [dataSource]="dataSource">
+                <ng-container matColumnDef="item">
+                  <th mat-header-cell style="text-align: center" *matHeaderCellDef>
+                    Producto.
+                  </th>
+                  <td mat-cell style="text-align: center" *matCellDef="let element">
+                    {{ element.item }}
+                  </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="item_desc">
+                  <th mat-header-cell style="text-align: center" *matHeaderCellDef>
+                    Descripcion
+                  </th>
+                  <td mat-cell style="text-align: center" *matCellDef="let element">
+                    {{ element.item_desc }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="cantidad">
+                  <th mat-header-cell style="text-align: center" *matHeaderCellDef>
+                    Cantidad
+                  </th>
+                  <td mat-cell style="text-align: center" *matCellDef="let element">
+                    {{ element.cantidad }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="precio">
+                  <th mat-header-cell style="text-align: center" *matHeaderCellDef>
+                    Precio unitario
+                  </th>
+                  <td mat-cell style="text-align: center" *matCellDef="let element">
+                    {{ element.precio }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="subtotal">
+                  <th mat-header-cell style="text-align: center" *matHeaderCellDef>
+                    Subtotal
+                  </th>
+                  <td mat-cell style="text-align: center" *matCellDef="let element">
+                    {{ element.subtotal }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                    Acciones
+                  </th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+
+
+                    <button mat-icon-button (click)="manageItems(2, i)" data-toggle="tooltip" data-placement="top"
+                      title="Eliminar">
+                      <i class="material-icons" style="color: red">delete</i>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </div>
+
+          </div>
+        </div>
+
+        <hr />
+
+        <mat-grid-list cols="3" rowHeight="100px">
+          <mat-grid-tile colspan="3">
+            <button *ngIf="!updating" mat-raised-button (click)="manageTransaction()" color="primary">
+              Guardar Transacción
+            </button>
+
+            <button *ngIf="(updating && this.noteType == 0) || updatingNotes" mat-raised-button
+              (click)="manageTransaction(2)" color="primary">
+              Actualizar Transacción
+            </button>
+            <button *ngIf="updating && this.noteType != 0 && !updatingNotes" mat-raised-button
+              (click)="manageTransaction(3)" color="primary">
+              Añadir Nota de {{ this.noteType == 1 ? "Crédito" : "Débito" }}
+            </button>
+            <button mat-raised-button (click)="setview('index')" style="margin-left: 20px" color="warn">
+              Cancelar Transacción
+            </button>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #modalAnulacion>
+
+  <div class="modal-body" style="padding: 0px !important; margin: auto; overflow-x: auto">
+    <div class="formGroup mt-3">
+      <mat-dialog-content class="ml-1">
+        <div class="container centrado">
+          <div class="row">
+            <div class="col-8 mt-4 text-center">
+              <h1>
+                ¿Esta seguro de Anular esta transacción? <br />
+                Esta acción no se puede revertir.
+              </h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-8 mt-4">
+              <mat-form-field style="width: 100%">
+                <mat-label>Motivo</mat-label>
+                <mat-select #motivoSelect>
+                  <mat-option *ngFor="let invalidacion of invalidacionTipo" [value]="invalidacion.id">
+                    {{ invalidacion.name.toLowerCase() }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row mt-3 mb-3">
+            <div class="col-8">
+              <mat-form-field [style.fontSize]="20" style="width: 100%">
+                <mat-label>Ingrese Descripción del motivo</mat-label>
+                <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                  cdkAutosizeMaxRows="10" #descripcionTextarea></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </mat-dialog-content>
+      <div class="modal-footer centrado" style="height: 75px">
+        <button (click)="closeModal()" mat-raised-button color="primary">
+          Cerrar
+        </button>
+        <button mat-raised-button color="accent" id="anular" (click)="confirmarAnulacion(this.anularElemento)">
+          Anular
+        </button>
+
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #pdfModal>
+  <div class="modal-header modal_titulo" style="width: 800px">
+    <div class="row dt_centrado">
+      <div class="ico_pers">
+        <i id="" class="fa fa-print fa-2x blanco ml-2"></i>
+      </div>
+      <div class="centrado_horizontal">
+        <h2 class="modal-title text-light negrita_separadas ml-4" mat-dialog-title>
+          COMPROBANTE DE "COMPRA"
+        </h2>
+      </div>
+    </div>
+    <button (click)="closeModal()" 
+        (keydown.enter)="closeModal()" 
+        (keydown.space)="closeModal()" 
+        class="btn-close-modal"
+        aria-label="Cerrar modal">
+        <i class="material-icons" style="color: white">remove_circle</i>
+    </button>
+
+  </div>
+  <div *ngIf="envio_correo == true" class="container-lg">
+    <div class="card">
+      <div class="card-header">
+        Envio de Factura por medio de Correo Electrónico al cliente registrado
+      </div>
+      <div class="card-body row centrado">
+        <div class="col-2 centrado">
+          <div class="u-img">
+            <img alt="desc cnr fin recreativo" src="./assets/images/icon/pdf.png" style="height: 150px" alt="pdf" />
+          </div>
+        </div>
+        <div class="col-10 w-90">
+          <form [formGroup]="emailForm" class="row">
+            <mat-form-field class="full-width-input centrado_horizontal" appearance="outline">
+              <mat-label>Correo Electronico</mat-label>
+              <input type="email" matInput formControlName="email" class="lowerCase" style="text-align: center" />
+              <mat-error *ngIf="
+                  this.emailForm.controls['email'].hasError('email') &&
+                  !this.emailForm.controls['email'].hasError('pattern')
+                ">
+                Ingresa un correo electronico valido
+              </mat-error>
+              <mat-error *ngIf="this.emailForm.controls['email'].hasError('required')">
+                Email es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </form>
+        </div>
+      </div>
+      <div class="card-footer derecha">
+        <div class="button-container">
+          <button class="btn btn-negro me-md-2" (click)="enviar_correo()" type="button">
+            Enviar
+          </button>
+
+        </div>
+        <div class="button-container">
+          <button class="btn btn-danger me-md-2" (click)="div_correo()" type="button">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="envio_correo != true">
+    <div *ngIf="pdfSRC != ''" style="width: 800px">
+      <ngx-extended-pdf-viewer [base64Src]="pdfSRC" backgroundColor="#ffffff" [height]="'80vh'"
+        [useBrowserLocale]="false" [handTool]="false" [showHandToolButton]="false"></ngx-extended-pdf-viewer>
+    </div>
+  </div>
+
+  <mat-grid-list cols="3" rowHeight="60px" class="w-100" *ngIf="envio_correo != true">
+    <mat-grid-tile colspan="3">
+      <div>
+        <mat-toolbar>
+          <mat-toolbar-row class="centrado_horizontal">
+            <span class="spacer"></span>
+            <div class="button-container" *ngIf="!this.qr_generado">
+              <button mat-mini-fab (click)="editar(transaction_id)" data-toggle="tooltip" data-placement="top"
+                title="Editar" color="primary">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div class="button-container" *ngIf="!this.qr_generado && !this.compra">
+              <button mat-mini-fab data-toggle="tooltip" data-placement="top" title="Generar QR" (click)="generar_QR()"
+                color="accent">
+                <mat-icon>qr_code</mat-icon>
+              </button>
+            </div>
+            <div class="button-container">
+              <button mat-mini-fab data-toggle="tooltip" data-placement="top" title="Cerrar" (click)="closeModal()"
+                color="warn">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <div class="button-container" *ngIf="!this.compra">
+              <button mat-mini-fab data-toggle="tooltip" (click)="div_correo()" data-placement="top"
+                title="Enviar Correo" style="background-color: #00695c; color: white">
+                <mat-icon>email</mat-icon>
+              </button>
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</ng-template>

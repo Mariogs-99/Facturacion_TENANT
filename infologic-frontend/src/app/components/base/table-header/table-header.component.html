@@ -1,0 +1,104 @@
+<mat-grid-list cols="1" rowHeight="{{ rowHeight }}" style="min-width: 200px">
+  <mat-grid-tile [rowspan]="rows" [class]="alignment">
+    <mat-label [ngClass]="!sort ? 'w-100' : 'w-75'" style="font-size: 14px">
+      {{ title }}
+    </mat-label>
+
+    <button
+      *ngIf="sort"
+      mat-icon-button
+      style="position: absolute; right: -8px"
+      (click)="sortData(column)"
+    >
+      <mat-icon *ngIf="sortDirection === 'none'">unfold_more</mat-icon>
+      <mat-icon *ngIf="sortDirection === 'asc'">arrow_upward</mat-icon>
+      <mat-icon *ngIf="sortDirection === 'desc'">arrow_downward</mat-icon>
+    </button>
+  </mat-grid-tile>
+  <mat-grid-tile *ngIf="search" style="min-height: 45px">
+    <form [formGroup]="filterForm" class="w-100">
+      <mat-form-field *ngIf="type == 'text'">
+        <input
+          [mask]="mascara"
+          class="text-center"
+          matInput
+          formControlName="filterVal"
+          (input)="inputChange($event)"
+        />
+
+        <button
+          *ngIf="!find"
+          mat-icon-button
+          matSuffix
+          [disabled]="inputFilter == '' || inputFilter == undefined"
+          aria-label="Example icon-button with a heart icon"
+          (click)="applyFilterByColumn(column, true)"
+        >
+          <mat-icon>search</mat-icon>
+        </button>
+
+        <button
+          *ngIf="find"
+          mat-icon-button
+          matSuffix
+          aria-label="Example icon-button with a heart icon"
+          (click)="applyFilterByColumn(column, false)"
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- select -->
+
+      <mat-form-field *ngIf="type == 'select'" class="w-100">
+        <mat-select
+          formControlName="filterVal"
+          class="text-center  w-100"
+          (selectionChange)="selectChange(column, $event)"
+        >
+          <mat-option *ngFor="let data of data" [value]="data.value"  class="w-100">
+            {{ data.name }}
+          </mat-option>
+        </mat-select>
+
+        <button
+          *ngIf="find"
+          mat-icon-button
+          matSuffix
+          aria-label="limpiar datos"
+          (click)="clearFilter(column, $event)"
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- datepicker  -->
+
+      <mat-form-field *ngIf="type == 'date'">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="filterVal"
+          class="text-center"
+          (dateChange)="selectChange(column, $event)"
+        />
+        <mat-datepicker-toggle
+          *ngIf="!find"
+          matSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+        <button
+          *ngIf="find"
+          mat-icon-button
+          matSuffix
+          aria-label="limpiar datos"
+          (click)="clearFilter(column, $event)"
+        >
+          <mat-icon>clear</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+  </mat-grid-tile>
+</mat-grid-list>

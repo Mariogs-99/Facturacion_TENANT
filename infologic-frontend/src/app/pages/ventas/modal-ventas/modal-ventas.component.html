@@ -1,0 +1,136 @@
+<div style="height: 400px;  overflow-y: scroll; padding: 0; margin-left: 0;" class="container">
+
+  <div class="alert alert-info d-flex justify-content-center align-items-center" style="height: 45px" role="alert">
+    <mat-icon style="margin-right: 8px !important">help</mat-icon>
+
+    <span>Total de Documentos Asociados: {{ this.transacciones.length }}/50</span>
+
+
+  </div>
+  <div style=" min-height: 10vh">
+    <div class="mat-elevation-z8 crud-table-container pb-4" style="overflow-y: hidden;">
+      <div class="row">
+        <div class="col-12 col-sm-10">
+          <mat-form-field class="w-100">
+            <mat-label>Filtro</mat-label>
+            <input matInput (keyup)="applyCustomFilter($event)" placeholder="" #input>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+      <table mat-table matTableResponsive class="full-width" [dataSource]="dataSourceSaved" matSort matSortActive="id"
+        matSortDirection="asc" aria-label="informacion de modal ventas ordenable">
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsSaved; sticky: true"></tr>
+
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsSaved;"
+          [ngStyle]="{'background-color': row.checked ? '#C7E3A6' : ''}"
+          (click)="row.checked = !row.checked; onCheckBoxChange($event, row)"
+          (keydown.enter)="row.checked = !row.checked; onCheckBoxChange($event, row)"
+          (keydown.space)="row.checked = !row.checked; onCheckBoxChange($event, row)"
+          tabindex="0">
+        </tr>
+
+
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef class="text-center" style="width: 20px;">
+
+            Sel.
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <div fxLayout="row" fxLayoutAlign.gt-sm="start center" fxLayoutAlign="end end">
+              <div style="display: flex; align-items: center;">
+                <mat-checkbox style="margin-left: 10px;" 
+                  [(ngModel)]="element.checked"
+                  *ngIf="element.transferido !== 'SI'" 
+                  (click)="$event.stopPropagation()" 
+                  (keydown.enter)="$event.preventDefault(); element.checked = !element.checked; onCheckBoxChange($event, element)"
+                  (keydown.space)="$event.preventDefault(); element.checked = !element.checked; onCheckBoxChange($event, element)">
+               </mat-checkbox>
+
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            Fecha
+
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ formattedDate(element.createdAt) }} <br> {{ formattedTime(element.createdAt) }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numeroDTE">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            numeroDte
+
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.numeroDTE }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="codigoGeneracion">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            UUID
+
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.codigoGeneracion }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+
+            Nombre del Cliente
+
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.cliente.nombre | uppercase}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="totalTransaccion">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+
+            Total Transacción
+
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{
+            (element.totalTransaccion-element.ivaRetenido)
+            | currency : "USD" : "symbol" : "1.2-2"
+            }}
+          </td>
+        </ng-container>
+
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="9999" style="text-align: left;">
+            No hay informaci&#0243;n que mostrar
+          </td>
+        </tr>
+      </table>
+
+
+
+
+    </div>
+    <mat-paginator [length]="totalRecords" [pageSize]="paginationSize" [pageSizeOptions]="paginationSizeOptions"
+      (page)="paginate($event)" #branchPaginator>
+    </mat-paginator>
+  </div>
+
+  <mat-dialog-content class="mat-typography" style="text-align: center;">
+    <mat-dialog-actions class="centrado_texto w-100">
+      <button type="button" style="margin-right: 20px" mat-raised-button color="primary" class="text-uppercase mt-4"
+        data-toggle="tooltip" data-placement="top" (click)="agregar()">
+        Agregar</button>
+
+    </mat-dialog-actions>
+  </mat-dialog-content>
+</div>

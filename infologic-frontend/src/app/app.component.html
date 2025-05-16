@@ -1,0 +1,5 @@
+<ng-container *ngIf="loading$ | async">
+  <div class="overlayer"></div>
+  <mat-progress-bar color="accent" [mode]="'indeterminate'"></mat-progress-bar>
+</ng-container>
+<router-outlet></router-outlet>

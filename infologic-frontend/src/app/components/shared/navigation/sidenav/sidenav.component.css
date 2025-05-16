@@ -1,0 +1,23 @@
+.example-container {
+    position: absolute;
+    max-width: 25%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.example-events {
+    width: 30%;
+    height: 100%;
+    overflow: auto;
+    border: 1px solid #555;
+}
+
+.selected-option {
+    background-color: #3c4557;
+    padding: 10px;
+    margin: 0px 13px 5px 3px;
+    border-radius: 10px;
+    color: #fff !important;
+}

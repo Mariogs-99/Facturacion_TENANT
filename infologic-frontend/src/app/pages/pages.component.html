@@ -1,0 +1,19 @@
+<app-navbar class="example-header"></app-navbar>
+
+<mat-sidenav-container
+  class="example-container"
+  (backdropClick)="close('backdrop')"
+>
+  <mat-sidenav
+    class="example-sidenav"
+    #sidenav
+    (keydown.escape)="close('escape')"
+    disableClose
+  >
+    <app-sidenav></app-sidenav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

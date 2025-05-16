@@ -1,0 +1,340 @@
+<div style="margin: 20px">
+  <mat-card>
+    <mat-card-title>
+      <div class="container mt-4 row">
+        <div class="col-10" style="margin-left: 50px">
+          <h1 class="titulo" style="text-align: left">
+            Bienvenido al Sistema de Facturación
+          </h1>
+          <div>
+            <div>
+              <h3>Elija entre las opciones del menú lateral para continuar.</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="row">
+        <div class="col-md-8 d-flex align-items-center justify-content-center">
+          <img
+            style="width: 350px;"
+            alt="desc infolofic fin recreativo"
+            src="assets/images/eta3.png"
+            alt="Logo"
+            class="img-fluid"
+          />
+        </div>
+
+        <div
+          class="col-md-4 d-flex flex-column align-items-center justify-content-center"
+        >
+          <button
+            type="button"
+            color="accent"
+            mat-raised-button
+            class="btn btn-lg btn-block"
+            style="height: 100px"
+            (click)="redirigirAPaginaEspecifica()"
+          >
+            <div class="card-icon mb-2">
+              <i class="material-icons icon-large">input</i>
+            </div>
+            <span class="button-label">Ir a Transacciones</span>
+          </button>
+          <button
+            type="button"
+            color="accent"
+            mat-raised-button
+            class="btn btn-lg btn-block mt-2"
+            style="height: 100px"
+            (click)="redirigirAPaginaReportes()"
+          >
+            <div class="card-icon mb-2">
+              <i class="material-icons icon-large">format_list_bulleted</i>
+            </div>
+            <span class="button-label">Ir a Reportes</span>
+          </button>
+        </div>
+      </div>
+    </mat-card-title>
+  </mat-card>
+
+  <mat-card class="mt-2">
+    <mat-tab-group animationDuration="2000ms">
+      <mat-tab label="GRÁFICOS GENERALES">
+        <div class="card-body mt-4 w-100">
+          <div class="row">
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-secundary card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">library_books</i>
+                  </div>
+                  <p class="card-category count-text">Emitidos</p>
+                  <h3 style="color: black">
+                    <count-up
+                      [countUp]="dashtotalEmitidos.counter"
+                      [duration]="dashtotalEmitidos.duration"
+                    ></count-up>
+                  </h3>
+                  <h3
+                    *ngIf="this.dashtotalEmitidos.counter == undefined"
+                    style="color: black"
+                    class="card-title count-title"
+                  >
+                    0
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-warning card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">assignment_late</i>
+                  </div>
+                  <p class="card-category count-text">Invalidados</p>
+                  <h3 style="color: black">
+                    {{
+                      (
+                        (this.totalInvalidados / this.totalEmitidos) *
+                        100
+                      ).toFixed(2)
+                    }}
+                    %
+                  </h3>
+                  <h3
+                    *ngIf="this.dashtotalInvalidados.counter == undefined"
+                    style="color: black"
+                    class="card-title count-title"
+                  >
+                    0
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">query_builder</i>
+                  </div>
+                  <p class="card-category count-text">Contingencia</p>
+                  <h3 style="color: black">
+                    {{
+                      (
+                        (this.totalContingencia / this.totalEmitidos) *
+                        100
+                      ).toFixed(2)
+                    }}
+                    %
+                  </h3>
+                  <h3
+                    *ngIf="this.dashtotalContingencia.counter == undefined"
+                    style="color: black"
+                    class="card-title count-title"
+                  >
+                    0
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">cancel</i>
+                  </div>
+                  <p class="card-category count-text">Rechazados</p>
+                  <h3 style="color: black">
+                    {{
+                      (
+                        (this.totalRechazados / this.totalEmitidos) *
+                        100
+                      ).toFixed(2)
+                    }}
+                    %
+                  </h3>
+                  <h3
+                    *ngIf="this.dashtotalRechazados.counter == undefined"
+                    style="color: black"
+                    class="card-title count-title"
+                  >
+                    0
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">monetization_on</i>
+                  </div>
+                  <p class="card-category count-text">FE Efectivo</p>
+                  <h3 style="color: black">
+                    {{
+                      (
+                        (this.totalFECanceladas / this.totalEmitidos) *
+                        100
+                      ).toFixed(2)
+                    }}
+                    %
+                  </h3>
+                  <h3
+                    *ngIf="this.dashtotalFECanceladas.counter == undefined"
+                    style="color: black"
+                    class="card-title count-title"
+                  >
+                    0
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-primary card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">monetization_on </i>
+                  </div>
+                  <p class="card-category count-text">CCFE Efectivo</p>
+                  <h3 style="color: black">
+                    {{
+                      (
+                        (this.totalCCFECancelados / this.totalEmitidos) *
+                        100
+                      ).toFixed(2)
+                    }}
+                    %
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container" style="width: 50%; height: 50%">
+          <canvas
+            id="completedTasksChartCredits"
+            width="200"
+            height="100"
+          ></canvas>
+        </div>
+      </mat-tab>
+      <mat-tab label="GRÁFICOS POR SUCURSAL">
+        <div class="container mt-4 row">
+          <mat-form-field appearance="outline">
+            <mat-label>Sucursal</mat-label>
+            <mat-select
+              [(ngModel)]="selectedPuntoVenta"
+              (selectionChange)="chartSucursal($event.value)"
+            >
+              <ng-container *ngFor="let sucursal of sucursales">
+                <mat-optgroup [label]="sucursal.sucursal">
+                  <mat-option
+                    *ngFor="let puntoVenta of sucursal.puntoVentas"
+                    [value]="puntoVenta.idSucursal"
+                  >
+                    {{ puntoVenta.puntoVenta }}
+                  </mat-option>
+                </mat-optgroup>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="card-body mt-4 w-100">
+          <div class="row">
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-warning card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">assignment_late</i>
+                  </div>
+                  <p class="card-category count-text">Invalidados</p>
+                  <h3 style="color: black">
+                    <count-up
+                      [countUp]="dashtotalInvalidadosSucursal.counter"
+                      [duration]="dashtotalInvalidadosSucursal.duration"
+                    ></count-up>
+                  </h3>
+                  <h3
+                    *ngIf="
+                      this.dashtotalInvalidadosSucursal.counter == undefined
+                    "
+                    style="color: black"
+                    class="card-title count-title"
+                  >
+                    0
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">query_builder</i>
+                  </div>
+                  <p class="card-category count-text">Contingencia</p>
+                  <h3 style="color: black">
+                    <count-up
+                      [countUp]="dashtotalContingenciaSucursal.counter"
+                      [duration]="dashtotalContingenciaSucursal.duration"
+                    ></count-up>
+                  </h3>
+                  <h3
+                    *ngIf="
+                      this.dashtotalContingenciaSucursal.counter == undefined
+                    "
+                    style="color: black"
+                    class="card-title count-title"
+                  >
+                    0
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 relieve">
+              <div class="card card-stats">
+                <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">cancel</i>
+                  </div>
+                  <p class="card-category count-text">Rechazados</p>
+                  <h3 style="color: black">
+                    <count-up
+                      [countUp]="dashtotalRechazadosSucursal.counter"
+                      [duration]="dashtotalRechazadosSucursal.duration"
+                    ></count-up>
+                  </h3>
+                  <h3
+                    *ngIf="
+                      this.dashtotalRechazadosSucursal.counter == undefined
+                    "
+                    style="color: black"
+                    class="card-title count-title"
+                  >
+                    0
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container" style="width: 50%; height: 50%">
+          <canvas id="kpiXSucursal" width="200" height="100"></canvas>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
+</div>

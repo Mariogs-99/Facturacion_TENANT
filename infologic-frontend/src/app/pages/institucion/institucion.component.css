@@ -1,0 +1,79 @@
+
+.derecha {
+  display: flex;
+  justify-content: right;
+  align-items: right;
+}
+
+.izquierda {
+  display: flex;
+  justify-content: left;
+  align-items: left;
+}
+.centrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cabecera {
+  background: linear-gradient(to right, #456098, #3C4557) !important;
+  margin-bottom: 20px;
+}
+.blanco {
+  color: white;
+  font-weight: 400;
+}
+.ico_pers {
+  width: 5%;
+}
+
+.accordion-action-buttons {
+  padding-bottom: 20px;
+}
+
+.accordion-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-headers-align .mat-mdc-form-field+.mat-mdc-form-field {
+  margin-left: 8px;
+}
+
+.mat-expansion-panel-header-indicator {
+  color: white !important;
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-indicator::after {
+  color: white !important;
+}
+
+.mat-expansion-indicator {
+  color: white !important;
+}
+
+
+.example-card {
+  max-width: 400px;
+}
+
+.gridTitle {
+  text-align-last: center;
+
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  display: flex !important;
+}
+
+.disabled-input {
+  background-color: #b6a1a1 !important; /* Cambia el color de fondo */
+  color: #999 impr !important; /* Cambia el color del texto */
+}
+
+
+/* Estilo para input en modo de solo lectura */
+.mat-form-field-disabled .mat-form-field-wrapper {
+  background-color: #333 !important; /* Color de fondo oscuro */
+  color: #fff !important; /* Color de texto blanco */
+}

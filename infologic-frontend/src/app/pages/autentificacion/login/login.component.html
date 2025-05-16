@@ -1,0 +1,111 @@
+<div class="main">
+  <div class="container" id="container">
+    <div class="form-container sign-in-container">
+      <form [formGroup]="loginForm" (keydown.enter)="disableEnter($event)">
+        <h1 class="mb-4">Efacturas+</h1>
+
+        <h4 class="mt-2"><b>Inicio de Sesión</b></h4>
+
+        <mat-form-field appearance="outline" class="w-100 mt-2">
+          <mat-label>Usuario </mat-label>
+          <input formControlName="usuario" matInput value="" />
+
+          <mat-error
+            *ngIf="this.loginForm.controls['usuario'].hasError('required')"
+          >
+            Usuario es <strong>requerido</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mt-2">
+          <mat-label>Ingrese su Contraseña</mat-label>
+          <input
+            matInput
+            (keyup.enter)="!loginForm.invalid ? login() : null"
+            [type]="hide ? 'password' : 'text'"
+            formControlName="clave"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Ocultar Contraseña'"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+
+          <mat-error
+            *ngIf="this.loginForm.controls['clave'].hasError('required')"
+          >
+            Contraseña es <strong>requerida</strong>
+          </mat-error>
+        </mat-form-field>
+        <button
+          type="submit"
+          class="button-submit"
+          [disabled]="loginForm.invalid"
+          (click)="login()"
+        >
+          Ingresar
+        </button>
+        <br />
+        <a routerLink="/forgot-password" style="color: gray"
+          >¿Olvidaste tu contrseña?</a
+        >
+
+        <a (click)="changePassword()" style="color: gray"
+        >Cambiar contraseña</a
+      >
+      </form>
+    </div>
+
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-right">
+          <div
+            style="
+              justify-content: center;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              width: 100%;
+              margin-top: 5px;
+            "
+          >
+            <div
+              style="
+                width: 50%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                padding-right: 20px;
+              "
+            >
+              <img alt="desc cnr fin recreativo"
+                height="240px"
+                src="assets/images/efacturas.png"
+                alt=""
+              />
+            </div>
+            <div style="width: 50%">
+              <p class="titlecnr"
+              >
+                <br />
+                ©2025 Global Solutions S.A. de C.V.
+                <br />
+              </p>
+            </div>
+          </div>
+          <p style="text-align: justify; line-height: 25px; font-size: 17px;">
+            Bienvenido <br />
+            El sistema de facturación en la nube diseñado para agilizar y garantizar el cumplimiento fiscal de tu empresa donde podrás gestionar tus facturas electrónicas y enviar Documentos Tributarios Electrónicos (DTE) directamente a Hacienda de manera segura y eficiente.<br />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer style="text-align: center; font-size: 12px; color: gray; padding: 10px;">
+    Propiedad de GlobalSolutions S.A. de C.V.
+  </footer>
+  
+</div>

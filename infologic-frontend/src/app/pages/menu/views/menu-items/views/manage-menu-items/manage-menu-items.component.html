@@ -1,0 +1,86 @@
+<div class="card card-body">
+  <form [formGroup]="menuItemsForms" style="overflow-x: hidden !important">
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="w-100 mt-2">
+          <mat-label>Nombre </mat-label>
+          <input formControlName="nameMenuItems" matInput />
+
+          <mat-error
+            *ngIf="
+              this.menuItemsForms.controls['nameMenuItems'].hasError('required')
+            "
+          >
+            Nombre es <strong>requerido</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="w-100 mt-2">
+          <mat-label>URL </mat-label>
+          <input formControlName="uriMenuItems" matInput />
+
+          <mat-error
+            *ngIf="
+              this.menuItemsForms.controls['uriMenuItems'].hasError('required')
+            "
+          >
+            URL es <strong>requerido</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Metodo HTTP</mat-label>
+          <mat-select formControlName="type" [compareWith]="compareStrings">
+            <mat-option *ngFor="let http of httpMethods" [value]="http">{{
+              http
+            }}</mat-option>
+          </mat-select>
+
+          <mat-error
+            *ngIf="this.menuItemsForms.controls['type'].hasError('required')"
+          >
+            Metodo HTTP es <strong>requerido</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Descripcion</mat-label>
+          <textarea formControlName="descriptionMenuItems" matInput></textarea>
+
+          <mat-error
+            *ngIf="
+              this.menuItemsForms.controls['descriptionMenuItems'].hasError(
+                'required'
+              )
+            "
+          >
+            Descripcion es <strong>requerido</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="card-footer mb-2 d-flex justify-content-start">
+      <button
+        [disabled]="this.menuItemsForms.invalid"
+        class="mr-2"
+        mat-flat-button
+        color="accent"
+        (click)="upsert()"
+      >
+        {{ update ? "Actualizar" : "Crear" }}
+      </button>
+      <button mat-flat-button color="primary" (click)="cancel()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,90 @@
+version: "3.9"
+
+networks:
+  cnr-network:
+    external: true
+
+services:
+  mysql-infologic:
+    image: mysql:8.0
+    container_name: INFOLOGIC-MYSQL
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: infologic
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3308:3306"  # MySQL estará disponible en el puerto 3307 en la máquina local
+    networks:
+      - cnr-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d  # Cargar automáticamente los scripts SQL
+
+  backend-infologic:
+    build:
+      context: ./infologic-backend
+    container_name: INFOLOGIC-BACKEND
+    depends_on:
+      - mysql-infologic
+      - transmisor-infologic
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-infologic:3306/infologic
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
+    networks:
+      - cnr-network
+    volumes:
+      - ./infologic-backend/app/admin/sisucc3/config/application.properties:/app/config/application.properties
+  transmisor-infologic:
+    build:
+      context: ./infologic-transmisor
+    container_name: INFOLOGIC-TRANSMISOR
+    depends_on:
+      - mysql-infologic
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-infologic:3306/infologic
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SERVER_PORT: 8080
+      ENDPOINT-FIRMAR: http://firmador-infologic:8113/firma/firmardocumento/
+      CLIENTE_GOOGLE: ${CLIENTE_GOOGLE}
+      CLIENTE_SECRET: ${CLIENTE_SECRET}
+      REFRESH_TOKEN: ${REFRESH_TOKEN}
+    ports:
+      - "8080:8080"
+    networks:
+      - cnr-network
+    volumes:
+      - ./uploads:/app/uploads  # Montar la carpeta de certificados
+
+  frontend-infologic:
+    build:
+      context: ./infologic-frontend
+    container_name: INFOLOGIC-FRONTEND
+    depends_on:
+      - backend-infologic
+    ports:
+      - "80:80"
+    networks:
+      - cnr-network
+
+  firmador-infologic:
+    build:
+      context: ./infologic-firmador
+    container_name: INFOLOGIC-FIRMADOR
+    depends_on:
+      - transmisor-infologic
+    ports:
+      - "8113:8113"
+    networks:
+      - cnr-network
+    volumes:
+      - ./uploads:/app/uploads  # Montar la carpeta de certificados
+
+volumes:
+  mysql_data:

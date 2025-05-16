@@ -1,0 +1,290 @@
+<div style="width: 800px" class="contaniner">
+  <mat-tab-group mat-stretch-tabs="true" mat-align-tabs="start">
+    <mat-tab label="Datos Generales">
+      <div style="overflow-y: auto">
+        <form [formGroup]="registerForm" class="form-container">
+          <div class="modal-body mt-4">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Nombre de la sucursal</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      formControlName="nombre"
+                      class="upperCase"
+                      maxlength="150"
+                      (keypress)="onKeyPressNoSignos($event)"
+                    />
+                    <mat-error
+                      *ngIf="
+                        this.registerForm.controls['nombre'].hasError(
+                          'required'
+                        )
+                      "
+                    >
+                      Nombre de sucursal es <strong>requerido</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Seleccionar Empresa</mat-label>
+                    <mat-select
+                      formControlName="idCompany"
+                      [compareWith]="compareObjects"
+                      required
+                    >
+                      <mat-option
+                        *ngFor="
+                          let cust of opcionesSelectCompany;
+                          let i = index
+                        "
+                        value="{{ cust.idCompany }}"
+                      >
+                        {{ cust.nameCompany }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                      *ngIf="
+                        this.registerForm.controls['idCompany'].hasError(
+                          'required'
+                        )
+                      "
+                    >
+                      Empresa es <strong>requerida</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Dirección</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      formControlName="direccion"
+                      class="upperCase"
+                      maxlength="250"
+                    />
+                    <mat-error
+                      *ngIf="
+                        this.registerForm.controls['direccion'].hasError(
+                          'required'
+                        )
+                      "
+                    >
+                      Dirección es <strong>requerida</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Municipio</mat-label>
+                    <input
+                      type="text"
+                      placeholder="Digite el Municipio"
+                      aria-label="municipio"
+                      matInput
+                      (keypress)="onKeyPressLetras($event)"
+                      formControlName="nombreMunicipioBranch"
+                      [matAutocomplete]="auto"
+                      (ngModelChange)="filtervaluesModalBranch($event)"
+                      (focus)="resetOptions()"
+                    />
+                    <mat-autocomplete
+                      (optionSelected)="selectChange($event)"
+                      autoActiveFirstOption
+                      #auto="matAutocomplete"
+                    >
+                      <mat-option
+                        value="{{ option.name }}"
+                        *ngFor="let option of filteredOptions"
+                      >
+                        {{ option.name }}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Telefono</mat-label>
+                    <input
+                      simpleMask="9999-9999"
+                      type="text"
+                      matInput
+                      formControlName="telefono"
+                      maxlength="8"
+                      (keypress)="onKeyPressNumeros($event)"
+                    />
+                    <mat-error
+                      *ngIf="
+                        this.registerForm.controls['telefono'].hasError(
+                          'required'
+                        )
+                      "
+                    >
+                      Telefono es <strong>requerido</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Correo Electronico</mat-label>
+                    <input
+                      type="email"
+                      matInput
+                      formControlName="email"
+                      class="lowerCase"
+                      (input)="toLower($event)"
+                      maxlenght="150"
+                    />
+                    <mat-error
+                      *ngIf="
+                        this.registerForm.controls['email'].hasError('email') &&
+                        !this.registerForm.controls['email'].hasError('pattern')
+                      "
+                    >
+                      Ingresa un correo electronico valido
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Seleccionar Tipo Establecimiento</mat-label>
+                    <mat-select
+                      formControlName="idTipoEstablecimiento"
+                      [compareWith]="compareObjects"
+                    >
+                      <mat-option
+                        *ngFor="
+                          let tipo of tiposEstablecimientos;
+                          let i = index
+                        "
+                        value="{{ tipo.id }}"
+                      >
+                        {{ tipo.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Código de Sucursal</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      formControlName="codigoSucursal"
+                      maxlength="8"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field
+                    class="full-width-input centrado_texto"
+                    appearance="outline"
+                    style="width: 100%"
+                  >
+                    <mat-label>Código de Misional</mat-label>
+                    <input
+                      type="text"
+                      matInput
+                      formControlName="misional"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Correlativos">
+      <div class="container">
+        <div style="overflow-y: auto; max-height: 400px">
+          <app-ranges
+            [item]="ranges"
+            (rangosArr)="parentData = $event"
+          ></app-ranges>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <div class="modal-footer w-100 mt-2 mb-2">
+    <mat-dialog-actions
+      style="
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+        margin-bottom: 10px;
+      "
+    >
+      <button
+        mat-flat-button
+        color="primary"
+        *ngIf="!isupdating"
+        type="button"
+        (click)="guardar()"
+        mat-raised-button
+        class="accent"
+      >
+        Agregar Sucursal
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        *ngIf="isupdating"
+        type="button"
+        (click)="actualizar()"
+        mat-raised-button
+        [disabled]="registerForm.invalid"
+        class="btn-azul"
+      >
+        Actualizar Sucursal
+      </button>
+      <button
+        mat-flat-button
+        color="warn"
+        (click)="closeModal()"
+        class="btn-rojo mr-4"
+        mat-raised-button
+      >
+        Cancelar
+      </button>
+    </mat-dialog-actions>
+  </div>
+</div>

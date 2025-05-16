@@ -1,0 +1,61 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin menu($theme) {
+    $color-config: mat.get-color-config($theme);
+    $primary:  map.get($color-config, 'primary');
+    $accent:  map.get($color-config, 'accent');
+    $warn:  map.get($color-config, 'warn');
+    $background: map.get($color-config, 'background');
+    $foreground: map.get($color-config, 'foreground');
+    $is-dark-theme: map.get($color-config, is-dark);
+    $fill-background: mat.get-color-from-palette($primary, base, if($is-dark-theme, 0.1, 0.3));
+    $underline-color: mat.get-color-from-palette($foreground, divider, if($is-dark-theme, 0.5, 0.42));
+    .menu-item-wrapper{
+        .menu-item{
+            display: block;
+            padding: 5px 8px;
+            margin: 3px 8px;
+            border-radius: 8px;
+        }
+        .menu-item.selected{
+            background-color: mat.get-color-from-palette($primary,600);
+            color:mat.get-color-from-palette($primary, 600-contrast);
+        }
+    }
+    .menu-item-collapse-wrapper{
+        cursor: pointer;
+        margin-bottom: 8px;
+        .menu-collapse{
+            display: block;
+            padding: 5px 8px;
+            margin: 0px 8px;
+            border-radius: 8px;
+        }
+
+        .menu-collapse-children{
+            position: relative;
+            margin-left: 8px;
+            border-left: dashed 1px if($is-dark-theme, #ffffff, mat.get-color-from-palette($primary,600));
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 2px;
+        }
+        .menu-collapse-children:not(.minimized):before{
+            display: block;
+            content: '';
+            background: if($is-dark-theme, #ffffff, mat.get-color-from-palette($primary,600));
+            height: 1px;
+            width: 5px;
+        }
+        .menu-collapse-children.minimized{
+            margin-left: 0px;
+            border-left: none;
+            border-bottom-left-radius: 0px;
+        }
+    }
+    .menu-item-collapse-wrapper.open >  .menu-collapse .mat-icon.collapse-arrow{
+        transform: rotate(90deg);
+    }
+
+
+}

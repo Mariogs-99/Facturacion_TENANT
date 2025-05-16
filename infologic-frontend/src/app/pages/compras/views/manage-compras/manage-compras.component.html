@@ -1,0 +1,142 @@
+<form [formGroup]="comprasForm" class="container mt-3">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <mat-form-field appearance="fill">
+          <mat-label>Codigo Generacion</mat-label>
+          <input matInput formControlName="codigoGeneracion">
+          <mat-error *ngIf="comprasForm.controls['codigoGeneracion'].hasError('required')">
+            Codigo Generacion es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group col-md-12">
+        <mat-form-field appearance="fill">
+          <mat-label>Numero Control</mat-label>
+          <input matInput formControlName="numeroControl">
+          <mat-error *ngIf="comprasForm.controls['numeroControl'].hasError('required')">
+            Numero Control es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo Documento</mat-label>
+              <mat-select
+                [(value)]="documentosTipoSelected"
+                formControlName="tipoDocumento"
+                [compareWith]="compareWith"
+                #company
+              >
+                <mat-option></mat-option>
+                <mat-option
+                  [value]="option?.idCatalogo"
+                  *ngFor="let option of documentosTipo"
+                  >{{ option?.valor }}</mat-option
+                >
+              </mat-select>
+          <mat-error *ngIf="comprasForm.controls['tipoOperacion'].hasError('required')">
+            Tipo Operacion es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group col-md-6">
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo Operacion</mat-label>
+              <mat-select
+                [(value)]="operacionTipoSelected"
+                formControlName="tipoOperacion"
+                [compareWith]="compareWith"
+                #company
+              >
+                <mat-option></mat-option>
+                <mat-option
+                  [value]="option?.idCatalogo"
+                  *ngFor="let option of operacionTipo"
+                  >{{ option?.valor }}</mat-option
+                >
+              </mat-select>
+          <mat-error *ngIf="comprasForm.controls['tipoOperacion'].hasError('required')">
+            Tipo Operacion es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group col-md-6">
+        <mat-form-field appearance="fill">
+          <mat-label>Fecha Emision</mat-label>
+          <input matInput formControlName="fechaEmision" type="date" >
+          <mat-error *ngIf="comprasForm.controls['fechaEmision'].hasError('required')">
+            Fecha Emision es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <mat-form-field appearance="fill">
+          <mat-label>Sello Recepcion</mat-label>
+          <input matInput formControlName="selloRecepcion">
+          <mat-error *ngIf="comprasForm.controls['selloRecepcion'].hasError('required')">
+            Sello Recepcion es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group col-md-6">
+        <mat-form-field appearance="fill">
+          <mat-label>ID Proveedor</mat-label>
+          <input matInput formControlName="idProveedor" type="number">
+          <mat-error *ngIf="comprasForm.controls['idProveedor'].hasError('required')">
+            ID Proveedor es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Total Gravado</mat-label>
+          <input matInput formControlName="totalGravado">
+          <mat-error *ngIf="comprasForm.controls['totalGravado'].hasError('required')">
+            Total Gravado es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Total Exento</mat-label>
+          <input matInput formControlName="totalExento">
+          <mat-error *ngIf="comprasForm.controls['totalExento'].hasError('required')">
+            Total Exento es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group col-md-4">
+        <mat-form-field appearance="fill">
+          <mat-label>Total Operacion</mat-label>
+          <input matInput formControlName="totalOperacion">
+          <mat-error *ngIf="comprasForm.controls['totalOperacion'].hasError('required')">
+            Total Operacion es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  
+    <div class="card-footer mb-2 d-flex justify-content-start">
+        <button
+          [disabled]="this.comprasForm.invalid"
+          class="mr-2"
+          mat-flat-button
+          color="accent"
+          (click)="update()"
+        >
+          {{ updating ? "Actualizar" : "Crear" }}
+        </button>
+        <button mat-flat-button color="primary" (click)="dialogRef.close()">
+          Cancelar
+        </button>
+      </div>  </form>
+  

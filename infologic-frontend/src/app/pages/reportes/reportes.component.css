@@ -1,0 +1,10 @@
+.btn-group {
+  margin-top: 20px;
+}
+
+
+.centrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

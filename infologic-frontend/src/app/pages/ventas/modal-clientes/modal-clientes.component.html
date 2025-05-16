@@ -1,0 +1,163 @@
+<div mat-dialog-content style="padding-bottom: 15px">
+  <div style="overflow-y: hidden; overflow-x: hidden; min-height: 10vh">
+    <div
+      class="alert alert-info d-flex justify-content-center align-items-center"
+      style="height: 45px"
+      role="alert"
+    >
+      <mat-icon style="margin-right: 8px !important">help</mat-icon>
+
+      <span
+        >Seleccione o haga doble clic sobre el registro que desea
+        seleccionar.</span
+      >
+    </div>
+
+    <div class="crud-table-container">
+      <table
+        mat-table
+        matTableResponsive
+        class="full-width"
+        [dataSource]="dataSource"
+        matSort
+        matSortActive="id"
+        matSortDirection="asc"
+        aria-label="informacion de clientes ordenable"
+      >
+      <tr
+      mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: true"
+    ></tr>
+    <tr
+    mat-row
+    (keydown)="keyDown($event)"
+    (keyup.enter)="selectItemAndClose(selectedItem?.id)"
+    (dblclick)="selectItemAndClose(row.id)"
+    (click)="selectItem(row.id)"
+    *matRowDef="let row; columns: displayedColumns; let i = index"
+    [class.selected]="selectedItem?.id === row.id"
+    class="highlight"
+    [tabindex]="i"
+    ></tr>
+        <!-- Position Column -->
+        <ng-container matColumnDef="NIT">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <!-- Código de la planilla -->
+
+            <app-table-header
+              rowHeight="45px"
+              title="NIT"
+              column="NIT"
+              [sort]="true"
+              [search]="true"
+              tableName="filtroBusquedaPersonas"
+            ></app-table-header>
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center">
+            {{ element.NIT }}
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="idpersona">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <!-- Denominación -->
+
+            <app-table-header
+              rowHeight="45px"
+              title="NR"
+              column="idpersona"
+              [sort]="true"
+              [search]="true"
+              tableName="filtroBusquedaPersonas"
+            ></app-table-header>
+          </th>
+
+          <td mat-cell *matCellDef="let element" class="text-left">
+            {{ element.idpersona }}
+          </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <!-- Mes -->
+            <app-table-header
+              rowHeight="45px"
+              title="Nombre"
+              column="nombre"
+              [sort]="true"
+              [search]="true"
+              tableName="filtroBusquedaPersonas"
+            ></app-table-header>
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-left">
+            {{ element.nombre }}
+          </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="decargo">
+          <th mat-header-cell *matHeaderCellDef class="text-center">
+            <!-- Año -->
+
+            <app-table-header
+              rowHeight="45px"
+              title="Cargo"
+              column="decargo"
+              [sort]="true"
+              [search]="true"
+              tableName="filtroBusquedaPersonas"
+            ></app-table-header>
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-left">
+            {{ element.decargo }}
+          </td>
+        </ng-container>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="9999">
+            No hay informaci&#0243;n que mostrar
+          </td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [length]="totalRecords"
+        [pageSize]="paginationSize"
+        [pageSizeOptions]="paginationSizeOptions"
+        (page)="paginate($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-footer" style="width: 100%; text-align: center;">
+  <mat-dialog-actions class="center_v">
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      class="text-uppercase"
+      data-toggle="tooltip"
+      data-placement="top"
+      (click)="selectItemAndClose(selectedItem?.id)"
+      cdkFocusInitial
+    >
+      Seleccionar
+    </button>
+    <button
+      type="button"
+      (click)="onNoClick()"
+      color="warn"
+      class="text-uppercase footer-cell.centered"
+      data-toggle="tooltip"
+      data-placement="top"
+      mat-raised-button
+    >
+      Cerrar
+    </button>
+  </mat-dialog-actions>
+</div>

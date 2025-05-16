@@ -1,0 +1,173 @@
+<div [hidden]="!isEditing">
+  <h4 class="ml-2 mt-2"><b>Ingreso de rangos</b></h4>
+
+  <mat-divider class="m-2"></mat-divider>
+
+  <form [formGroup]="rangosBranchForm">
+    <div class="modal-body mt-4 mb-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <mat-form-field class="w-100 centrado_texto" appearance="outline">
+              <mat-label>Tipo DTE</mat-label>
+              <mat-select formControlName="idRango" [compareWith]="compareObjects">
+                <mat-option *ngFor="let category of tipoRango" [value]="category.id">
+                  {{ category.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="
+                  this.rangosBranchForm.controls['idRango'].hasError('required')
+                ">
+                Debes seleccionar uno es campo es<strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-sm-6">
+            <mat-form-field class="w-100 centrado_texto" appearance="outline">
+              <mat-label>Descripcion del rango</mat-label>
+              <input type="text" matInput formControlName="descripcion" class="upperCase" />
+              <mat-error *ngIf="
+                  this.rangosBranchForm.controls['descripcion'].hasError(
+                    'required'
+                  )
+                ">
+                Descripcion del rango es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field [style.width.%]="100" class="w-100 centrado_texto" appearance="outline">
+              <mat-label>Rango inicial</mat-label>
+              <input [maxLength]="15" (keypress)="onKeyPressNumeros($event)" type="text" matInput
+                formControlName="inicioRango" class="upperCase" />
+              <mat-error *ngIf="
+                  this.rangosBranchForm.controls['inicioRango'].hasError(
+                    'required'
+                  )
+                ">
+                Rango inicial es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-6">
+            <mat-form-field [style.width.%]="100" class="w-100 centrado_texto" appearance="outline">
+              <mat-label>Rango final</mat-label>
+              <input [maxLength]="15" (keypress)="onKeyPressNumeros($event)" type="text" matInput
+                formControlName="finalRango" class="upperCase" />
+              <mat-error *ngIf="
+                  this.rangosBranchForm.controls['finalRango'].hasError(
+                    'required'
+                  )
+                ">
+                Rango final es <strong>requerido</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 d-flex justify-content-end">
+            <button class="mr-4" mat-raised-button color="primary" (click)="actualizarRange()">
+              crear
+            </button>
+            <button mat-raised-button color="warn" (click)="limpiarformulario()">
+              cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="d-flex w-100 align-items-center justify-content-between pl-2 pr-2">
+  <h3 class="mt-3"><b>Histórico de rangos</b></h3>
+
+  <button [hidden]="isEditing" mat-button (click)="isEditing = !isEditing">
+    <mat-icon>add</mat-icon> nuevo rango
+  </button>
+</div>
+<mat-divider class="p-2"> </mat-divider>
+<div *ngIf="dataSource.data.length > 0; else emptyBlock" class="d-flex w-100 flex-column pl-2 pr-2">
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Filtro de Rangos" #input />
+  </mat-form-field>
+
+  <div class="mat-elevation-z8 mb-4">
+    <table mat-table #tableRangos [dataSource]="dataSource" matSort aria-label="informacion de rangos uno ordenable">
+      <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>DESCRIPCION</th>
+        <td mat-cell *matCellDef="let row">{{ row.descripcion }}</td>
+      </ng-container>
+      <ng-container matColumnDef="tipo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>TIPO RANGO</th>
+        <td mat-cell *matCellDef="let row">{{ row.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ranges">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>RANGOS</th>
+
+        <td mat-cell *matCellDef="let row">
+          <table class="w-100" aria-label="informacion de rangos dos ordenable">
+            <thead>
+              <tr class="border-bottom border-light">
+                <th>Descripción</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-bottom border-light">
+                <td>ACTUAL</td>
+                <td>{{ row.actualValor }}</td>
+              </tr>
+              <tr class="border-bottom border-light">
+                <td>INICIAL</td>
+                <td>{{ row.inicioRango }}</td>
+              </tr>
+              <tr>
+                <td>FINAL</td>
+                <td>{{ row.finalRango }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="-">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>-</th>
+
+        <td mat-cell *matCellDef="let row; let i = index">
+          <button mat-icon-button (click)="eliminar(row, i)" data-toggle="tooltip" data-placement="top"
+            title="Eliminar">
+            <i class="material-icons" style="color: red">delete</i>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedRangesColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedRangesColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          No data matching the filter "{{ input.value }}"
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
+</div>
+<ng-template #emptyBlock>
+  <div class="d-flex flex-column w-100 justify-content-center align-item-center mb-4">
+    <div class="w-100 d-flex justify-content-center">
+      <img alt="desc cnr fin recreativo" width="150" [src]="this.image" />
+    </div>
+    <div class="w-100 d-flex justify-content-center">
+      <h3><b>NO HAY DATOS</b></h3>
+    </div>
+  </div>
+</ng-template>

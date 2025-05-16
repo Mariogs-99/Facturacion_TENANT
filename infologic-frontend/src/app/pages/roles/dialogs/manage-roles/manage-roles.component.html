@@ -1,0 +1,107 @@
+<form [formGroup]="rolesForm" style="overflow-x: hidden !important">
+  <div class="row">
+    <div class="col-6">
+      <mat-form-field appearance="outline" class="w-100 mt-2">
+        <mat-label>Nombre de Rol </mat-label>
+        <input formControlName="nameRole" matInput />
+
+        <mat-error
+          *ngIf="this.rolesForm.controls['nameRole'].hasError('required')"
+        >
+          Nombre es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="outline" class="w-100 mt-2">
+        <mat-label>Descripcion de Rol </mat-label>
+        <input formControlName="descriptionRole" matInput />
+
+        <mat-error
+          *ngIf="
+            this.rolesForm.controls['descriptionRole'].hasError('required')
+          "
+        >
+          Descripcion es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <mat-label> Seleccione los permisos para este rol: </mat-label>
+    <table mat-table [dataSource]="dataSource" aria-label="informacion de roles admin ordenable">
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            onkeypress="return true;"
+            (change)="$event ? toggleAllRows() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.selected.length > 0"
+            [aria-label]="checkboxLabel()"
+          >
+          </mat-checkbox>
+        </th>
+
+        <td mat-cell *matCellDef="let row; let i = index">
+          <mat-checkbox
+            onkeypress="return true;"
+            (click)="$event.stopPropagation()"
+            (change)="
+              $event.checked ? selection.toggle(row.idPermissions) : null;
+              changecheck($event.checked, row)
+            "
+            [checked]="selection.isSelected(row.idPermissions)"
+            [aria-label]="checkboxLabel(row)"
+          >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="namePermissions">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.namePermissions }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="descriptionPermissions">
+        <th mat-header-cell *matHeaderCellDef>Descripcion</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.descriptionPermissions }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        onkeypress="return true;"
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="selection.toggle(row)"
+      ></tr>
+    </table>
+    <mat-paginator
+      class="mat-elevation-z8"
+      [length]="totalRecords"
+      [pageSize]="paginationSize"
+      [pageSizeOptions]="paginationSizeOptions"
+      (page)="paginate($event)"
+    >
+    </mat-paginator>
+  </div>
+
+  <div class="card-footer mt-3 mb-2 d-flex justify-content-start">
+    <button
+      [disabled]="this.rolesForm.invalid"
+      class="mr-2"
+      mat-flat-button
+      color="accent"
+      (click)="update()"
+    >
+      {{ updating ? "Actualizar" : "Crear" }}
+    </button>
+    <button mat-flat-button color="primary" (click)="dialogRef.close()">
+      Cancelar
+    </button>
+  </div>
+</form>

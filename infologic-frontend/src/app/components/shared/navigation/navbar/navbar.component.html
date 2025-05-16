@@ -1,0 +1,30 @@
+<mat-toolbar>
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+    (click)="toggle()"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <button mat-button (click)="home()">Facturador Electrónico</button>
+
+  <span class="example-spacer"></span>
+
+  <span class="example-spacer"></span>
+
+  <button
+    class="d-flex flex-row-reverse justify-content-center align-content-end"
+    mat-button
+    [matMenuTriggerFor]="belowMenu"
+  >
+    {{ username }} <mat-icon>keyboard_arrow_down</mat-icon>
+  </button>
+
+  <mat-menu #belowMenu="matMenu" yPosition="below">
+    <button mat-menu-item (click)="updateProfile()">Actualizar perfil</button>
+    <button mat-menu-item (click)="changePass()">Cambiar contraseña</button>
+    <button mat-menu-item (click)="logout()">Cerrar sesión</button>
+  </mat-menu>
+</mat-toolbar>

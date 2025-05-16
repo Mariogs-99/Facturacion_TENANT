@@ -1,0 +1,152 @@
+.test{
+    background: #f0f0f0;
+    height: 90vh;
+}
+
+.menu-card {
+  margin-top: 15px;
+  max-width: 200px;
+}
+
+.menu-header-image {
+  background-size: cover;
+}
+
+
+#tablaDiv {
+  transform: scale(0.20) !important;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+  color: #000;
+  font-weight: bold;
+}
+table{
+  width: 100%;
+}
+tr:hover {
+ background-color: rgb(229, 226, 226);
+ cursor: pointer;
+}
+td, th {
+ padding-right: 10px!important;
+}
+.mat-column-acciones {
+ width: 175px;
+}
+h2 {
+  font: 500 20px/32px Roboto,Helvetica Neue,sans-serif !important;
+  letter-spacing: normal !important;
+  margin: 0 0 16px !important;
+}
+
+h3 {
+  font: 400 16px/28px Roboto,Helvetica Neue,sans-serif !important;
+  letter-spacing: normal !important;
+  margin: 0 0 16px !important;
+}
+
+.custom-width{
+  width: 100% !important;
+}
+
+.seccion {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 7px 7px 7px 7px;
+  -moz-border-radius: 7px 7px 7px 7px;
+  -webkit-border-radius: 7px 7px 7px 7px;
+  border: 2px solid #C7C7C7;
+}
+
+.centrado_horizontal {
+  display: block !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+
+.titulo {
+  font: 500 20px/32px Roboto,Helvetica Neue,sans-serif;
+  letter-spacing: normal;
+  margin: 0;
+  width: inherit;
+  text-align: center;
+}
+
+.centrado {
+  position: relative !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+
+.modal-footer {
+  margin-top: auto;
+}
+
+
+.container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+}
+
+.card {
+  flex: 1 !important;
+  min-width: 200px !important;
+  max-width: 300px !important;
+}
+
+.total-card {
+  border: 1px solid #ddd !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-body {
+  padding: 20px !important;
+}
+
+
+
+
+.img-fluid {
+  max-width: 100%; 
+  height: auto;
+}
+
+.btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  text-align: center; 
+}
+
+.material-icons {
+  font-size: 24px;
+}
+
+.button-label {
+  margin-top: 8px; 
+}
+
+.mt-2 {
+  margin-top: 10px; 
+}
+
+
+.icon-large {
+  font-size: 36px;
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px; 
+}

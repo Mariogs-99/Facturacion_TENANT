@@ -1,0 +1,151 @@
+<mat-dialog-content class="w-100 ml-1">
+  <div class="text-center">
+    <h1>
+      ¿Está seguro de Invalidar esta transacción? <br />
+      Esta acción no se puede revertir.
+    </h1>
+  </div>
+
+  <form [formGroup]="registerForm2">
+    <div class="row">
+      <div class="col-12 col-sm-6 mb-3">
+        <mat-form-field appearance="outline" class="w-100"> 
+          <mat-label>Nombre del Solicitante</mat-label>
+          <input
+            style="text-align: center"
+            type="text"
+            formControlName="solicitante"
+            matInput
+            required
+            (keypress)="validaciones.onKeyPressNoNumeros($event)"
+            maxlength="200"
+          />
+          <mat-error
+            *ngIf="
+              registerForm2.get('solicitante')?.invalid &&
+              registerForm2.get('solicitante')?.touched
+            "
+          >
+            Nombre del solicitante es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-sm-6 mb-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>NIT o DUI del Solicitante</mat-label>
+          <input
+            style="text-align: center"
+            type="text"
+            formControlName="DOC_solicitante"
+            matInput
+            required
+            (keypress)="validaciones.onKeyPressNumbers($event)"
+            maxlength="17"
+          />
+          <mat-error
+            *ngIf="
+              registerForm2.get('DOC_solicitante')?.invalid &&
+              registerForm2.get('DOC_solicitante')?.touched
+            "
+          >
+            Campo requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-sm-6 mb-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nombre del Responsable</mat-label>
+          <input
+            style="text-align: center"
+            type="text"
+            formControlName="responsable"
+            matInput
+            required
+            (keypress)="validaciones.onKeyPressNoNumeros($event)"
+            maxlength="200"
+          />
+          <mat-error
+            *ngIf="
+              registerForm2.get('responsable')?.invalid &&
+              registerForm2.get('responsable')?.touched
+            "
+          >
+            Nombre del responsable es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-sm-6 mb-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>NIT o DUI del Responsable</mat-label>
+          <input
+            style="text-align: center"
+            type="text"
+            formControlName="DOC_responsable"
+            matInput
+            required
+            (keypress)="validaciones.onKeyPressNumbers($event)"
+            maxlength="17"
+          />
+          <mat-error
+            *ngIf="
+              registerForm2.get('DOC_responsable')?.invalid &&
+              registerForm2.get('DOC_responsable')?.touched
+            "
+          >
+            Campo requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 mb-3">
+        <mat-form-field class="w-100">
+          <mat-label>Motivo</mat-label>
+          <mat-select formControlName="motivoSelect" required>
+            <mat-option [value]="1542">
+              RESCINDIR DE LA OPERACIÓN REALIZADA.
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 mb-3">
+        <mat-form-field class="w-100">
+          <mat-label>Ingrese Descripción del Motivo</mat-label>
+          <textarea
+            matInput
+            formControlName="descripcionTextarea"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="3"
+            cdkAutosizeMaxRows="10"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-card-footer class="centrado mt-4">
+  <div
+    class="d-flex justify-content-center align-items-center"
+    style="height: 75px"
+  >
+    <button mat-raised-button color="primary" (click)="closeModal()">
+      Cerrar
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      id="anular"
+      (click)="confirmarAnulacion()"
+    >
+      Invalidar
+    </button>
+  </div>
+</mat-card-footer>

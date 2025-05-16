@@ -1,0 +1,119 @@
+table {
+  width: 100%;
+}
+
+td, th {
+  padding-right: 10px !important;
+}
+
+tr:hover {
+  background-color: rgb(229, 226, 226);
+  cursor: pointer;
+}
+
+input {
+  width: 100%;
+}
+
+.mat-column-acciones {
+  width: 175px;
+}
+
+@media only screen and (max-width: 600px) {
+  .mat-column-acciones {
+    width: 100%;
+  }
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.custom-width {
+  width: 100% !important;
+}
+
+.input-left {
+  margin-left: 8px !important;
+  width: 100% !important;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 80%;
+  color: #000;
+  font-weight: bold;
+}
+
+.example-container>mat-form-field {
+  width: 45% !important;
+  margin-left: 8px !important;
+}
+
+::ng-deep .mat-form-field-label {
+  color: black;
+}
+
+h2 {
+  font: 500 20px/32px Roboto, Helvetica Neue, sans-serif !important;
+  letter-spacing: normal !important;
+  margin: 0 0 16px !important;
+}
+
+h3 {
+  font: 400 16px/28px Roboto, Helvetica Neue, sans-serif !important;
+  letter-spacing: normal !important;
+  margin: 0 0 16px !important;
+}
+
+.titulo {
+  font: 500 20px/32px Roboto, Helvetica Neue, sans-serif;
+  letter-spacing: normal;
+  margin: 0;
+  width: inherit;
+  text-align: center;
+}
+
+.seccion {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 7px;
+  border: 2px solid #C7C7C7;
+}
+
+.centrado_horizontal {
+  display: block !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+
+.centrado {
+  position: relative !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.modal-footer {
+  margin-top: auto;
+}
+
+.test {
+  background: #f0f0f0;
+  height: 90vh;
+}
+
+.menu-card {
+  margin-top: 15px;
+  max-width: 200px;
+}
+
+.menu-header-image {
+  background-size: cover;
+}
+
+#tablaDiv {
+  transform: scale(0.20) !important;
+}

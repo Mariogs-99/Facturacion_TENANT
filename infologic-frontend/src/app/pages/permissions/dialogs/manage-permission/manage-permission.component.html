@@ -1,0 +1,84 @@
+<form [formGroup]="permissionForm" style="overflow-x: hidden !important">
+  <div class="row">
+    <div class="col-6">
+      <mat-form-field appearance="outline" class="w-100 mt-2">
+        <mat-label>Nombre de Permiso </mat-label>
+        <input formControlName="namePermissions" matInput />
+
+        <mat-error
+          *ngIf="
+            this.permissionForm.controls['namePermissions'].hasError('required')
+          "
+        >
+          Nombre es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="outline" class="w-100 mt-2">
+        <mat-label>Descripcion de Permiso </mat-label>
+        <input formControlName="descriptionPermissions" matInput />
+
+        <mat-error
+          *ngIf="
+            this.permissionForm.controls['descriptionPermissions'].hasError(
+              'required'
+            )
+          "
+        >
+          Descripcion es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Menu</mat-label>
+        <mat-select
+          formControlName="menuId"
+          [compareWith]="compareWith"
+          (selectionChange)="setMenuItems($event.value)"
+        >
+          <mat-option *ngFor="let menu of menus" [value]="menu.idMenu">
+            {{ menu.nameMenu }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Opciones Disponibles</mat-label>
+        <mat-select
+          formControlName="menuItemsIds"
+          [compareWith]="compareWith"
+          multiple="true"
+        >
+          <mat-option
+            *ngFor="let menuItem of menuItems"
+            [value]="menuItem.idMenuItems"
+          >
+            {{ menuItem.nameMenuItems }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="card-footer mb-2 d-flex justify-content-start">
+    <button
+      [disabled]="this.permissionForm.invalid"
+      class="mr-2"
+      mat-flat-button
+      color="accent"
+      (click)="update()"
+    >
+      {{ updating ? "Actualizar" : "Crear" }}
+    </button>
+    <button mat-flat-button color="primary" (click)="dialogRef.close()">
+      Cancelar
+    </button>
+  </div>
+</form>

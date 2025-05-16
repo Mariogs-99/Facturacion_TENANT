@@ -1,0 +1,502 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <app-module-header
+            title="Institución"
+            subtitle=""
+            buttonLabel="Editar"
+            buttonColor="accent"
+            component="InstitucionComponent"
+            action="open"
+            [button]="!permissionsArr.includes('Actualizar')"
+          ></app-module-header>
+
+          <form [formGroup]="institucionForm" class="form-container">
+            <div
+              class="modal-body"
+              style="padding: 0px !important; margin: auto; overflow-x: auto"
+            >
+              <div class="formGroup mt-3">
+                <mat-tab-group>
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <mat-icon> domain</mat-icon>
+                      Datos Generales
+                    </ng-template>
+
+                    <div class="form-row container mt-4">
+                      <div class="row mt-4">
+                        <div class="row w-100">
+                          <div class="col-sm-6">
+                            <mat-form-field
+                              appearance="outline"
+                              class="w-100 centrado_texto"
+                              [class.mat-form-field-disabled]="disable"
+                            >
+                              <mat-label>Nombre de la empresa</mat-label>
+                              <input
+                                [readonly]="disable"
+                                type="text"
+                                matInput
+                                formControlName="nameCompany"
+                                class="upperCase"
+                                maxlength="150"
+                                (keypress)="
+                                  validaciones.onKeyPressNoSignos($event)
+                                "
+                              />
+                              <mat-error
+                                *ngIf="
+                                  this.institucionForm.controls[
+                                    'nameCompany'
+                                  ].hasError('required')
+                                "
+                              >
+                                Nombre de empresa es <strong>requerido</strong>
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+
+                          <div class="col-sm-6">
+                            <mat-form-field
+                              appearance="outline"
+                              class="w-100 centrado_texto"
+                              appearance="outline"
+                            >
+                              <mat-label>Nombre Comercial</mat-label>
+                              <input
+                                [readonly]="disable"
+                                type="text"
+                                matInput
+                                formControlName="socialReasonCompany"
+                                class="upperCase"
+                                maxlength="150"
+                                (keypress)="
+                                  validaciones.onKeyPressNoSignos($event)
+                                "
+                              />
+                              <mat-error
+                                *ngIf="
+                                  this.institucionForm.controls[
+                                    'socialReasonCompany'
+                                  ].hasError('required')
+                                "
+                              >
+                                Nombre Comercial de la empresa es
+                                <strong>requerido</strong>
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+
+                          <div class="col-sm-12">
+                            <mat-form-field
+                              appearance="outline"
+                              class="w-100 centrado_texto"
+                              appearance="outline"
+                            >
+                              <mat-label>Descripción de la empresa</mat-label>
+                              <input
+                                [readonly]="disable"
+                                type="text"
+                                matInput
+                                formControlName="descriptionCompany"
+                                class="upperCase"
+                                maxlength="250"
+                              />
+                              <mat-error
+                                *ngIf="
+                                  this.institucionForm.controls[
+                                    'descriptionCompany'
+                                  ].hasError('required')
+                                "
+                              >
+                                Descripción de empresa es
+                                <strong>requerido</strong>
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="row w-100">
+                          <div class="col-sm-6">
+                            <mat-form-field
+                              class="w-100 centrado_texto"
+                              appearance="outline"
+                            >
+                              <mat-label>Número NIT</mat-label>
+                              <input
+                                [readonly]="disable"
+                                (ngModelChange)="maskDUINIT($event)"
+                                type="text"
+                                matInput
+                                formControlName="nit"
+                              />
+                              <mat-error
+                                *ngIf="
+                                  this.institucionForm.controls['nit'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                                Número de Identificación Tributaria NIT es
+                                <strong>requerido</strong>
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+
+                          <div class="col-sm-6">
+                            <mat-form-field
+                              class="w-100 centrado_texto"
+                              appearance="outline"
+                            >
+                              <mat-label>Número de Registro NRC</mat-label>
+                              <input
+                                [readonly]="disable"
+                                type="text"
+                                matInput
+                                formControlName="nrc"
+                                (keypress)="
+                                  validaciones.onKeyPressNumbersAndHyphens(
+                                    $event
+                                  )
+                                "
+                                maxlength="25"
+                              />
+                              <mat-error
+                                *ngIf="
+                                  this.institucionForm.controls['nrc'].hasError(
+                                    'required'
+                                  )
+                                "
+                              >
+                                Número de Registro de Contribuyente NRC es
+                                <strong>requerido</strong>
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row w-100">
+                        <div class="col-sm-12">
+                          <mat-form-field
+                            class="w-100 centrado_texto"
+                            appearance="outline"
+                          >
+                            <mat-label>Dirección</mat-label>
+                            <input
+                              [readonly]="disable"
+                              type="text"
+                              matInput
+                              formControlName="addressCompany"
+                              class="upperCase"
+                              maxlength="250"
+                            />
+                            <mat-error
+                              *ngIf="
+                                this.institucionForm.controls[
+                                  'addressCompany'
+                                ].hasError('required')
+                              "
+                            >
+                              Dirección es <strong>requerida</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col-sm-6">
+                          <mat-form-field
+                            class="w-100 centrado_texto"
+                            appearance="outline"
+                          >
+                            <mat-label>Municipio</mat-label>
+                            <input
+                              [readonly]="disable"
+                              type="text"
+                              placeholder="Digite el Municipio"
+                              aria-label="municipio"
+                              matInput
+                              formControlName="nombreMunicipioCompany"
+                              [matAutocomplete]="auto"
+                              (ngModelChange)="filtervaluesInstitucion($event)"
+                              (focus)="resetOptions()"
+                            />
+                            <mat-autocomplete
+                              (optionSelected)="selectChangeInstitucion($event)"
+                              autoActiveFirstOption
+                              #auto="matAutocomplete"
+                            >
+                              <mat-option
+                                value="{{ option.name }}"
+                                *ngFor="let option of filteredOptions"
+                              >
+                                {{ option.name }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+
+                        <div class="col">
+                          <mat-form-field
+                            class="w-100 centrado_texto"
+                            appearance="outline"
+                          >
+                            <mat-label>Telefono</mat-label>
+                            <input
+                              [readonly]="disable"
+                              simpleMask="9999-9999"
+                              type="text"
+                              matInput
+                              formControlName="phoneCompany"
+                            />
+                            <mat-error
+                              *ngIf="
+                                this.institucionForm.controls[
+                                  'phoneCompany'
+                                ].hasError('required')
+                              "
+                            >
+                              Telefono es <strong>requerido</strong>
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field
+                            class="w-100 centrado_texto"
+                            appearance="outline"
+                          >
+                            <mat-label>Correo Electronico</mat-label>
+                            <input
+                              [readonly]="disable"
+                              type="email"
+                              matInput
+                              formControlName="emailCompany"
+                              class="lowerCase"
+                              (input)="toLower($event)"
+                              maxlength="150"
+                            />
+                            <mat-error
+                              *ngIf="
+                                this.institucionForm.controls[
+                                  'emailCompany'
+                                ].hasError('emailCompany') &&
+                                !this.institucionForm.controls[
+                                  'emailCompany'
+                                ].hasError('pattern')
+                              "
+                            >
+                              Ingresa un correo electronico valido
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class="col">
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Actividad Economica</mat-label>
+                            <input
+                              [readonly]="disable"
+                              type="text"
+                              placeholder="Digite la Actividad Economica"
+                              aria-label="giro"
+                              matInput
+                              formControlName="nombreGiroCompany"
+                              [matAutocomplete]="auto_act"
+                              (ngModelChange)="
+                                filtervaluesInstitucion($event, 2)
+                              "
+                              (focus)="resetOptions()"
+                            />
+                            <mat-autocomplete
+                              (optionSelected)="
+                                selectChangeInstitucion($event, 2)
+                              "
+                              autoActiveFirstOption
+                              #auto_act="matAutocomplete"
+                            >
+                              <mat-option
+                                value="{{ option.name }}"
+                                *ngFor="let option of filteredOptionsGiros"
+                              >
+                                {{ option.name }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <mat-icon> account_balance </mat-icon>
+                      Hacienda
+                    </ng-template>
+                    <div
+                      class="col container mt-4"
+                      style="min-height: 425px; max-height: 425px"
+                    >
+                      <mat-form-field class="w-100 mt-4" appearance="outline">
+                        <mat-label
+                          >Usuario del Ministerio de Hacienda</mat-label
+                        >
+                        <input
+                          [readonly]="disable"
+                          type="text"
+                          matInput
+                          formControlName="mhUser"
+                          class="upperCase"
+                          maxlength="100"
+                        />
+                        <mat-error
+                          *ngIf="
+                            this.institucionForm.controls['mhUser'].hasError(
+                              'required'
+                            )
+                          "
+                        >
+                          Usuario del Ministerio de Hacienda es
+                          <strong>requerido</strong>
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Clave primaria certificado</mat-label>
+                        <input
+                          [readonly]="disable"
+                          type="text"
+                          matInput
+                          formControlName="clavePrimariaCert"
+                          class="upperCase"
+                          maxlength="100"
+                        />
+                        <mat-error
+                          *ngIf="
+                            this.institucionForm.controls[
+                              'clavePrimariaCert'
+                            ].hasError('required')
+                          "
+                        >
+                          Clave primaria certificado es
+                          <strong>requerido</strong>
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field class="w-100" appearance="outline">
+                        <mat-label
+                          >Contraseña API Ministerio de Hacienda</mat-label
+                        >
+                        <input
+                          [readonly]="disable"
+                          type="text"
+                          matInput
+                          formControlName="mhPass"
+                          class="upperCase"
+                          style="text-transform: none"
+                          maxlength="100"
+                        />
+                        <mat-error
+                          *ngIf="
+                            this.institucionForm.controls['mhPass'].hasError(
+                              'required'
+                            )
+                          "
+                        >
+                          Contraseña API Ministerio de Hacienda es
+                          <strong>requerido</strong>
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-checkbox formControlName="active"
+                        >Activo</mat-checkbox
+                      >
+                    </div>
+                  </mat-tab>
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <mat-icon> drive_file_move_outline </mat-icon>
+                      Exportadora
+                    </ng-template>
+                    <div
+                      class="col container mt-4"
+                      style="min-height: 425px; max-height: 425px"
+                    >
+                      <mat-form-field class="w-100 mt-4" appearance="outline">
+                        <mat-label>Recinto fiscal</mat-label>
+                        <input
+                          [readonly]="disable"
+                          type="text"
+                          rows="2"
+                          placeholder="Digite el recinto fiscal"
+                          aria-label="recinto"
+                          matInput
+                          formControlName="nombreRecintoCompany"
+                          [matAutocomplete]="auto_rec"
+                          (ngModelChange)="filtervaluesInstitucion($event, 3)"
+                          (focus)="resetOptions()"
+                        />
+                        <mat-autocomplete
+                          (optionSelected)="selectChangeInstitucion($event, 3)"
+                          autoActiveFirstOption
+                          #auto_rec="matAutocomplete"
+                        >
+                          <mat-option
+                            value="{{ option.name }}"
+                            *ngFor="let option of filteredOptionsRecinto"
+                          >
+                            {{ option.name }}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+
+                      <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Regimen</mat-label>
+                        <input
+                          [readonly]="disable"
+                          type="text"
+                          placeholder="Digite el regimen"
+                          aria-label="regimen"
+                          matInput
+                          formControlName="nombreRegimenCompany"
+                          [matAutocomplete]="auto_reg"
+                          (ngModelChange)="filtervaluesInstitucion($event, 4)"
+                          (focus)="resetOptions()"
+                        />
+                        <mat-autocomplete
+                          (optionSelected)="selectChangeInstitucion($event, 4)"
+                          autoActiveFirstOption
+                          #auto_reg="matAutocomplete"
+                        >
+                          <mat-option
+                            value="{{ option.name }}"
+                            *ngFor="let option of filteredOptionsRegimen"
+                          >
+                            {{ option.name }}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                  </mat-tab>
+                </mat-tab-group>
+              </div>
+              <div class="container"></div>
+            </div>
+          </form>
+
+          <div class="modal-footer centrado mt-2 mb-2">
+            <mat-dialog-actions>
+              <button
+                *ngIf="isupdating"
+                type="button"
+                (click)="actualizarInstitucion()"
+                mat-flat-button
+                color="accent"
+                data-toggle="tooltip"
+                data-placement="top"
+              >
+                Actualizar
+              </button>
+            </mat-dialog-actions>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Editar Producto' : 'Agregar Producto' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="productoForm">
+    <!-- Código del Producto -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Código Producto*</mat-label>
+      <input matInput formControlName="codigoProducto" placeholder="Ej: 1-002" required />
+      <mat-error *ngIf="productoForm.get('codigoProducto')?.hasError('required')">
+        El código del producto es obligatorio.
+      </mat-error>
+      <mat-error *ngIf="productoForm.get('codigoProducto')?.hasError('pattern')">
+        Formato inválido. Use `X-YYY` (ejemplo: `1-002`).
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Clasificación -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Clasificación*</mat-label>
+      <input matInput formControlName="clasificacion" placeholder="Ingrese la clasificación" required />
+    </mat-form-field>
+
+    <!-- Nombre -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Nombre*</mat-label>
+      <input matInput formControlName="nombre" placeholder="Ingrese el nombre del producto" required />
+    </mat-form-field>
+
+    <!-- Descripción -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion" placeholder="Ingrese una descripción"></textarea>
+    </mat-form-field>
+
+    <!-- Precio -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Precio*</mat-label>
+      <input matInput type="number" formControlName="precio" placeholder="Ingrese el precio" required />
+      <mat-error *ngIf="productoForm.get('precio')?.hasError('required')">
+        El precio del producto es obligatorio.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- IVA (Calculado automáticamente) -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>IVA (13%)</mat-label>
+      <input matInput type="number" formControlName="iva" readonly />
+    </mat-form-field>
+
+    <!-- Total (Calculado automáticamente) -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Total</mat-label>
+      <input matInput type="number" formControlName="total" readonly />
+    </mat-form-field>
+
+    <!-- Código de Ingreso -->
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Código de Ingreso</mat-label>
+      <input matInput formControlName="codigoIngreso" placeholder="Ingrese el código de ingreso" />
+      <mat-error *ngIf="productoForm.get('codigoIngreso')?.hasError('maxLength')">
+        El código de ingreso no puede exceder los 50 caracteres.
+      </mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="accent" (click)="guardar()" [disabled]="productoForm.invalid">
+    {{ isEditMode ? 'Actualizar' : 'Agregar' }}
+  </button>
+</mat-dialog-actions>

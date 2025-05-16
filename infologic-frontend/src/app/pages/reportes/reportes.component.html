@@ -1,0 +1,453 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <app-module-header
+            title="Reportes"
+            subtitle=""
+            buttonIcon="add"
+            buttonLabel="Agregar"
+            buttonColor="accent"
+            [button]="true"
+            component="ReportesComponent"
+            action="open"
+          ></app-module-header>
+
+          <div class="card-body">
+            <mat-tab-group animationDuration="2000ms">
+              <mat-tab label="REPORTES DE CONTABILIDAD">
+                <div class="card">
+                  <div class="row mt-4 ml-2">
+                    <div class="col-12 col-sm-12 col-lg-8 col-xl-4">
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Tipo de Reporte</mat-label>
+                        <mat-select [(ngModel)]="selectedReporte">
+                          <ng-container
+                            *ngFor="let seccion of this.reportesContabilidad"
+                          >
+                            <mat-optgroup
+                              style="font-weight: bold"
+                              [label]="seccion.label"
+                            >
+                              <mat-option
+                                style="font-weight: initial"
+                                *ngFor="let reporte of seccion.reportes"
+                                [value]="reporte.reporteName"
+                              >
+                                {{ reporte.descripcion }}
+                              </mat-option>
+                            </mat-optgroup>
+                          </ng-container>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Fecha Inicial</mat-label>
+                        <input
+                          matInput
+                          [matDatepicker]="myDatepickerC"
+                          [(ngModel)]="fechaInicial"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="myDatepickerC"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepickerC></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Fecha Final</mat-label>
+                        <input
+                          matInput
+                          [matDatepicker]="myDatepickerC2"
+                          [(ngModel)]="fechaFinal"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="myDatepickerC2"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepickerC2></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    <div
+                      class="col-12 col-sm-6 col-lg-4 col-xl-2"
+                      style="display: none"
+                    >
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Formato</mat-label>
+                        <mat-select [(ngModel)]="selectedFormato">
+                          <mat-option [value]="'pdf'">PDF</mat-option>
+                          <mat-option [value]="'csv'">CSV</mat-option>
+                          <mat-option [value]="'excel'">Excel</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-lg-1 col-md-12">
+                      <div class="d-flex justify-content-center">
+                        <button
+                          mat-fab
+                          type="button"
+                          (click)="cargarReporte()"
+                          class="mat-elevation-z8"
+                          matTooltipPosition="right"
+                          mat-raised-above
+                          matTooltip="Cargar Reporte"
+                        >
+                          <mat-icon>search</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+
+
+                    <div *ngIf="this.pdfSRC != ''" class="col-12 centrado">
+                      <div
+                        class="btn-group"
+                        aria-label="Basic outlined example"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary"
+                          (click)="downloadReport('pdf')"
+                        >
+                          PDF
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary"
+                          (click)="downloadReport('xls')"
+                        >
+                          XLS
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-success"
+                          (click)="downloadReport('csv')"
+                        >
+                          CSV
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="this.pdfSRC != ''"
+                      style="width: 100%; height: 100%"
+                    >
+                      <div class="pdf-controls">
+                        <button class="btn btn-primary" (click)="zoomIn()">
+                          +
+                        </button>
+                        <button class="btn btn-secondary" (click)="zoomOut()">
+                          -
+                        </button>
+                        <button class="btn btn-success" (click)="downloadPDF()">
+                          Descargar
+                        </button>
+                      </div>
+                      <pdf-viewer
+                        [src]="pdfSRC"
+                        [original-size]="false"
+                        [rotation]="0"
+                        [original-size]="false"
+                        [show-all]="true"
+                        [fit-to-page]="false"
+                        [zoom]="zoom"
+                        [zoom-scale]="'page-width'"
+                        [stick-to-page]="false"
+                        [render-text]="true"
+                        [external-link-target]="'blank'"
+                        [autoresize]="true"
+                        [show-borders]="false"
+                        style="height: 500px"
+                      >
+                      </pdf-viewer>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab label="REPORTES DE TESORERIA">
+                <div class="card">
+                  <div class="row mt-4 ml-2">
+                    <div class="col-12 col-sm-12 col-lg-8 col-xl-4">
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Tipo de Reporte</mat-label>
+                        <mat-select
+                          [(ngModel)]="selectedReporteTesoreria"
+                          (selectionChange)="setFormItems($event.value)"
+                        >
+                          <mat-option
+                            *ngFor="let reporte of this.reportesTesoreria"
+                            [value]="reporte.reporteName"
+                          >
+                            {{ reporte.descripcion }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div
+                      *ngIf="this.FECHA"
+                      class="col-12 col-sm-6 col-lg-4 col-xl-2"
+                    >
+                      <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Seleciones una Fecha</mat-label>
+                        <input
+                          matInput
+                          [matDatepicker]="myDatepicker1"
+                          [(ngModel)]="fecha"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="myDatepicker1"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepicker1></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    <div
+                      *ngIf="this.FECHA_DESDE"
+                      class="col-12 col-sm-6 col-lg-4 col-xl-2"
+                    >
+                      <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Fecha Inicial</mat-label>
+                        <input
+                          matInput
+                          [matDatepicker]="myDatepicker"
+                          [(ngModel)]="fechaInicial"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="myDatepicker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepicker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    <div
+                      *ngIf="this.FECHA_HASTA"
+                      class="col-12 col-sm-6 col-lg-4 col-xl-2"
+                    >
+                      <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Fecha Final</mat-label>
+                        <input
+                          matInput
+                          [matDatepicker]="myDatepicker2"
+                          [(ngModel)]="fechaFinal"
+                        />
+                        <mat-datepicker-toggle
+                          matSuffix
+                          [for]="myDatepicker2"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #myDatepicker2></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                    <div
+                      *ngIf="this.MES"
+                      class="col-12 col-sm-6 col-lg-4 col-xl-2"
+                    >
+                      <div mat-dialog-content style="padding-bottom: 5px">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Seleccione un mes</mat-label>
+                          <mat-select
+                            [(value)]="selectedMonth"
+                            [compareWith]="setCurrentMonth"
+                            (selectionChange)="onMonthSelectionChange()"
+                          >
+                            <mat-option
+                              *ngFor="let month of months"
+                              [value]="month.id"
+                              >{{ month.name }}</mat-option
+                            >
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="this.ANIO"
+                      class="col-12 col-sm-6 col-lg-4 col-xl-2"
+                    >
+                      <div mat-dialog-content style="padding-bottom: 5px">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Seleccione un año</mat-label>
+                          <mat-select
+                            [(value)]="selectedAnio"
+                            (selectionChange)="onYearSelectionChange()"
+                          >
+                            <mat-option
+                              *ngFor="let startYear of years"
+                              [value]="startYear"
+                              >{{ startYear }}</mat-option
+                            >
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <div
+                      *ngIf="this.CODIGO_SUCURSAL"
+                      class="col-12 col-sm-12 col-lg-8 col-xl-4"
+                    >
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Seleccione la Sucursal</mat-label>
+                        <mat-select [(ngModel)]="selectedSucursal">
+
+                          <mat-option
+                            *ngIf="
+                              this.selectedReporteTesoreria ==
+                              'rpt_invalidaciones_dte'
+                            "
+                            [value]="1"
+                            selected
+                          >
+                            Todas
+                          </mat-option>
+
+                          <mat-option
+                            *ngFor="let sucursal of this.sucursales"
+                            [value]="sucursal.id"
+                          >
+                            {{ sucursal.nombreSucursal }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div
+                      *ngIf="this.PUNTO_DE_VENTA"
+                      class="col-12 col-sm-12 col-lg-8 col-xl-4"
+                    >
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Seleccione la Sucursal</mat-label>
+                        <mat-select [(ngModel)]="selectedPuntoDeVenta">
+
+
+                          <mat-option
+                            *ngFor="let puntoDeVenta of this.puntoDeVenta"
+                            [value]="puntoDeVenta.codigoSucursal"
+                          >
+                            {{ puntoDeVenta.nombre + ' ' +puntoDeVenta.misional}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+
+
+                    <div
+                      *ngIf="this.MODULO"
+                      class="col-12 col-sm-12 col-lg-8 col-xl-4"
+                    >
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Seleccione el Módulo</mat-label>
+                        <mat-select [(ngModel)]="selectedModulo">
+                          <mat-option
+                            *ngFor="let modulo of this.modulos"
+                            [value]="modulo"
+                          >
+                            {{ modulo }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div
+                      class="col-12 col-sm-6 col-lg-4 col-xl-2"
+                      style="display: none"
+                    >
+                      <mat-form-field appearance="outline" style="width: 100%">
+                        <mat-label>Formato</mat-label>
+                        <mat-select [(ngModel)]="selectedFormato">
+                          <mat-option [value]="'pdf'">PDF</mat-option>
+                          <mat-option [value]="'csv'">CSV</mat-option>
+                          <mat-option [value]="'excel'">Excel</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-1 col-md-12">
+                      <div class="d-flex justify-content-center">
+                        <button
+                          mat-fab
+                          type="button"
+                          (click)="cargarReporteTesoreria()"
+                          class="mat-elevation-z8"
+                          matTooltipPosition="right"
+                          mat-raised-above
+                          matTooltip="Cargar Reporte"
+                        >
+                          <mat-icon>search</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-4 ml-2" *ngIf="this.pdfSRCTes != ''">
+
+                    <div *ngIf="this.pdfSRCTes != ''" class="col-12 centrado">
+                      <div
+                        class="btn-group"
+                        aria-label="Basic outlined example"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary"
+                          (click)="downloadReportTes('pdf')"
+                        >
+                          PDF
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary"
+                          (click)="downloadReportTes('xls')"
+                        >
+                          XLS
+                        </button>
+                      </div>
+                    </div>
+                    <div style="width: 100%; height: 100%">
+                      <div class="pdf-controls">
+                        <button class="btn btn-primary" (click)="zoomIn(2)">
+                          +
+                        </button>
+                        <button class="btn btn-secondary" (click)="zoomOut(2)">
+                          -
+                        </button>
+                        <button
+                          class="btn btn-success"
+                          (click)="downloadPDF('reporte tesoreria.pdf', 2)"
+                        >
+                          Descargar
+                        </button>
+                      </div>
+
+                      <pdf-viewer
+                        [src]="pdfSRCTes"
+                        [original-size]="false"
+                        [rotation]="0"
+                        [original-size]="false"
+                        [show-all]="true"
+                        [fit-to-page]="false"
+                        [zoom]="zoom2"
+                        [zoom-scale]="'page-width'"
+                        [stick-to-page]="false"
+                        [render-text]="true"
+                        [external-link-target]="'blank'"
+                        [autoresize]="true"
+                        [show-borders]="false"
+                        style="height: 500px"
+                      >
+                      </pdf-viewer>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

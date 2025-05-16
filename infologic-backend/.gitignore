@@ -1,0 +1,86 @@
+HELP.md
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+
+
+# Eclipse
+.settings/
+
+# Logs
+log/
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Compiled Java classes
+*.class
+
+
+
+# Application files
+*.jar
+*.war
+*.ear
+
+# IntelliJ
+out/
+
+
+# Spring Boot
+.DS_Store?
+.cache
+logs/
+*.log.*
+*.log*
+*.tmp
+*.tmp.*
+*.tmp*
+*.releaseBackup
+*.swp
+*.~lock.*
+*.db
+*.db-shm
+*.db-wal
+
+
+
+# Thumbnails
+._*
+/.mvn/
+.mvn/*
+mvnw
+mvnw.cmd

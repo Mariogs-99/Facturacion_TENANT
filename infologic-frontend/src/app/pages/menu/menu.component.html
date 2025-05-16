@@ -1,0 +1,84 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <app-module-header
+            title="Gestion de Menu"
+            subtitle=""
+            [button]="!permissionsArrMenu.includes('Agregar')"
+            buttonLabel="Agregar"
+            buttonColor="accent"
+            buttonIcon="add"
+            component="MenuComponent"
+            action="open"
+          ></app-module-header>
+
+          <div class="card-body">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" aria-label="informacion de menu ordenable">
+              <!-- Name Column -->
+              <ng-container matColumnDef="nameMenu">
+                <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.nameMenu }}
+                </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="descriptionMenu">
+                <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.descriptionMenu }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <button
+                    [hidden]="!permissionsArrMenu.includes('Actualizar')"
+                    color="accent"
+                    mat-icon-button
+                    (click)="update(element, i)"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Editar"
+                  >
+                    <i class="material-icons">create</i>
+                  </button>
+                  <button
+                    [hidden]="!permissionsArrMenu.includes('Eliminar')"
+                    color="primary"
+                    mat-icon-button
+                    (click)="deleteMenu(element, i)"
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Eliminar"
+                  >
+                    <i class="material-icons">delete</i>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="9999">
+                  No hay información que mostrar
+                </td>
+              </tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <mat-paginator
+              class="mat-elevation-z8"
+              [length]="totalRecordsMenu"
+              [pageSize]="paginationSizeMenu"
+              [pageSizeOptions]="paginationSizeMenuOptions"
+              (page)="paginateMenu($event)"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div mat-dialog class="w-100">
+  <mat-toolbar
+    style="
+      background: #3c4557;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    "
+  >
+    <div style="width: 20%">
+      <img
+        alt="desc cnr fin recreativo"
+        src="./assets/images/Logo_Gobierno.svg"
+        style="height: 33px"
+      />
+    </div>
+
+    <div style="width: 60%; text-align: center">
+      <span class="modal-title">{{ data.title }}</span>
+    </div>
+
+    <div style="width: 20%; text-align: right">
+      <button mat-icon-button (click)="closeModal()">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+</div>

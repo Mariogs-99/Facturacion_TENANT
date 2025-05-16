@@ -1,0 +1,117 @@
+<form [formGroup]="menuForm" style="overflow-x: hidden !important">
+  <div class="row">
+    <div class="col-6">
+      <mat-form-field appearance="outline" class="w-100 mt-2">
+        <mat-label>Nombre </mat-label>
+        <input formControlName="nameMenu" matInput />
+
+        <mat-error
+          *ngIf="this.menuForm.controls['nameMenu'].hasError('required')"
+        >
+          Nombre es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-6">
+      <mat-form-field appearance="outline" class="w-100 mt-2">
+        <mat-label>URL </mat-label>
+        <input formControlName="slugMenu" matInput />
+
+        <mat-error
+          *ngIf="this.menuForm.controls['slugMenu'].hasError('required')"
+        >
+          URL es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Descripcion</mat-label>
+        <textarea formControlName="descriptionMenu" matInput></textarea>
+
+        <mat-error
+          *ngIf="this.menuForm.controls['descriptionMenu'].hasError('required')"
+        >
+          Descripcion es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <mat-form-field appearance="outline">
+        <mat-label>Categoria</mat-label>
+        <mat-select formControlName="idCategory" [compareWith]="compareWith">
+          <mat-option
+            *ngFor="let category of categories"
+            [value]="category.idCatalogo"
+          >
+            {{ category.valor }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-6" [hidden]="updating">
+      <mat-checkbox formControlName="createItemsMenu"></mat-checkbox>
+      Crear Endpoints Automaticamente
+    </div>
+  </div>
+
+  <div class="row" [hidden]="!menuForm.controls['createItemsMenu'].value">
+    <div class="col-6">
+      <mat-form-field appearance="outline" class="w-100 mt-2">
+        <mat-label>Nombre de API </mat-label>
+        <input formControlName="apiName" matInput />
+
+        <mat-error
+          *ngIf="this.menuForm.controls['apiName'].hasError('required')"
+        >
+          Nombre de API es <strong>requerido</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="col-6">
+      <div *ngIf="this.menuForm.controls['apiName'].value != ''">
+        Ejemplo:
+        <ul>
+          <li>
+            <span style="font-weight: bold">
+              api/v1/{{ this.menuForm.controls["apiName"].value }}</span
+            >
+          </li>
+          <li>
+            <span style="font-weight: bold">
+              api/v1/{{ this.menuForm.controls["apiName"].value }}/id</span
+            >
+          </li>
+          <li>
+            <span style="font-weight: bold">
+              api/v1/{{ this.menuForm.controls["apiName"].value }}/page</span
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer mb-2 d-flex justify-content-start">
+    <button
+      [disabled]="this.menuForm.invalid"
+      class="mr-2"
+      mat-flat-button
+      color="accent"
+      (click)="update()"
+    >
+      {{ updating ? "Actualizar" : "Crear" }}
+    </button>
+    <button mat-flat-button color="primary" (click)="dialogRef.close()">
+      Cancelar
+    </button>
+  </div>
+</form>

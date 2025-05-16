@@ -1,0 +1,42 @@
+
+<h3>Contenido del modal</h3>
+
+<p> {{ data.title }}</p>
+
+
+
+<div *ngIf="!data.footer" class="modal-footer dialog-footer d-flex w-100 mat-typography" >
+  <mat-dialog-actions class="centrado_horizontal">
+    <button type="button" (click)="closeModal()"
+    color="warn"
+    class="text-uppercase"
+      data-toggle="tooltip"
+      data-placement="top"
+    mat-raised-button>Cerrar</button>
+    <button type="button"
+    style="margin-top: 15px"
+    mat-raised-button
+    color="primary"
+    class="text-uppercase"
+      data-toggle="tooltip"
+      data-placement="top"
+      (click)="closeModal()"
+      >
+      {{ data.botonAceptar }}</button>
+
+      <button type="button"
+      style="margin-top: 15px"
+      mat-raised-button
+      color="accent"
+      class="text-uppercase"
+        data-toggle="tooltip"
+        data-placement="top"
+        (click)="closeModal()"
+        >
+        <mat-icon>cloud_upload</mat-icon>
+        Adjuntar Archivos</button>
+
+  </mat-dialog-actions>
+</div>
+
+

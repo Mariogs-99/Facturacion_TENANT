@@ -1,0 +1,11 @@
+<div class="card-header card-header-gob d-flex justify-content-between">
+  <div>
+    <h4 class="card-title" style="font-weight: 450;">{{ title }}</h4>
+    <p class="card-category">{{ subtitle }}</p>
+  </div>
+
+  <button [hidden]="button" mat-raised-button [color]="buttonColor" style="border-radius: 20px" (click)="sendMessage()">
+    <mat-icon [hidden]="buttonIcon == null">{{ buttonIcon }}</mat-icon>
+    {{ buttonLabel }}
+  </button>
+</div>

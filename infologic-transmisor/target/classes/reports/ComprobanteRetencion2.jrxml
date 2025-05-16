@@ -1,0 +1,1104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ComprobanteRetencion" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="651b5476-12ab-413f-869b-2f8f1d1dfad1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JsonFileCR"/>
+	<subDataset name="identificacion" uuid="66763242-e5ca-4efb-982e-dcbff5c57337">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JsonFileCR"/>
+		<parameter name="SELLO_RECEPCION" class="java.lang.String"/>
+		<queryString language="json">
+			<![CDATA[identificacion]]>
+		</queryString>
+		<field name="version" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="version"/>
+			<fieldDescription><![CDATA[version]]></fieldDescription>
+		</field>
+		<field name="ambiente" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="ambiente"/>
+			<fieldDescription><![CDATA[ambiente]]></fieldDescription>
+		</field>
+		<field name="tipoDte" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoDte"/>
+			<fieldDescription><![CDATA[tipoDte]]></fieldDescription>
+		</field>
+		<field name="numeroControl" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="numeroControl"/>
+			<fieldDescription><![CDATA[numeroControl]]></fieldDescription>
+		</field>
+		<field name="codigoGeneracion" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="codigoGeneracion"/>
+			<fieldDescription><![CDATA[codigoGeneracion]]></fieldDescription>
+		</field>
+		<field name="tipoModelo" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoModelo"/>
+			<fieldDescription><![CDATA[tipoModelo]]></fieldDescription>
+		</field>
+		<field name="tipoOperacion" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoOperacion"/>
+			<fieldDescription><![CDATA[tipoOperacion]]></fieldDescription>
+		</field>
+		<field name="tipoContingencia" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoContingencia"/>
+			<fieldDescription><![CDATA[tipoContingencia]]></fieldDescription>
+		</field>
+		<field name="motivoContin" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="motivoContin"/>
+			<fieldDescription><![CDATA[motivoContin]]></fieldDescription>
+		</field>
+		<field name="fecEmi" class="java.sql.Date">
+			<property name="net.sf.jasperreports.json.field.expression" value="fecEmi"/>
+			<fieldDescription><![CDATA[fecEmi]]></fieldDescription>
+		</field>
+		<field name="horEmi" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="horEmi"/>
+			<fieldDescription><![CDATA[horEmi]]></fieldDescription>
+		</field>
+		<field name="tipoMoneda" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoMoneda"/>
+			<fieldDescription><![CDATA[tipoMoneda]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="receptor" uuid="b42143a3-4945-47bb-b46c-e0be14606bf5">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JsonFileCR"/>
+		<parameter name="JSON_DATA" class="java.lang.String"/>
+		<parameter name="DIRECCION" class="java.lang.String"/>
+		<queryString language="json">
+			<![CDATA[receptor]]>
+		</queryString>
+		<field name="tipoDocumento" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoDocumento"/>
+			<fieldDescription><![CDATA[tipoDocumento]]></fieldDescription>
+		</field>
+		<field name="numDocumento" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="numDocumento"/>
+			<fieldDescription><![CDATA[numDocumento]]></fieldDescription>
+		</field>
+		<field name="nrc" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="nrc"/>
+			<fieldDescription><![CDATA[nrc]]></fieldDescription>
+		</field>
+		<field name="nombre" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="nombre"/>
+			<fieldDescription><![CDATA[nombre]]></fieldDescription>
+		</field>
+		<field name="codActividad" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="codActividad"/>
+			<fieldDescription><![CDATA[codActividad]]></fieldDescription>
+		</field>
+		<field name="descActividad" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="descActividad"/>
+			<fieldDescription><![CDATA[descActividad]]></fieldDescription>
+		</field>
+		<field name="nombreComercial" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="nombreComercial"/>
+			<fieldDescription><![CDATA[nombreComercial]]></fieldDescription>
+		</field>
+		<field name="direccion" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="direccion.complemento"/>
+			<fieldDescription><![CDATA[direccion]]></fieldDescription>
+		</field>
+		<field name="telefono" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="telefono"/>
+			<fieldDescription><![CDATA[telefono]]></fieldDescription>
+		</field>
+		<field name="correo" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="correo"/>
+			<fieldDescription><![CDATA[correo]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="cuerpoDocumento" uuid="7a4b9b3d-7696-4d53-88a6-e8d441162628">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JsonFileCR"/>
+		<queryString language="json">
+			<![CDATA[cuerpoDocumento]]>
+		</queryString>
+		<field name="numItem" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="numItem"/>
+			<fieldDescription><![CDATA[numItem]]></fieldDescription>
+		</field>
+		<field name="tipoDte" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoDte"/>
+			<fieldDescription><![CDATA[tipoDte]]></fieldDescription>
+		</field>
+		<field name="tipoDoc" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoDoc"/>
+			<fieldDescription><![CDATA[tipoDoc]]></fieldDescription>
+		</field>
+		<field name="numDocumento" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="numDocumento"/>
+			<fieldDescription><![CDATA[numDocumento]]></fieldDescription>
+		</field>
+		<field name="fechaEmision" class="java.sql.Date">
+			<property name="net.sf.jasperreports.json.field.expression" value="fechaEmision"/>
+			<fieldDescription><![CDATA[fechaEmision]]></fieldDescription>
+		</field>
+		<field name="montoSujetoGrav" class="java.math.BigDecimal">
+			<property name="net.sf.jasperreports.json.field.expression" value="montoSujetoGrav"/>
+			<fieldDescription><![CDATA[montoSujetoGrav]]></fieldDescription>
+		</field>
+		<field name="codigoRetencionMH" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="codigoRetencionMH"/>
+			<fieldDescription><![CDATA[codigoRetencionMH]]></fieldDescription>
+		</field>
+		<field name="ivaRetenido" class="java.math.BigDecimal">
+			<property name="net.sf.jasperreports.json.field.expression" value="ivaRetenido"/>
+			<fieldDescription><![CDATA[ivaRetenido]]></fieldDescription>
+		</field>
+		<field name="descripcion" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="descripcion"/>
+			<fieldDescription><![CDATA[descripcion]]></fieldDescription>
+		</field>
+		<sortField name="numItem"/>
+	</subDataset>
+	<subDataset name="resumen" uuid="312e88aa-cbc0-4689-a3fe-583ae0401b89">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JsonFileCR"/>
+		<parameter name="ESTA_ANULADO" class="java.lang.Boolean"/>
+		<parameter name="TOTAL_LETRAS" class="java.lang.String"/>
+		<parameter name="NOTA" class="java.lang.String"/>
+		<queryString language="json">
+			<![CDATA[resumen]]>
+		</queryString>
+		<field name="totalSujetoRetencion" class="java.math.BigDecimal">
+			<property name="net.sf.jasperreports.json.field.expression" value="totalSujetoRetencion"/>
+			<fieldDescription><![CDATA[totalSujetoRetencion]]></fieldDescription>
+		</field>
+		<field name="totalIVAretenido" class="java.math.BigDecimal">
+			<property name="net.sf.jasperreports.json.field.expression" value="totalIVAretenido"/>
+			<fieldDescription><![CDATA[totalIVAretenido]]></fieldDescription>
+		</field>
+		<field name="totalIVAretenidoLetras" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="totalIVAretenidoLetras"/>
+			<fieldDescription><![CDATA[totalIVAretenidoLetras]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="emisor" uuid="bf6e1004-43e0-4dd7-8251-e28f43c495ba">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="JsonFileCCF"/>
+		<parameter name="DIRECCION_EMISOR" class="java.lang.String"/>
+		<queryString language="json">
+			<![CDATA[emisor]]>
+		</queryString>
+		<field name="codActividad" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="codActividad"/>
+			<fieldDescription><![CDATA[codActividad]]></fieldDescription>
+		</field>
+		<field name="codEstable" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="codEstable"/>
+			<fieldDescription><![CDATA[codEstable]]></fieldDescription>
+		</field>
+		<field name="codEstableMH" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="codEstableMH"/>
+			<fieldDescription><![CDATA[codEstableMH]]></fieldDescription>
+		</field>
+		<field name="codPuntoVenta" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="codPuntoVenta"/>
+			<fieldDescription><![CDATA[codPuntoVenta]]></fieldDescription>
+		</field>
+		<field name="codPuntoVentaMH" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="codPuntoVentaMH"/>
+			<fieldDescription><![CDATA[codPuntoVentaMH]]></fieldDescription>
+		</field>
+		<field name="correo" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="correo"/>
+			<fieldDescription><![CDATA[correo]]></fieldDescription>
+		</field>
+		<field name="descActividad" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="descActividad"/>
+			<fieldDescription><![CDATA[descActividad]]></fieldDescription>
+		</field>
+		<field name="direccion" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="direccion.complemento"/>
+			<fieldDescription><![CDATA[direccion]]></fieldDescription>
+		</field>
+		<field name="nit" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="nit"/>
+			<fieldDescription><![CDATA[nit]]></fieldDescription>
+		</field>
+		<field name="nombre" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="nombre"/>
+			<fieldDescription><![CDATA[nombre]]></fieldDescription>
+		</field>
+		<field name="nombreComercial" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="nombreComercial"/>
+			<fieldDescription><![CDATA[nombreComercial]]></fieldDescription>
+		</field>
+		<field name="nrc" class="java.lang.String">
+			<property name="net.sf.jasperreports.json.field.expression" value="nrc"/>
+			<fieldDescription><![CDATA[nrc]]></fieldDescription>
+		</field>
+		<field name="telefono" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="telefono"/>
+			<fieldDescription><![CDATA[telefono]]></fieldDescription>
+		</field>
+		<field name="tipoEstablecimiento" class="java.lang.Integer">
+			<property name="net.sf.jasperreports.json.field.expression" value="tipoEstablecimiento"/>
+			<fieldDescription><![CDATA[tipoEstablecimiento]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="direccion" uuid="55ac900f-d284-46b1-8b88-6c45ac9397f5">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<parameter name="JSON_DATA" class="java.lang.String"/>
+		<queryString language="JSON">
+			<![CDATA[direccion]]>
+		</queryString>
+		<field name="complemento" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="JSON_DATA" class="java.lang.String"/>
+	<parameter name="URL_DTE" class="java.lang.String"/>
+	<parameter name="ESTA_ANULADO" class="java.lang.Boolean"/>
+	<parameter name="LOGO" class="java.io.InputStream"/>
+	<parameter name="FONDO" class="java.io.InputStream"/>
+	<parameter name="SELLO_RECEPCION" class="java.lang.String"/>
+	<parameter name="CONDICION_PAGO" class="java.lang.String"/>
+	<parameter name="TOTAL_LETRAS" class="java.lang.String"/>
+	<parameter name="NOTA" class="java.lang.String"/>
+	<parameter name="DIRECCION" class="java.lang.String"/>
+	<parameter name="DIRECCION_EMISOR" class="java.lang.String"/>
+	<queryString language="json">
+		<![CDATA[emisor]]>
+	</queryString>
+	<field name="nit" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="nit"/>
+		<fieldDescription><![CDATA[nit]]></fieldDescription>
+	</field>
+	<field name="nrc" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="nrc"/>
+		<fieldDescription><![CDATA[nrc]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="nombre"/>
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="codActividad" class="java.lang.Integer">
+		<property name="net.sf.jasperreports.json.field.expression" value="codActividad"/>
+		<fieldDescription><![CDATA[codActividad]]></fieldDescription>
+	</field>
+	<field name="descActividad" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="descActividad"/>
+		<fieldDescription><![CDATA[descActividad]]></fieldDescription>
+	</field>
+	<field name="nombreComercial" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="nombreComercial"/>
+		<fieldDescription><![CDATA[nombreComercial]]></fieldDescription>
+	</field>
+	<field name="tipoEstablecimiento" class="java.lang.Integer">
+		<property name="net.sf.jasperreports.json.field.expression" value="tipoEstablecimiento"/>
+		<fieldDescription><![CDATA[tipoEstablecimiento]]></fieldDescription>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="direccion.complemento"/>
+		<fieldDescription><![CDATA[direccion]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.Integer">
+		<property name="net.sf.jasperreports.json.field.expression" value="telefono"/>
+		<fieldDescription><![CDATA[telefono]]></fieldDescription>
+	</field>
+	<field name="codigoMH" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="codigoMH"/>
+		<fieldDescription><![CDATA[codigoMH]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="codigo"/>
+		<fieldDescription><![CDATA[codigo]]></fieldDescription>
+	</field>
+	<field name="puntoVentaMH" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="puntoVentaMH"/>
+		<fieldDescription><![CDATA[puntoVentaMH]]></fieldDescription>
+	</field>
+	<field name="puntoVenta" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="puntoVenta"/>
+		<fieldDescription><![CDATA[puntoVenta]]></fieldDescription>
+	</field>
+	<field name="correo" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="correo"/>
+		<fieldDescription><![CDATA[correo]]></fieldDescription>
+	</field>
+	<background>
+		<band height="800" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="20" y="0" width="552" height="800" uuid="e48a8145-b27a-404a-a06e-c0cfb709e006"/>
+				<imageExpression><![CDATA[$P{FONDO}]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="180" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="140" y="15" width="240" height="15" uuid="1d8a6357-bf79-41fa-94e8-e35fa497a869">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMPROBANTE DE RETENCIÓN]]></text>
+			</staticText>
+			<image onErrorType="Blank">
+				<reportElement mode="Transparent" x="0" y="0" width="140" height="40" backcolor="#E6E6E6" uuid="89f896f9-0ee5-4527-bd8e-6ff8808b5587"/>
+				<imageExpression><![CDATA[$P{LOGO}]]></imageExpression>
+			</image>
+			<textField hyperlinkType="Reference">
+				<reportElement x="2" y="40" width="138" height="20" uuid="f1af75c0-2d0a-481e-8b7a-2e59d12d7908"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["www.informaticaylogistica.com"]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA["www.informaticaylogistica.com"]]></hyperlinkReferenceExpression>
+			</textField>
+			<componentElement>
+				<reportElement mode="Transparent" x="1" y="60" width="209" height="90" uuid="23b2baef-2d5e-4497-ac23-8e4a36d24799"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="identificacion" uuid="8383266f-84d4-4c19-b022-8e76e9c2862a">
+						<datasetParameter name="SELLO_RECEPCION">
+							<datasetParameterExpression><![CDATA[$P{SELLO_RECEPCION}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource(new java.io.ByteArrayInputStream($P{JSON_DATA}.getBytes("UTF-8")), "identificacion")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="90" width="209">
+						<textField>
+							<reportElement x="0" y="15" width="209" height="15" uuid="3833563e-8424-48d7-9989-f0ff95646fcc">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{codigoGeneracion}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="45" width="209" height="15" uuid="1cc78236-4988-49bd-b957-047d27d38d2a">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{numeroControl}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="0" y="0" width="209" height="15" uuid="22f7b9d2-a6d7-4361-80b3-5db9291841c5">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Bottom">
+								<font fontName="SansSerif" size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[CODIGO DE GENERACIÓN:]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="0" y="30" width="209" height="15" uuid="3512ab94-163c-4fbc-86c8-7da5a84bf02d">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Bottom">
+								<font fontName="SansSerif" size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[NÚMERO DE CONTROL]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="0" y="60" width="209" height="15" uuid="ee7b29e7-9364-4755-9d95-dd7be0b9b391">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Bottom">
+								<font fontName="SansSerif" size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[SELLO DE RECEPCIÓN]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="0" y="75" width="209" height="15" uuid="3587d231-6960-4cec-b598-571d28feecc0">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$P{SELLO_RECEPCION}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement mode="Transparent" x="210" y="111" width="200" height="69" uuid="31af836d-9ebf-4e3f-9c21-a20fd55db167">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="identificacion" uuid="0c3b986a-4d21-4d6a-815d-fca3ca471bd3">
+						<datasetParameter name="SELLO_RECEPCION">
+							<datasetParameterExpression><![CDATA[$P{SELLO_RECEPCION}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource(new java.io.ByteArrayInputStream($P{JSON_DATA}.getBytes("UTF-8")), "identificacion")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="69" width="200">
+						<componentElement>
+							<reportElement x="0" y="0" width="60" height="50" uuid="f44ce104-c5f4-46c2-9dfb-7ddc01dd8bc0"/>
+							<jr:QRCode>
+								<jr:codeExpression><![CDATA[$F{codigoGeneracion}]]></jr:codeExpression>
+							</jr:QRCode>
+						</componentElement>
+						<staticText>
+							<reportElement x="0" y="49" width="59" height="20" uuid="f9477614-af5f-4078-b46a-7bf8489fdd73"/>
+							<textElement textAlignment="Center">
+								<font size="6"/>
+							</textElement>
+							<text><![CDATA[CODIGO DE GENERACIÓN]]></text>
+						</staticText>
+						<componentElement>
+							<reportElement x="70" y="0" width="60" height="50" uuid="7d4c5edf-0dd0-447c-a207-9a39b5e2ceb2">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<jr:QRCode>
+								<jr:codeExpression><![CDATA[$F{numeroControl}]]></jr:codeExpression>
+							</jr:QRCode>
+						</componentElement>
+						<componentElement>
+							<reportElement x="140" y="0" width="59" height="49" uuid="0cc83b72-6e81-4817-b9bc-c1fb67194d3e">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<jr:QRCode>
+								<jr:codeExpression><![CDATA[$P{SELLO_RECEPCION}]]></jr:codeExpression>
+							</jr:QRCode>
+						</componentElement>
+						<staticText>
+							<reportElement x="70" y="50" width="58" height="18" uuid="8b8f41e9-6369-4852-9b28-73681ea82369"/>
+							<textElement textAlignment="Center">
+								<font size="6"/>
+							</textElement>
+							<text><![CDATA[NÚMERO DE CONTROL]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="145" y="49" width="52" height="20" uuid="5020b720-ad85-4587-8a3b-420fa3a410a9"/>
+							<textElement textAlignment="Center">
+								<font size="6"/>
+							</textElement>
+							<text><![CDATA[SELLO DE RECEPCIÓN]]></text>
+						</staticText>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="223" y="32" width="89" height="79" uuid="331d6fc6-4941-477f-a25f-2fe463ebe7d4"/>
+				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:codeExpression><![CDATA[$P{URL_DTE}]]></jr:codeExpression>
+				</jr:QRCode>
+			</componentElement>
+			<componentElement>
+				<reportElement mode="Transparent" x="380" y="31" width="175" height="60" uuid="2e08871b-bb39-46b3-a54e-45405f62f6f3"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="identificacion" uuid="10d2240e-5dc8-4cc5-a4ca-0b1a5300b765">
+						<datasetParameter name="SELLO_RECEPCION">
+							<datasetParameterExpression><![CDATA[$P{SELLO_RECEPCION}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource(new java.io.ByteArrayInputStream($P{JSON_DATA}.getBytes("UTF-8")), "identificacion")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="60" width="175">
+						<textField pattern="dd/MM/yyyy">
+							<reportElement x="0" y="45" width="80" height="15" uuid="3f67da7b-cc28-4eb8-a503-7a57868d2da2">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{fecEmi}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="0" y="30" width="174" height="15" uuid="806e82a4-b819-4065-9896-b9bac93f5570">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Bottom">
+								<font fontName="SansSerif" size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[FECHA Y HORA DE GENERACIÓN]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="0" y="0" width="174" height="15" uuid="efa47765-a5f0-467b-8311-9defb7500194">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Bottom">
+								<font fontName="SansSerif" size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[TIPO DE OPERACIÓN]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="0" y="15" width="174" height="15" uuid="43ca43eb-8250-47d3-8158-4b5a8ff539c5">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{tipoOperacion} == 1 ? "Normal" : "Contingencia"]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="80" y="45" width="80" height="15" uuid="866ac2b0-5c92-4cdd-bcee-9bda0bfc7974">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{horEmi}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="160" y="0" width="220" height="15" uuid="8f9c8eca-bef2-41cc-8fa7-3212bd2ab5be">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOCUMENTO TRIBUTARIO ELECTRÓNICO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="135" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="320" y="0" width="235" height="15" uuid="deb9d0c1-4a50-4d49-89ed-e4ac7247f622">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUJETO DE RETENCIÓN(RECEPTOR)]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="320" y="15" width="234" height="120" uuid="ae6bd53f-5c74-4783-b12d-4e6bc6c1e784"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="receptor" uuid="0338be0e-84b3-4a49-826e-f7686de1d5e9">
+						<datasetParameter name="JSON_DATA">
+							<datasetParameterExpression><![CDATA[$P{JSON_DATA}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="DIRECCION">
+							<datasetParameterExpression><![CDATA[$P{DIRECCION}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource(new java.io.ByteArrayInputStream($P{JSON_DATA}.getBytes("UTF-8")), "receptor")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="120" width="234">
+						<textField textAdjust="StretchHeight">
+							<reportElement positionType="Float" x="0" y="30" width="234" height="15" uuid="e3fda254-a0c2-4fe6-86f9-51aaff0a5608">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["ACTIVIDAD: "+$F{descActividad}.toUpperCase()]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight">
+							<reportElement positionType="Float" x="0" y="105" width="234" height="15" uuid="17779922-4349-44ac-9424-a29fee67286a">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{correo}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="15" width="130" height="15" uuid="a53d91c3-e6c9-4770-9d08-040bf50fa4f6">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["DUI/NIT: " + $F{numDocumento}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="0" width="234" height="15" uuid="20429b47-3ee8-435a-8efc-3b30a976688d">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{nombre}.toUpperCase()]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="130" y="15" width="104" height="15" uuid="7bab3f39-f5e3-4dd0-bb59-2c9672232f27">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["NRC: " + ($F{nrc} != null ? $F{nrc} : "")]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight">
+							<reportElement positionType="Float" x="0" y="75" width="120" height="15" uuid="ea12d326-f784-4dd5-b71c-ed5b309bdfd8">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["TEL:" +$F{telefono}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement positionType="Float" x="0" y="90" width="50" height="15" uuid="9616a90d-e799-4b36-90fd-9a861a607a62">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Correo:]]></text>
+						</staticText>
+						<componentElement>
+							<reportElement positionType="Float" x="0" y="45" width="234" height="15" uuid="88414dd8-8889-4763-b871-ad41edd6ae3d"/>
+							<jr:list printOrder="Vertical">
+								<datasetRun subDataset="direccion" uuid="cb314565-b77c-4bd6-a03f-191c96f6175f">
+									<datasetParameter name="JSON_DATA">
+										<datasetParameterExpression><![CDATA[$P{JSON_DATA}]]></datasetParameterExpression>
+									</datasetParameter>
+									<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource(new java.io.ByteArrayInputStream($P{JSON_DATA}.getBytes("UTF-8")), "receptor.direccion")]]></dataSourceExpression>
+								</datasetRun>
+								<jr:listContents height="15" width="234">
+									<textField textAdjust="StretchHeight">
+										<reportElement x="0" y="0" width="234" height="15" uuid="adb3528d-1ab0-498d-ad82-071978892786">
+											<property name="com.jaspersoft.studio.unit.height" value="px"/>
+										</reportElement>
+										<textElement textAlignment="Left" verticalAlignment="Middle">
+											<font size="8"/>
+										</textElement>
+										<textFieldExpression><![CDATA[$F{complemento}]]></textFieldExpression>
+									</textField>
+								</jr:listContents>
+							</jr:list>
+						</componentElement>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="60" width="234" height="15" uuid="35b215ac-84b5-4e52-acbb-1b1138aa1f9c">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement>
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$P{DIRECCION}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="0" y="0" width="240" height="15" uuid="60c68d33-026d-406c-bfaa-414db112207d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AGENTE DE RETENCIÓN]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="15" width="240" height="120" uuid="22b60273-cca9-45de-ad92-d102ceaba66a"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="emisor" uuid="bd3b0f0a-a283-43e0-9302-71170de074f5">
+						<datasetParameter name="DIRECCION_EMISOR">
+							<datasetParameterExpression><![CDATA[$P{DIRECCION_EMISOR}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource(new java.io.ByteArrayInputStream($P{JSON_DATA}.getBytes("UTF-8")), "emisor")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="120" width="240">
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="1" y="30" width="239" height="15" uuid="0e654238-9ee0-40a2-ac42-f5abe51db4f4">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8" isBold="false"/>
+							</textElement>
+							<textFieldExpression><![CDATA["ACTIVIDAD: " + $F{descActividad}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="45" width="240" height="15" uuid="8e5d2d82-a093-4d8d-afc6-8181f46f4138">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box leftPadding="1"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{direccion}.toUpperCase()]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="0" width="220" height="15" uuid="a08468b9-f314-47dc-92eb-d09a6b053074">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{nombre}.toUpperCase()]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="15" width="120" height="15" uuid="feee02c1-a489-4b95-95b1-723de78d4102">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box leftPadding="1"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["NIT: " + $F{nit}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="120" y="15" width="90" height="15" uuid="b0bd4b50-665b-42fe-a850-7705a2608028">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box leftPadding="1"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["NRC: " + $F{nrc}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="75" width="220" height="15" uuid="2c27686b-19e1-48f3-aa20-f53ee4073b47">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box leftPadding="1"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["TEL: " + $F{telefono}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="90" width="220" height="15" uuid="987b9ba8-d36c-4f9e-b192-5b7d8271c4ba">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box leftPadding="1"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["CORREO ELECTRÓNICO: " + $F{correo}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="60" width="240" height="15" uuid="55689fe2-62cd-48c3-a219-cf0f088cbf04">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box leftPadding="1"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$P{DIRECCION_EMISOR}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement mode="Opaque" x="415" y="20" width="90" height="30" forecolor="#FFFFFF" backcolor="#3C4557" uuid="9d1fcd01-a323-48e5-b6d1-2b3f23871816">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO SUJETO A RETENCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="100" y="20" width="315" height="30" forecolor="#FFFFFF" backcolor="#3C4557" uuid="9a8230d1-9024-40c5-837f-384bbf58e9a5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="20" width="30" height="30" forecolor="#FFFFFF" backcolor="#3C4557" uuid="db181765-b7f2-4a36-8859-345ccec999dd">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="30" y="20" width="70" height="30" forecolor="#FFFFFF" backcolor="#3C4557" uuid="be6b00c5-14ce-4e89-bccf-3a571f53e858">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA DOC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="505" y="20" width="50" height="30" forecolor="#FFFFFF" backcolor="#3C4557" uuid="10fb5db6-5447-450a-8eb8-54166bdf118a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA RETENIDO]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="96" y="0" width="235" height="20" uuid="51bc384d-60e9-4504-9e6c-e5bf66b1dc5c"/>
+				<box rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{CONDICION_PAGO}.equalsIgnoreCase( "1" ) ? "CONTADO" : "CRÉDITO"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="105" height="20" uuid="55ff025e-b65f-4066-a172-4069bebf19e6">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONDICION DE PAGO:]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<componentElement>
+				<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="554" height="30" uuid="150ebf22-5196-47d6-95f8-e49858c77dd3"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="cuerpoDocumento" uuid="76e30668-48a8-4ee0-9bf1-0eb7ab933159">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource(new java.io.ByteArrayInputStream($P{JSON_DATA}.getBytes("UTF-8")), "cuerpoDocumento")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="554">
+						<textField>
+							<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="0" width="30" height="30" uuid="3ddbe040-c4f2-4c4e-9af5-097c882bd54d">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<textElement>
+								<font size="8"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{numItem}]]></textFieldExpression>
+						</textField>
+						<textField pattern="$#,##0.00">
+							<reportElement positionType="Float" stretchType="ContainerHeight" x="504" y="0" width="50" height="30" uuid="384792ee-5230-4268-89c4-e192b8f1ae33">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<textElement textAlignment="Right">
+								<font size="8"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ivaRetenido}]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="StretchHeight">
+							<reportElement positionType="Float" stretchType="ElementGroupHeight" x="100" y="0" width="314" height="30" uuid="06041cba-9b08-4abf-aa82-1a512b3faaf4">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<textElement>
+								<font size="8"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{descripcion}.toUpperCase()]]></textFieldExpression>
+						</textField>
+						<textField pattern="$#,##0.00">
+							<reportElement positionType="Float" stretchType="ContainerHeight" x="414" y="0" width="90" height="30" uuid="76d8dbf3-ec17-44fa-9269-8a6123b13817">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.25"/>
+								<leftPen lineWidth="0.25"/>
+								<bottomPen lineWidth="0.25"/>
+								<rightPen lineWidth="0.25"/>
+							</box>
+							<textElement textAlignment="Right">
+								<font size="8"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{montoSujetoGrav}]]></textFieldExpression>
+						</textField>
+						<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+							<reportElement x="30" y="0" width="70" height="30" uuid="6aca7192-1289-4353-8bbb-3f053cfe1a61"/>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{fechaEmision}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+		<band height="290">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<componentElement>
+				<reportElement x="0" y="0" width="554" height="150" uuid="4a5758e6-e5b2-40c1-b36b-671c83517149"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="resumen" uuid="3ee0a32d-ae11-4d8c-be0c-a5ed8e042eb7">
+						<datasetParameter name="ESTA_ANULADO">
+							<datasetParameterExpression><![CDATA[$P{ESTA_ANULADO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="TOTAL_LETRAS">
+							<datasetParameterExpression><![CDATA[$P{TOTAL_LETRAS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="NOTA">
+							<datasetParameterExpression><![CDATA[$P{NOTA}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JsonDataSource(new java.io.ByteArrayInputStream($P{JSON_DATA}.getBytes("UTF-8")), "resumen")]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="150" width="554">
+						<textField pattern="$#,##0.00">
+							<reportElement x="449" y="0" width="105" height="20" uuid="c33c4d74-0391-46dc-be48-0503cf132547">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.25"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{totalSujetoRetencion}]]></textFieldExpression>
+						</textField>
+						<textField pattern="$#,##0.00">
+							<reportElement x="449" y="20" width="105" height="20" uuid="6fb36e0e-9526-41a9-bee4-56b3b2c9bdc7">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<box>
+								<pen lineWidth="0.25"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{totalIVAretenido}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement mode="Opaque" x="295" y="0" width="154" height="20" backcolor="rgba(62, 72, 92, 0.28235295)" uuid="834ef166-3082-4989-affa-ebd85ecd8991">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
+							<box rightPadding="2">
+								<pen lineWidth="0.25"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<text><![CDATA[MONTO SUJETO A RETENCION]]></text>
+						</staticText>
+						<staticText>
+							<reportElement mode="Opaque" x="295" y="20" width="154" height="20" backcolor="rgba(62, 72, 92, 0.28235295)" uuid="a655f54a-a988-487c-9b43-2d3a3a3921e3">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+							</reportElement>
+							<box rightPadding="2">
+								<pen lineWidth="0.25"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<text><![CDATA[IVA RETENIDO]]></text>
+						</staticText>
+						<staticText>
+							<reportElement x="0" y="80" width="340" height="49" forecolor="#E60D09" uuid="d421cbe2-f82a-45c8-b823-417835cd4b0a">
+								<printWhenExpression><![CDATA[$P{ESTA_ANULADO}]]></printWhenExpression>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+								<font size="22"/>
+							</textElement>
+							<text><![CDATA[DOCUMENTO ANULADO]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="0" y="0" width="295" height="20" uuid="e31d65b2-8b90-46bc-8ca5-bd9ab120f6a8">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="SansSerif" size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["SON " +$F{totalIVAretenidoLetras}.replace("$ ", "").toUpperCase() + " DOLARES"]]></textFieldExpression>
+						</textField>
+						<textField textAdjust="ScaleFont">
+							<reportElement positionType="Float" x="0" y="20" width="295" height="30" uuid="0bfb9aa9-9006-4b16-b43c-9d549c139f7a">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.firstLineIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingBefore" value="px"/>
+								<property name="com.jaspersoft.studio.unit.spacingAfter" value="px"/>
+								<printWhenExpression><![CDATA[$P{NOTA} != null && !$P{NOTA}.isEmpty()]]></printWhenExpression>
+							</reportElement>
+							<box>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Justified" verticalAlignment="Top">
+								<font fontName="SansSerif" size="8"/>
+								<paragraph firstLineIndent="2" leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
+							</textElement>
+							<textFieldExpression><![CDATA["OBSERVACIONES " + $P{NOTA}.toUpperCase()]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="48" splitType="Stretch">
+			<textField>
+				<reportElement x="416" y="18" width="84" height="30" uuid="c8eca151-335a-47e9-95db-c700aa2179e7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pág. " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="500" y="18" width="55" height="30" uuid="d61b108a-dda0-4c1d-a2be-def06f7ca075"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

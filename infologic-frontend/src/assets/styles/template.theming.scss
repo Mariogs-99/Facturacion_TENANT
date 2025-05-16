@@ -1,0 +1,599 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@import "./menu.component.scss";
+@mixin template-theme($theme) {
+  @include menu($theme);
+  $color-config: mat.get-color-config($theme);
+  $primary: map.get($color-config, "primary");
+  $accent: map.get($color-config, "accent");
+  $warn: map.get($color-config, "warn");
+  $background: map.get($color-config, "background");
+  $foreground: map.get($color-config, "foreground");
+  $is-dark-theme: map.get($color-config, is-dark);
+  $fill-background: mat.get-color-from-palette(
+    $foreground,
+    base,
+    if($is-dark-theme, 0.1, 0.04)
+  );
+  $underline-color: mat.get-color-from-palette(
+    $foreground,
+    divider,
+    if($is-dark-theme, 0.5, 0.42)
+  );
+  /*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+  .mat-mdc-raised-button .mat-button-wrapper > .mat-icon.fas,
+  .mat-mdc-raised-button .mat-button-wrapper > .mat-icon.far,
+  .mat-mdc-raised-button .mat-button-wrapper > .mat-icon.fa {
+    font-size: 24px;
+  }
+
+  /*TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.*/
+  .highlight .mat-select-value-text {
+    font-weight: 900;
+  }
+  .prueba {
+    background-color: red;
+  }
+  .main-container {
+    background-color: mat.get-color-from-palette($background, background);
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .tag {
+    display: inline-block;
+    background-color: mat.get-color-from-palette($accent);
+    color: mat.get-color-from-palette($accent, default-contrast);
+    border-radius: 5px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-weight: bold;
+  }
+  app-output {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+  }
+  .output-fill {
+    margin-bottom: 30px;
+    padding: 7px 15px;
+    height: 52px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom: solid 1px $underline-color;
+    background-color: $fill-background;
+  }
+  .output-fill .label {
+    font-size: 0.75rem;
+  }
+  .output-fill .value {
+    margin-top: -1px;
+    line-height: 1rem;
+  }
+  .mat-mdc-list.order-detail > .mat-mdc-list-item {
+    font-size: 0.9rem;
+    border: solid 1px mat.get-color-from-palette($foreground, divider);
+    margin-right: -1px;
+    margin-bottom: -1px;
+  }
+  /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+  .mat-mdc-list.order-detail .mat-mdc-list-item > .mat-list-item-content {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    cursor: pointer;
+  }
+  .mat-mdc-list.order-detail > .mat-mdc-list-item:nth-child(2n + 1) {
+    background-color: mat.get-color-from-palette($background, card);
+  }
+  .mat-mdc-list.order-detail > .mat-mdc-list-item:nth-child(2n) {
+    background-color: mat.get-color-from-palette($background, background);
+  }
+  .mat-mdc-selection-list.styled {
+    border: solid 1px mat.get-color-from-palette($foreground, divider);
+    border-radius: 5px;
+  }
+  .mat-mdc-selection-list.styled > .mat-mdc-list-item:nth-child(2n + 1) {
+    background-color: mat.get-color-from-palette($background, card);
+  }
+  .mat-mdc-selection-list.styled > .mat-mdc-list-item:nth-child(2n) {
+    background-color: mat.get-color-from-palette($background, background);
+  }
+  /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+  .mat-selection-list.styled > .mat-list-option[aria-selected="true"] {
+    background: mat.get-color-from-palette($background, selected-button);
+    color: mat.get-color-from-palette($foreground, text);
+  }
+  .mb-5 {
+    margin-bottom: 5px;
+  }
+  .separated-row {
+    padding-bottom: 5px;
+    border-bottom: solid 1px mat.get-color-from-palette($background, status-bar);
+  }
+  .mat-expansion-panel-header-description {
+    color: mat.get-color-from-palette($foreground, text);
+    opacity: 1 !important;
+  }
+  .tab-container {
+    background-color: mat.get-color-from-palette($background, status-bar);
+  }
+  /*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+  .mat-tab-label,
+  .mat-mdc-tab-link {
+    color: mat.get-color-from-palette($foreground, text);
+    opacity: 0.6 !important;
+  }
+  /*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+  .mat-mdc-tab-link.mat-tab-label-active {
+    /*color: mat.get-color-from-palette($primary) !important;*/
+    opacity: 1 !important;
+  }
+
+  .tab-bar {
+    background-color: mat.get-color-from-palette($background, card);
+  }
+  /*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
+  .tab-bar .mat-tab-link-container .mat-tab-list .mat-ink-bar {
+    height: 4px !important;
+  }
+  .tab-icon {
+    margin-right: 8px;
+  }
+  .grid-container {
+    padding: 10px;
+  }
+  .grid-container .item-container {
+    padding: 5px 5px;
+    width: 280px;
+    height: 100px;
+  }
+  .grid-container .item-container .mat-mdc-card {
+    height: 100%;
+    cursor: pointer;
+  }
+  .full-height-section {
+    height: 100%;
+    min-height: 100vh;
+  }
+  .full-width {
+    width: 100%;
+  }
+  .full-height {
+    height: 100%;
+  }
+  .right-aligned {
+    text-align: right;
+  }
+  /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+  .view-list .mat-list-text .mat-line {
+    font-size: 0.8rem !important;
+  }
+  /*TODO(mdc-migration): The following rule targets internal classes of list that may no longer apply for the MDC version.*/
+  .view-list .mat-list-text label.mat-line {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+  }
+  form .mat-mdc-form-field {
+    display: flex;
+    // margin-bottom: 10px;
+  }
+
+  table form .mat-mdc-form-field-flex {
+    height: 40px;
+  }
+
+  table form .mat-mdc-form-field-infix {
+    min-height: 0px !important;
+  }
+
+  table form .mat-mdc-form-field-icon-suffix {
+    margin-right: -8px !important;
+  }
+
+  table form .mat-mdc-form-field-focus-overlay {
+    background: transparent !important;
+  }
+
+  .theme-dark {
+    .order-modified {
+      background-color: #607d8b !important;
+    }
+    .login-container,
+    .register-container {
+      background-color: #424242 !important;
+      color: #fff !important;
+    }
+    .mat-toolbar.mat-primary {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cecece;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #fff;
+    }
+  }
+  .toolbar-select {
+    margin-left: 5px;
+    margin-top: -5px;
+    select {
+      padding-left: 5px;
+      padding-right: 5px;
+      border-radius: 5px;
+      height: 24px;
+      border-color: mat.get-color-from-palette($background, card) !important;
+      background-color: transparent;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      max-width: 170px;
+    }
+    select:focus {
+      outline: 1px solid transparent;
+      color: mat.get-color-from-palette($foreground, text);
+      background-color: mat.get-color-from-palette($background, card);
+    }
+  }
+  .overflow-auto-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+  }
+  .panel-group-wrapper {
+    .title {
+      background-color: mat.get-color-from-palette($background, card);
+    }
+  }
+  .login-container,
+  .register-container {
+    background-color: #fff;
+    color: #000;
+  }
+
+  .section.right {
+    color: #fff;
+    border-left-color: rgb(226, 232, 240);
+    background: linear-gradient(
+      -45deg,
+      #212529,
+      #3c4557,
+      #212529,
+      #3c4557,
+      #3c4557,
+      #212529,
+      #3c4557
+    );
+    background-size: 400% 400%;
+    -webkit-animation: gradient 40s ease infinite;
+    -moz-animation: gradient 40s ease infinite;
+    animation: gradient 40s ease infinite;
+  }
+  .section.left,
+  .section.right {
+    a {
+      font-weight: bold;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+    a:hover {
+      opacity: 1;
+    }
+    /*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+    a .mat-button-wrapper {
+      letter-spacing: 1px;
+    }
+  }
+  .layout-note {
+    border-radius: 10px;
+    font-size: 0.9rem;
+    padding: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: justify;
+  }
+  .wrapper {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    max-width: 80%;
+  }
+  .centered {
+    text-align: center !important;
+  }
+  .bold {
+    opacity: 0.95;
+  }
+  .float-right {
+    float: right;
+  }
+  .clearfix {
+    overflow: auto;
+  }
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .padding-20 {
+    padding: 20px;
+  }
+  .spinner-centered-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spinner:before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    margin-left: -10px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    border-top-color: #000000;
+    animation: spinner 0.8s linear infinite;
+  }
+  @keyframes spinner {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .spacer {
+    flex: 1 1 auto;
+  }
+  .full-width {
+    width: 100%;
+  }
+  .half-width {
+    width: 50%;
+  }
+  .float-right {
+    float: right;
+  }
+
+  .wrap-text {
+    white-space: normal;
+    word-wrap: break-word;
+    min-width: 150px;
+  }
+
+  .wrap-cell {
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 100px;
+  }
+  .white-snackbar {
+    background: #fff;
+    color: #000;
+  }
+  .green-snackbar {
+    background: #43a047;
+    color: white;
+  }
+  .red-snackbar {
+    background: #f44336;
+    color: white;
+  }
+
+  .layout-note {
+    border: solid 1px mat.get-color-from-palette($background, base);
+    color: mat.get-color-from-palette($foreground, text);
+    background-color: mat.get-color-from-palette($background, background);
+  }
+  .output-wrapper {
+    .output {
+      border: solid 1px #e0e0e0;
+    }
+    label {
+      color: mat.get-color-from-palette($foreground, text);
+      background-color: mat.get-color-from-palette($background, card);
+    }
+  }
+  table:not([multitemplatedatarows]) .mat-mdc-row.highlight:nth-child(odd),
+  table[multitemplatedatarows] .mat-mdc-row.highlight.index-odd {
+    background-color: mat.get-color-from-palette($background, app-bar);
+  }
+
+  table:not([multitemplatedatarows]) .mat-mdc-row.highlight:hover,
+  table[multitemplatedatarows] .mat-mdc-row.highlight:hover {
+    background-color: mat.get-color-from-palette($background, hover);
+    cursor: pointer;
+  }
+  .mat-mdc-row.highlight.expanded-row .mat-mdc-row.highlight.expanded-row {
+    background-color: mat.get-color-from-palette($primary) !important;
+    color: mat.get-color-from-palette($primary, default-contrast);
+  }
+
+  .mat-mdc-cell.centered,
+  .mat-mdc-header-cell.centered,
+  .footer-cell.centered {
+    text-align: center !important;
+    justify-content: center !important;
+  }
+  .mat-mdc-header-cell.centered .mat-sort-header-container {
+    justify-content: center !important;
+  }
+  .mat-mdc-list.styled {
+    border: solid 1px mat.get-color-from-palette($background, app-bar);
+  }
+  .mat-mdc-list.styled > .mat-mdc-list-item:nth-child(2n + 1) {
+    background-color: mat.get-color-from-palette($background, card);
+  }
+  .mat-mdc-list.styled > .mat-mdc-list-item:nth-child(2n) {
+    background-color: mat.get-color-from-palette($background, app-bar);
+  }
+  .warn {
+    font-weight: 400 !important;
+    color: mat.get-color-from-palette($warn) !important;
+  }
+  .mat-mdc-table .mat-mdc-row.selected {
+    background-color: if($is-dark-theme, #9c27b0, #c7e3a6) !important;
+    color: mat.get-color-from-palette($foreground, text) !important;
+  }
+
+  .crud-table-container {
+    overflow-x: auto;
+  }
+  .crud-table-container .mat-mdc-table {
+    border: solid 1px mat.get-color-from-palette($foreground, divider);
+  }
+  .crud-table-container .mat-column-actions {
+    max-width: 70px;
+    min-width: 70px;
+  }
+  .crud-table-container .mat-mdc-paginator {
+    border-left: solid 1px mat.get-color-from-palette($foreground, divider);
+    border-right: solid 1px mat.get-color-from-palette($foreground, divider);
+    border-bottom: solid 1px mat.get-color-from-palette($foreground, divider);
+  }
+  .crud-table-container .mat-mdc-table td {
+    border-right: solid 1px mat.get-color-from-palette($foreground, divider);
+    padding: 0px 10px !important;
+  }
+  .crud-table-container .mat-mdc-table th {
+    background-color: mat.get-color-from-palette($primary, tables);
+    border-right: solid 1px mat.get-color-from-palette($foreground, divider);
+    padding: 0px 10px !important;
+    color: mat.get-color-from-palette($primary, tables-text);
+  }
+  .crud-table-container .mat-mdc-table th .mat-sort-header-stem,
+  .crud-table-container .mat-mdc-table th .mat-sort-header-indicator {
+    color: mat.get-color-from-palette($primary, tables-text);
+  }
+
+  @media (max-width: 600px) {
+    .wrap-cell {
+      max-width: 100%;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-row:not(:last-of-type)
+      .mat-mdc-row:not(:last-of-type)
+      td:last-of-type {
+      border-bottom: 0.5rem solid
+        mat.get-color-from-palette($background, app-bar);
+    }
+    .mat-mdc-card .mat-mdc-table[matTableResponsive],
+    .mat-expansion-panel .mat-mdc-table[matTableResponsive] {
+      border: 0.5rem solid mat.get-color-from-palette($background, app-bar);
+    }
+    .mat-mdc-table[matTableResponsive] .mat-mdc-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      height: auto;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-header-row
+      th.mat-mdc-header-cell {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      padding: 1rem 0.5rem;
+      justify-content: space-around;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-header-row
+      th.mat-mdc-header-cell
+      > .mat-sort-header-container {
+      padding-left: 15px;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-header-row
+      th.mat-mdc-header-cell:not([mat-sort-header]),
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-header-row
+      th.mat-mdc-header-cell.mat-sort-header-disabled,
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-header-row
+      th.mat-mdc-header-cell.mat-column-actions {
+      display: none;
+    }
+    .mat-mdc-table[matTableResponsive] .mat-mdc-row .mat-mdc-row {
+      height: auto;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-row
+      td.mat-mdc-cell:not(.mat-column-actions) {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      padding: 0.5rem;
+      text-align: right;
+      word-break: break-word;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-row
+      td.mat-mdc-cell:not(.mat-column-actions)
+      > * {
+      grid-column: 2;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-row
+      td.mat-mdc-cell:not(.mat-column-actions):before {
+      content: attr(data-column-name);
+      text-align: left;
+      font-weight: bold;
+      min-width: 100px;
+    }
+    .mat-mdc-table[matTableResponsive] .mat-mdc-row td.mat-column-actions {
+      display: flex;
+      justify-content: center;
+      padding: 0 0.5rem;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-row
+      td.mat-column-actions
+      > button {
+      margin: 0.5rem 0;
+    }
+    .mat-mdc-table[matTableResponsive]
+      .mat-mdc-row:last-of-type
+      td:last-of-type {
+      border: none;
+    }
+    .crud-table-container .mat-column-actions,
+    .theme-dark .crud-table-container .mat-column-actions {
+      max-width: 100%;
+      min-width: 100%;
+    }
+  }
+  @media only screen and (min-width: 600px) {
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: mat.get-color-from-palette($primary);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: mat.get-color-from-palette($primary, 600);
+    }
+  }
+
+  .mat-mdc-tab-body-content {
+    height: 100% !important;
+    overflow: hidden !important;
+}
+}

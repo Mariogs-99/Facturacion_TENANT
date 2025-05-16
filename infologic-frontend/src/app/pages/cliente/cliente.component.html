@@ -1,0 +1,107 @@
+<!-- cliente.component.html -->
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <app-module-header
+            title="Gestión de Clientes"
+            subtitle=""
+            [usuarioActual]="usuarioActual"
+            [button]="permissionsArrUser.includes('Agregar')"
+            buttonLabel="Agregar"
+            buttonColor="accent"
+            buttonIcon="add"
+            (click)="agregarCliente()">
+          </app-module-header>
+          
+          <div class="card-body">
+
+            <div class="w-flex w-100 flex-row-reverse m-2">
+              <button
+                [hidden]="!permissionsArrUser.includes('cambiarclave')"
+                mat-raised-button
+                color="accent"
+                style="border-radius: 20px"
+                (click)="cambiarPassword()"
+              >
+                <mat-icon> cached </mat-icon>
+                Cambiar contraseñas
+              </button>
+            </div>
+            <div class="mat-elevation-z8 overflow-x-auto">
+              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 styled-table">
+
+                <!-- Nombre -->
+                <ng-container matColumnDef="nombreCliente">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">Nombre</th>
+                  <td mat-cell *matCellDef="let element">{{ element.nombreCliente }}</td>
+                </ng-container>
+
+                <!-- Tipo Documento -->
+                <ng-container matColumnDef="tipoDocumento">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">Tipo Documento</th>
+                  <td mat-cell *matCellDef="let element">{{ element.tipoDocumento }}</td>
+                </ng-container>
+
+                <!-- Número Documento -->
+                <ng-container matColumnDef="numeroDocumento">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">Número Documento</th>
+                  <td mat-cell *matCellDef="let element">{{ element.numeroDocumento }}</td>
+                </ng-container>
+
+                <!-- NIT -->
+                <ng-container matColumnDef="nitCustomer">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">NIT</th>
+                  <td mat-cell *matCellDef="let element">{{ element.nitCustomer }}</td>
+                </ng-container>
+
+                <!-- Teléfono -->
+                <ng-container matColumnDef="telefono">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">Teléfono</th>
+                  <td mat-cell *matCellDef="let element">{{ element.telefono }}</td>
+                </ng-container>
+
+                <!-- Email -->
+                <ng-container matColumnDef="emailCustomer">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">Email</th>
+                  <td mat-cell *matCellDef="let element">{{ element.emailCustomer }}</td>
+                </ng-container>
+
+                <!-- Estado Fiscal -->
+                <ng-container matColumnDef="estadoFiscal">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">Estado Fiscal</th>
+                  <td mat-cell *matCellDef="let element">{{ element.estadoFiscal }}</td>
+                </ng-container>
+
+                <!-- Acciones -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">Acciones</th>
+                  <td mat-cell *matCellDef="let element" class="actions">
+                    <button mat-icon-button color="accent" (click)="update(element)">
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="delete(element)">
+                      <i class="material-icons">delete</i>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </div>
+
+            <mat-paginator
+              class="mat-elevation-z8"
+              [length]="totalRecords"
+              [pageSize]="paginationSize"
+              [pageSizeOptions]="paginationSizeOptions"
+              (page)="paginate($event)">
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

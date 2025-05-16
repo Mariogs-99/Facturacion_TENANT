@@ -1,0 +1,213 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <app-module-header
+            title="Sucursales"
+            subtitle=""
+            buttonIcon="add"
+            buttonLabel="Agregar"
+            buttonColor="accent"
+            component="BranchComponent"
+            action="open"
+            [button]="!permissionsArr.includes('Agregar')"
+          ></app-module-header>
+
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-sm-10">
+                <mat-form-field class="w-100">
+                  <mat-label>Filtro</mat-label>
+                  <input
+                    matInput
+                    (keyup)="applyFilter($event)"
+                    placeholder=""
+                    #input
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-12 col-sm-2">
+                <div class="fab-container derecha mb-4" style="display: none">
+                  <button
+                    mat-fab
+                    color="primary"
+                    class="fab-toggler"
+                    matTooltip="Exportar Excel"
+                    matTooltipPosition="right"
+                  >
+                    <img
+                      alt="desc cnr fin recreativo"
+                      src="../../../assets/images/icon/excel.svg"
+                      height="25px"
+                      alt=""
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="mat-elevation-z8" style="width: 100%">
+              <div class="table-responsive">
+                <table
+                  #tableBranch
+                  mat-table
+                  [dataSource]="dataSource"
+                  (matSortChange)="announceSortChange($event)"
+                  matSort
+                  aria-label="informacion de sucursales ordenable"
+                >
+                  <ng-container matColumnDef="actions">
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      style="text-align: center"
+                    >
+                      Acciones
+                    </th>
+                    <td mat-cell *matCellDef="let element; let i = index">
+                      <button
+                        [hidden]="!permissionsArr.includes('Actualizar')"
+                        mat-icon-button
+                        (click)="editar(element)"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Editar"
+                      >
+                        <i class="material-icons" style="color: blue">create</i>
+                      </button>
+                      <button
+                        [hidden]="!permissionsArr.includes('Eliminar')"
+                        mat-icon-button
+                        (click)="eliminar(element, i)"
+                        data-toggle="tooltip"
+                        data-placement="top"
+                        title="Desactivar"
+                      >
+                        <i class="material-icons" style="color: darkgray"
+                          >block</i
+                        >
+                      </button>
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="nombre">
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      style="text-align: center"
+                      mat-sort-header
+                    >
+                      Nombre.
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ capitalizeWords(element.nombre) }}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="nombreCompany">
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      style="text-align: center"
+                      mat-sort-header
+                    >
+                      Empresa
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ capitalizeWords(element.nombreCompany) }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="misional">
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      style="text-align: center"
+                      mat-sort-header
+                    >
+                      Misional
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.misional  | uppercase  }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="codigoSucursal">
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      style="text-align: center"
+                      mat-sort-header
+                    >
+                      Código Punto de Vta.
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.codigoSucursal | uppercase }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="direccion">
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      style="text-align: center"
+                      mat-sort-header
+                    >
+                      Dirección
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ capitalizeWords(element.direccion) }}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="telefono">
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      style="text-align: center"
+                      mat-sort-header
+                    >
+                      Teléfono
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.telefono }}
+                    </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="email">
+                    <th
+                      mat-header-cell
+                      *matHeaderCellDef
+                      style="text-align: center"
+                      mat-sort-header
+                    >
+                      Correo
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                      {{ element.email | lowercase }}
+                    </td>
+                  </ng-container>
+
+                  <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="9999">
+                      No hay informaci&#0243;n que mostrar
+                    </td>
+                  </tr>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                  ></tr>
+                </table>
+              </div>
+              <mat-paginator
+                #branchPaginator
+                [pageSizeOptions]="[10, 25, 50, 100]"
+                showFirstLastButtons
+                aria-label="test 0"
+              >
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

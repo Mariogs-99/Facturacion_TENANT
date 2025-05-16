@@ -1,0 +1,107 @@
+<div class="d-flex w-100 flex-row-reverse">
+  <button
+    mat-fab
+    color="accent"
+    class="mt-2 mb-2 mr-2"
+    [matTooltip]="!hide ? 'Crear nuevo item' : 'Ocultar'"
+    [matTooltipPosition]="'left'"
+    [ngStyle]="{ transform: hide ? 'rotate(30deg)' : 'rotate(0deg)' }"
+    (click)="hide = !hide; updating = !updating; create()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+<app-manage-menu-items
+  [hidden]="!updating"
+  style="overflow-x: hidden"
+></app-manage-menu-items>
+
+<table
+  [hidden]="hide"
+  mat-table
+  [dataSource]="dataSource"
+  class="mat-elevation-z8"
+  aria-label="informacion de menu items ordenable"
+>
+  <!-- Name Column -->
+  <ng-container matColumnDef="nameMenuItems">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let element">{{ element.nameMenuItems }}</td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef>HTTP</th>
+    <td mat-cell *matCellDef="let element">
+      <div
+        style="
+          width: fit-content;
+          padding: 0 10px 0 10px;
+          border-radius: 8px;
+          color: aliceblue;
+        "
+        [ngStyle]="{
+          'background-color':
+            element.type == 'GET'
+              ? 'rgb(101 205 144)'
+              : element.type == 'POST'
+              ? 'rgb(230 206 116)'
+              : element.type == 'PUT'
+              ? 'rgb(101 147 205)'
+              : 'rgb(221 140 129)'
+        }"
+      >
+        {{ element.type }}
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="uriMenuItems">
+    <th mat-header-cell *matHeaderCellDef>URI</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.uriMenuItems }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let element; let i = index">
+      <button
+        mat-icon-button
+        (click)="update(element, i)"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Editar"
+        color="accent"
+      >
+        <i class="material-icons">create</i>
+      </button>
+      <button
+        mat-icon-button
+        (click)="delete(element, i)"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="Eliminar"
+        color="primary"
+      >
+        <i class="material-icons">delete</i>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="9999">No hay información que mostrar</td>
+  </tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<mat-paginator
+  [hidden]="hide"
+  class="mat-elevation-z8"
+  [length]="totalRecords"
+  [pageSize]="paginationSize"
+  [pageSizeOptions]="paginationSizeOptions"
+  (page)="paginate($event)"
+>
+</mat-paginator>

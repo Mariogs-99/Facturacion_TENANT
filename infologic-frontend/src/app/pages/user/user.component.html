@@ -1,0 +1,207 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <app-module-header
+            title="Gestion de Usuarios"
+            subtitle=""
+            [button]="!permissionsArrUser.includes('Agregar')"
+            buttonLabel="Agregar"
+            buttonColor="accent"
+            buttonIcon="add"
+            component="UserComponent"
+            action="open"
+          ></app-module-header>
+          <div class="card-body">
+            <div class="w-flex w-100 flex-row-reverse m-2">
+              <button
+                [hidden]="!permissionsArrUser.includes('cambiarclave')"
+                mat-raised-button
+                color="accent"
+                style="border-radius: 20px"
+                (click)="cambiarPassword()"
+              >
+                <mat-icon> cached </mat-icon>
+                Cambiar contraseñas
+              </button>
+            </div>
+
+            <div class="mat-elevation-z8 overflow-x-auto">
+              <table
+                mat-table
+                [dataSource]="dataSource"
+                class="mat-elevation-z8"
+                aria-label="informacion de usuarios ordenable"
+              >
+                <!-- Weight Column -->
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">
+                    <app-table-header
+                      rowHeight="45px"
+                      title="Correo"
+                      column="email"
+                      [sort]="true"
+                      [search]="true"
+                      tableName="UsercomponentTable"
+                    ></app-table-header>
+                  </th>
+
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.email }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="isActive">
+                  <th mat-header-cell *matHeaderCellDef>Usuario Activo</th>
+                  <td mat-cell *matCellDef="let element">
+                    <!-- {{ element.isActive }} -->
+                    <mat-slide-toggle
+                      [checked]="element.isActive == true"
+                      (change)="changeChk($event, 'isActive', element)"
+                      class="example-margin"
+                      color="accent"
+                      #slideToggle
+                    ></mat-slide-toggle>
+                  </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="usuario">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">
+                    <app-table-header
+                      rowHeight="45px"
+                      title="Usuario"
+                      column="usuario"
+                      [sort]="true"
+                      [search]="true"
+                      tableName="UsercomponentTable"
+                    ></app-table-header>
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.usuario }}
+                  </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="carnet">
+                  <th mat-header-cell *matHeaderCellDef class="text-center">
+                    <app-table-header
+                      rowHeight="45px"
+                      title="Carnet"
+                      column="carnet"
+                      [sort]="true"
+                      [search]="true"
+                      tableName="UsercomponentTable"
+                    ></app-table-header>
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.carnet }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="testMode">
+                  <th mat-header-cell *matHeaderCellDef>Modo de Prueba</th>
+                  <td mat-cell *matCellDef="let element">
+                    <!-- {{ element.testMode }} -->
+                    <mat-slide-toggle
+                      [checked]="element.testMode == true"
+                      (change)="changeChk($event, 'testMode', element)"
+                      class="example-margin"
+                      color="accent"
+                      #slideToggle
+                    ></mat-slide-toggle>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                  <td mat-cell *matCellDef="let element; let i = index">
+                    <button
+                      [hidden]="!permissionsArrUser.includes('Actualizar')"
+                      color="accent"
+                      mat-icon-button
+                      (click)="update(element, i)"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Editar"
+                    >
+                      <i class="material-icons">create</i>
+                    </button>
+                    <button
+                      [hidden]="!permissionsArrUser.includes('Eliminar')"
+                      color="primary"
+                      mat-icon-button
+                      (click)="delete(element, i)"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Eliminar"
+                    >
+                      <i class="material-icons">delete</i>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="mat-cell" colspan="9999">
+                    No hay información que mostrar
+                  </td>
+                </tr>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+              </table>
+            </div>
+            <mat-paginator
+              class="mat-elevation-z8"
+              [length]="totalRecords"
+              [pageSize]="paginationSize"
+              [pageSizeOptions]="paginationSizeOptions"
+              (page)="paginate($event)"
+            >
+            </mat-paginator>
+            <div class="d-flex justify-content-start pt-2 pb-2">
+              <button
+                mat-flat-button
+                color="accent"
+                [matMenuTriggerFor]="docMenu"
+                [disabled]="false"
+              >
+                <mat-icon>insert_drive_file</mat-icon> Generar Reporte
+              </button>
+
+              <mat-menu #docMenu="matMenu">
+                <button mat-menu-item [matMenuTriggerFor]="pdfUuarios">
+                  PDF <mat-icon>save_alt</mat-icon>
+                </button>
+                <button mat-menu-item [matMenuTriggerFor]="excelUsuarios">
+                  XLS <mat-icon>save_alt</mat-icon>
+                </button>
+              </mat-menu>
+
+              <mat-menu #pdfUuarios="matMenu">
+                <button mat-menu-item (click)="descargarPdf('pdf',1,'usuarios_activos.pdf')">
+                  Activos <mat-icon>supervisor_account</mat-icon>
+                </button>
+                <button mat-menu-item (click)="descargarPdf('pdf',2,'usuarios_inactivos.pdf')">
+                  Inactivos <mat-icon>block</mat-icon>
+                </button>
+              </mat-menu>
+
+              <mat-menu #excelUsuarios="matMenu">
+                <button mat-menu-item (click)="descargarPdf('xls',1,'usuarios_activos.xls')">
+                  Activos <mat-icon>supervisor_account</mat-icon>
+                </button>
+                <button mat-menu-item (click)="descargarPdf('xls',2,'usuarios_inactivos.xls')">
+                  Inactivos <mat-icon>block</mat-icon>
+                </button>
+              </mat-menu>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

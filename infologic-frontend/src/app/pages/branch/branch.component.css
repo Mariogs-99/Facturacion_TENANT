@@ -1,0 +1,188 @@
+table, input {
+  width: 100%;
+}
+
+td {
+  text-align: center;
+}
+
+th {
+  text-align: center;
+}
+
+.mat-dialog-content {
+  width: 800px;
+}
+
+.centrado {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.derecha {
+  display: flex;
+  justify-content: right;
+  align-items: right;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.btn-negro {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-azul {
+  background-color: #0502a8;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-azul:hover {
+  background-color: #305080;
+}
+
+.btn-negro:hover {
+  background-color: #555;
+}
+
+.centrado_horizontal {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.btn-rojo {
+  background-color: #750505;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-rojo:hover {
+  background-color: #7c3333;
+}
+
+
+.editar {
+  background-color: #2196F3;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.editar:hover {
+  background-color: #0D47A1;
+}
+
+.editar i.material-icons {
+  font-size: 15px;
+  padding: 0px;
+
+}
+
+.eliminar {
+  background-color: #F44336;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px;
+
+}
+
+.eliminar:hover {
+  background-color: #B71C1C;
+}
+
+.eliminar i.material-icons {
+  font-size: 15px;
+  padding: 0px;
+
+}
+
+.crear {
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.crear:hover {
+  background-color: #ffffff;
+}
+
+
+.full-width-input {
+  width: 90%;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+
+}
+
+.modal_titulo {
+  background-color: #213665 !important;
+}
+
+.blanco {
+  color: white;
+}
+
+.negrita_separadas {
+  font-size: larger;
+  font-weight: bold;
+  letter-spacing: 0.07em;
+}
+
+.text-light {
+  color: #eee !important;
+}
+
+.modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.ico_pers {
+  width: 5%;
+}
+
+::ng-deep .mat-dialog-container {
+  overflow: hidden;
+}

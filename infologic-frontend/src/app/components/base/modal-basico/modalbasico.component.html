@@ -1,0 +1,36 @@
+<mat-dialog-title style="overflow-y: hidden">
+  <mat-toolbar
+    style="
+      background: #3c4557;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    "
+  >
+    <div style="width: 15%">
+      <img
+        alt="desc cnr fin recreativo"
+        src="./assets/images/Logo_Gobierno.svg"
+        alt=""
+        style="height: 33px"
+      />
+    </div>
+
+    <div style="width: 70%; text-align: center">
+      <span class="modal-tittle">{{ data.title }}</span>
+    </div>
+
+    <div style="width: 15%; text-align: right">
+      <button mat-icon-button (click)="closeModal()">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+</mat-dialog-title>
+
+<mat-dialog-content>
+  <div class="modal-body">
+    <ng-container *ngComponentOutlet="data.componentToLoad"></ng-container>
+  </div>
+</mat-dialog-content>

@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: factElec
+  datasource:
+    #url: ${SPRING_DATASOURCE_URL}
+    #username: ${SPRING_DATASOURCE_USERNAME}
+    #password: ${SPRING_DATASOURCE_PASSWORD}
+    #url: jdbc:mysql://localhost:3307/cnr?useSSL=false&allowPublicKeyRetrieval=true
+    #url: jdbc:mysql://localhost:3308/master?useSSL=false&allowPublicKeyRetrieval=true
+    #username: root
+    #password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialize: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        connection:
+          handling_mode: DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  port: 8081
+  servlet:
+    context-path: /factElec
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+cnrapps:
+  SISID: 85
+
+configuracion:
+  # url-api-clientes: ${url_cliente}
+  # url-api-productos: ${url_productos}
+  #url-api-clientes: "https://api-desa.cnr.gob.sv/apifacturael/api/consulta/clientes" #${url_cliente}
+  #url-api-productos: "https://api-desa.cnr.gob.sv/apifacturael/api/consulta/productos" #${url_productos}
+  password-user-new: root123
+
+jwt:
+  secret: e57040150fe97595e2f38fcca490cbd4f4cac04da085ba41b0d2d0bc554cc347
+
+  AMBIENTE_MH: 00

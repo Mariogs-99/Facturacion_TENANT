@@ -1,0 +1,8 @@
+form .mat-mdc-form-field-flex {
+    height: 40px;
+}
+
+
+form .mat-mdc-form-field-infix {
+    min-height: 0px !important;
+}
