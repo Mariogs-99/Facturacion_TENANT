@@ -1,0 +1,19 @@
+# Node (Angular)
+**/node_modules/
+**/dist/
+**/.angular/
+**/package-lock.json
+
+# Java/Spring Boot
+**/target/
+**/.classpath
+**/.project
+**/.settings/
+**/*.iml
+**/.idea/
+
+# General
+*.log
+*.env
+.DS_Store
+*.swp
