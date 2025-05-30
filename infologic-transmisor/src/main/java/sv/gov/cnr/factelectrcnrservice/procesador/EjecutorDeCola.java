@@ -46,77 +46,99 @@ public class EjecutorDeCola {
 
         if (estadoDTETransaccion == null || !estadoDTETransaccion.equalsIgnoreCase(estadoAprobado)) {
             var lock = lockRegistry.obtain(String.valueOf(registroEnCola.getIdCola()));
-            if (lock.tryLock()) {
-                boolean condicionesMinimas = validator.condicionesMinimas(transaccion);
-                try {
-                    log.info("Elemento de la cola ID {} bloqueado", registroEnCola.getIdCola());
-                    log.info("El siguiente registro en cola es {}", registroEnCola);
+            boolean acquired = false;
+            boolean condicionesMinimas = false;
+
+            try {
+                acquired = lock.tryLock(5, java.util.concurrent.TimeUnit.SECONDS);
+                if (acquired) {
+                    condicionesMinimas = validator.condicionesMinimas(transaccion);
+                    log.info("🔒 Elemento de la cola ID {} bloqueado", registroEnCola.getIdCola());
+                    log.info("📄 Procesando registro: {}", registroEnCola);
+
                     if (condicionesMinimas) {
                         Object dte = dteService.crearDTE(transaccion);
                         dteService.firmarDte(transaccion, dte);
                         String estado = dteService.transmitirDte(transaccion);
+
                         if (estado.equals(estadoAprobado)) {
                             presentado = true;
                             transaccion.setStatus(registroEnCola.getEsContingencia() ? EstatusCola.APROBADO_CONTINGENCIA : EstatusCola.APROBADO);
                             registroEnCola.setEstatusCola(EstatusCola.ENVIADO);
                             dteService.enviarDte(transaccion);
-                            log.info("Cambio de especifico para la transaccion {}", transaccion.getIdTransaccion());
+                            log.info("🔁 Cambio de específico para la transacción {}", transaccion.getIdTransaccion());
                             actualizarComprobantePago(transaccion.getIdTransaccion());
                         } else {
                             transaccion.setStatus(EstatusCola.RECHAZADO);
                             registroEnCola.setEstatusCola(EstatusCola.ERROR);
                         }
-                        transaccionService.actualizarTransaccion(transaccion);
+
                         registroEnCola.setFinalizado(true);
                         colaService.save(registroEnCola);
+                        transaccionService.actualizarTransaccion(transaccion);
+
                     } else {
-                        log.warn("No se cumplieron las condiciones mínimas para transmitir DTEs");
+                        log.warn("⚠️ No se cumplieron las condiciones mínimas para transmitir DTEs");
                         transaccion.setStatus(EstatusCola.RECHAZADO);
                         registroEnCola.setEstatusCola(EstatusCola.ERROR);
                         registroEnCola.setFinalizado(true);
+                        colaService.save(registroEnCola);
                         transaccionService.actualizarTransaccion(transaccion);
-                        colaService.save(registroEnCola);
                     }
-                } catch (Exception e) {
-                    log.error("Error al enviar el DTE: {}", e.getMessage());
-                    log.info("Consulta de DTE");
-                    if (!presentado) {
-                        var estado = dteService.consultarDte(transaccion);
-                        if (estado != null && estado.equals(estadoAprobado)) {
-                            transaccion.setStatus(registroEnCola.getEsContingencia() ? EstatusCola.APROBADO_CONTINGENCIA : EstatusCola.APROBADO);
-                            registroEnCola.setEstatusCola(EstatusCola.ENVIADO);
-                            dteService.enviarDte(transaccion);
-                        } else {
-                            transaccion.setStatus(EstatusCola.RECHAZADO);
-                            registroEnCola.setEstatusCola(EstatusCola.ERROR);
-                        }
-                        registroEnCola.setFinalizado(true);
-                        colaService.save(registroEnCola);
+
+                } else {
+                    log.warn("❌ Lock no adquirido para el ID {}", registroEnCola.getIdCola());
+                }
+            } catch (InterruptedException e) {
+                log.error("🛑 Error al intentar adquirir el lock: {}", e.getMessage(), e);
+                Thread.currentThread().interrupt();
+            } catch (Exception e) {
+                log.error("❗ Error al enviar el DTE: {}", e.getMessage(), e);
+
+                if (!presentado) {
+                    var estado = dteService.consultarDte(transaccion);
+                    if (estado != null && estado.equals(estadoAprobado)) {
+                        transaccion.setStatus(registroEnCola.getEsContingencia() ? EstatusCola.APROBADO_CONTINGENCIA : EstatusCola.APROBADO);
+                        registroEnCola.setEstatusCola(EstatusCola.ENVIADO);
+                        dteService.enviarDte(transaccion);
                     } else {
-                        registroEnCola.setFinalizado(true);
+                        transaccion.setStatus(EstatusCola.RECHAZADO);
+                        registroEnCola.setEstatusCola(EstatusCola.ERROR);
                     }
-                } finally {
-                    log.info("Finalizó el proceso");
-                    if (condicionesMinimas) {
-                        if (!registroEnCola.getEsContingencia()) {
-                            registroEnCola.setNroIntento(registroEnCola.getNroIntento() + 1);
-                        } else {
-                            registroEnCola.setNroIntentoCont(registroEnCola.getNroIntentoCont() + 1);
-                        }
-                        if (registroEnCola.getNroIntento() == 3 && !registroEnCola.getEsContingencia()) {
-                            registroEnCola.setEsContingencia(true);
-                            transaccion.setStatus(EstatusCola.MARCADO_CONTINGENCIA);
-                        }
-                    }
+                    registroEnCola.setFinalizado(true);
                     colaService.save(registroEnCola);
                     transaccionService.actualizarTransaccion(transaccion);
-                    lock.unlock();
+                } else {
+                    registroEnCola.setFinalizado(true);
+                    colaService.save(registroEnCola);
                 }
-            } else {
-                log.warn("Lock para el ID {} no adquirido", registroEnCola.getIdCola());
+            } finally {
+                log.info("✅ Finalizó el proceso para el ID {}", registroEnCola.getIdCola());
+
+                if (condicionesMinimas) {
+                    if (!registroEnCola.getEsContingencia()) {
+                        registroEnCola.setNroIntento(registroEnCola.getNroIntento() + 1);
+                    } else {
+                        registroEnCola.setNroIntentoCont(registroEnCola.getNroIntentoCont() + 1);
+                    }
+
+                    if (registroEnCola.getNroIntento() == 3 && !registroEnCola.getEsContingencia()) {
+                        registroEnCola.setEsContingencia(true);
+                        transaccion.setStatus(EstatusCola.MARCADO_CONTINGENCIA);
+                    }
+                }
+
+                colaService.save(registroEnCola);
+                transaccionService.actualizarTransaccion(transaccion);
+
+                if (acquired) {
+                    lock.unlock(); // ✅ Solo si el lock fue adquirido
+                    log.info("🔓 Lock liberado para ID {}", registroEnCola.getIdCola());
+                }
             }
         }
     }
+
 
     private void actualizarComprobantePago(Long idTransaccion) throws DTEException {
         List<ComprobantePago> comprobantesPago = comprobantePagoService.listComprobanteTransaccion(idTransaccion);

@@ -63,7 +63,7 @@ public class DataSourceConfig {
 
         dynamicDataSource.setTargetDataSources(targetDataSources);
         dynamicDataSource.setDefaultTargetDataSource(masterDs);
-        dynamicDataSource.setMasterDataSource(masterDs); // ✅ ESTA LÍNEA ES CLAVE
+        dynamicDataSource.setMasterDataSource(masterDs);
 
         return dynamicDataSource;
     }

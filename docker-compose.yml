@@ -1,5 +1,3 @@
-version: "3.9"
-
 networks:
   cnr-network:
     external: true
@@ -9,18 +7,18 @@ services:
     image: mysql:8.0
     container_name: INFOLOGIC-MYSQL
     restart: always
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: infologic
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 123456
     ports:
-      - "3308:3306"  # MySQL estará disponible en el puerto 3307 en la máquina local
+      - "3308:3306"
     networks:
       - cnr-network
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./mysql-init:/docker-entrypoint-initdb.d  # Cargar automáticamente los scripts SQL
+      - ./mysql-init:/docker-entrypoint-initdb.d
 
   backend-infologic:
     build:
@@ -29,38 +27,41 @@ services:
     depends_on:
       - mysql-infologic
       - transmisor-infologic
+    env_file:
+      - .env
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-infologic:3306/infologic
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 123456
-      SERVER_PORT: 8081
+      MASTER_DB_URL: ${MASTER_DB_URL}
+      MASTER_DB_USERNAME: ${MASTER_DB_USERNAME}
+      MASTER_DB_PASSWORD: ${MASTER_DB_PASSWORD}
+      SERVER_PORT: ${BACKEND_PORT}
     ports:
-      - "8081:8081"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     networks:
       - cnr-network
-    volumes:
-      - ./infologic-backend/app/admin/sisucc3/config/application.properties:/app/config/application.properties
+
   transmisor-infologic:
     build:
       context: ./infologic-transmisor
     container_name: INFOLOGIC-TRANSMISOR
     depends_on:
       - mysql-infologic
+    env_file:
+      - .env
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-infologic:3306/infologic
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 123456
-      SERVER_PORT: 8080
-      ENDPOINT-FIRMAR: http://firmador-infologic:8113/firma/firmardocumento/
+      MASTER_DB_URL: ${MASTER_DB_URL}
+      MASTER_DB_USERNAME: ${MASTER_DB_USERNAME}
+      MASTER_DB_PASSWORD: ${MASTER_DB_PASSWORD}
+      TRANSMISOR_PORT: ${TRANSMISOR_PORT}
+      ENDPOINT-FIRMAR: ${ENDPOINT_FIRMAR}
       CLIENTE_GOOGLE: ${CLIENTE_GOOGLE}
       CLIENTE_SECRET: ${CLIENTE_SECRET}
       REFRESH_TOKEN: ${REFRESH_TOKEN}
     ports:
-      - "8080:8080"
+      - "${TRANSMISOR_PORT}:${TRANSMISOR_PORT}"
     networks:
       - cnr-network
     volumes:
-      - ./uploads:/app/uploads  # Montar la carpeta de certificados
+      - ./uploads:/app/uploads  # Montado para transmisor (si aplica)
 
   frontend-infologic:
     build:
@@ -84,7 +85,7 @@ services:
     networks:
       - cnr-network
     volumes:
-      - ./uploads:/app/uploads  # Montar la carpeta de certificados
+      - ./infologic-firmador/uploads:/app/uploads 
 
 volumes:
   mysql_data:

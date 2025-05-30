@@ -38,17 +38,18 @@ public class EmailService {
     private final DteTransaccionService dteTransaccionService;
     private final TemplateEngine templateEngine;
 
-    @Value("${spring.mail.username}")
+    @Value("${MAIL_USERNAME}")
     private String correoEmisor;
 
-    @Value("${spring.oauth2.client.registration.google.client-id}")
+    @Value("${CLIENTE_GOOGLE}")
     private String clientId;
 
-    @Value("${spring.oauth2.client.registration.google.client-secret}")
+    @Value("${CLIENTE_SECRET}")
     private String clientSecret;
 
-    @Value("${spring.oauth2.authorized-client.google.refresh-token}")
+    @Value("${REFRESH_TOKEN}")
     private String refreshToken;
+
 
     @Value("${configuracion.ambiente}")
     private String ambiente;

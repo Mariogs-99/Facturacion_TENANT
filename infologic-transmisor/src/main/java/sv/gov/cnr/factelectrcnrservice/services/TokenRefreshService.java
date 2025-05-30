@@ -18,13 +18,13 @@ import java.time.Instant;
 @Slf4j
 public class TokenRefreshService {
 
-    @Value("${spring.oauth2.client.registration.google.client-id}")
+    @Value("${CLIENTE_GOOGLE}")
     private String clientId;
 
-    @Value("${spring.oauth2.client.registration.google.client-secret}")
+    @Value("${CLIENTE_SECRET}")
     private String clientSecret;
 
-    @Value("${spring.oauth2.authorized-client.google.refresh-token}")
+    @Value("${REFRESH_TOKEN}")
     private String refreshToken;
 
     private Instant refreshTokenExpiration = Instant.now().plusSeconds(604799); // 7 días por defecto
