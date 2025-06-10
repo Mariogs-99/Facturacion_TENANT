@@ -199,11 +199,6 @@
         </dependency>
 
         <dependency>
-            <groupId>sv.gob.cnr</groupId>
-            <artifactId>ClienteSisucc</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
             <version>6.20.0</version>
