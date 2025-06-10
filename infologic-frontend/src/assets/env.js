@@ -1,5 +1,4 @@
-// src/assets/env.js
 window['env'] = {
-  apiServerUrl: 'http://backend-infologic:8081/factElec/',
-  apiTransmisorUrl: 'http://transmisor-infologic:8080/factElec/',
+  apiServerUrl: 'http://localhost:8081/factElec/',               // backend
+  apiTransmisorUrl: 'http://localhost:8080/factElec/',           // transmisor
 };

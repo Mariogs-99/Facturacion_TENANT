@@ -9,23 +9,22 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("*")
-//                .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept","Authorization");
-//    }
-
-
-    // ENTORNO MAS SEGURO PARA EL BACKEND
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Aplica CORS solo a rutas de la API
-                .allowedOrigins("http://localhost", "http://localhost:4200") // Permite Angular y backend en Docker-------ENTORNO DEV
-                //.allowedOrigins("https://tudominio.com", "https://otrodominio.com") // Define orígenes específicos -------ENTORNO PROD
-                .allowedMethods("GET", "POST", "PUT", "DELETE") // Métodos permitidos
-                .allowedHeaders("Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization")
-                .allowCredentials(true); // Permite credenciales (cookies, JWT, etc.)
+        registry.addMapping("/**")
+                .allowedOrigins(
+                        "http://localhost",         //  desde http://localhost
+                        "http://localhost:4200",    // Angular corre aquí
+                        "http://localhost:8081"     // otro frontend en ese puerto
+                )
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders(
+                        "Origin",
+                        "X-Requested-With",
+                        "Content-Type",
+                        "Accept",
+                        "Authorization"
+                )
+                .allowCredentials(true); // permite cookies, tokens, sesiones, etc.
     }
 }

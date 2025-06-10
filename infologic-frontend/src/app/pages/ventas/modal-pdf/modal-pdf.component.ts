@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   AbstractControl,
@@ -23,6 +23,7 @@ export class ModalPdfComponent {
   private apiUrl = environment.apiTransmisorUrl + 'api/v1';
   private apiUrlBack = environment.apiServerUrl + 'api/v1';
   zoom = 1.0;
+
   constructor(
     private api: ApiService,
     public dialog: MatDialog,
@@ -30,7 +31,6 @@ export class ModalPdfComponent {
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private sanitizer: DomSanitizer,
-
     private sharedDataService: SharedDataService
   ) {
     this.emailForm = this.formBuilder.group({
@@ -54,6 +54,7 @@ export class ModalPdfComponent {
     );
     return invalidEmails.length > 0 ? { invalidEmails: true } : null;
   }
+
   ngOnInit(): void {
     this.envio_correo = false;
     this.envio_whatsapp = false;
@@ -71,19 +72,23 @@ export class ModalPdfComponent {
 
   envio_correo = false;
   envio_whatsapp = false;
+
   div_correo() {
     this.envio_correo = !this.envio_correo;
     this.envio_whatsapp = false;
   }
+
   div_whatsapp() {
     this.envio_correo = false;
     this.envio_whatsapp = true;
   }
+
   closeModal() {
     this.envio_correo = false;
     this.envio_whatsapp = false;
     this.dialog.closeAll();
   }
+
   enviar_correo() {
     if (this.emailForm.valid && this.emailForm.value.emails) {
       const emails: string[] = this.emailForm.value.emails
@@ -100,7 +105,7 @@ export class ModalPdfComponent {
           if (res.code == 200) {
             this.util.showSWAL(
               'Correo Enviado.',
-              'El Documento Tributario Electrónico fue enviado Correctamente a la dirección indicada',
+              'El Documento Tributario Electrónico fue enviado correctamente.',
               'OK',
               'success'
             );
@@ -110,7 +115,7 @@ export class ModalPdfComponent {
     } else {
       this.util.showSWAL(
         'ERROR',
-        'Por favor, Digite Correos Electrónicos Válidos',
+        'Por favor, digite correos electrónicos válidos.',
         'OK',
         'error'
       );
@@ -118,35 +123,34 @@ export class ModalPdfComponent {
   }
 
   async descargar() {
-    try {
-      this.http
-        .get(
-          this.apiUrl + '/dte/reporte/' + this.mostrarElemento.codigoGeneracion,
+    const token = localStorage.getItem('token');
 
-          { responseType: 'arraybuffer' }
-        )
-        .subscribe(
-          (response: ArrayBuffer) => {
-            const blob = new Blob([response], { type: 'application/pdf' });
+    if (!token) return this.util.showSWAL('Error', 'Token no encontrado.', 'OK', 'error');
 
-            const url = window.URL.createObjectURL(blob);
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-            const fileName = this.mostrarElemento.codigoGeneracion + '.pdf';
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName;
+    this.http
+      .get(
+        `${this.apiUrl}/dte/reporte/${this.mostrarElemento.codigoGeneracion}`,
+        { responseType: 'arraybuffer', headers }
+      )
+      .subscribe(
+        (response: ArrayBuffer) => {
+          const blob = new Blob([response], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+          const fileName = this.mostrarElemento.codigoGeneracion + '.pdf';
 
-            link.click();
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = fileName;
+          link.click();
 
-            window.URL.revokeObjectURL(url);
-          },
-          (error) => {
-            console.error('Error al obtener el PDF:', error);
-          }
-        );
-    } catch (error) {
-      console.error('Error loading PDF', error);
-    }
+          window.URL.revokeObjectURL(url);
+        },
+        (error) => {
+          console.error('Error al descargar el PDF:', error);
+        }
+      );
   }
 
   enviar_whatsapp() {
@@ -158,11 +162,7 @@ export class ModalPdfComponent {
 
       this.api
         .doRequest2(
-          this.apiUrl +
-          '/dte/send-message/' +
-          this.mostrarElemento.codigoGeneracion +
-          '/503' +
-          this.whatsappForm.value.phone,
+          `${this.apiUrl}/dte/send-message/${this.mostrarElemento.codigoGeneracion}/503${this.whatsappForm.value.phone}`,
           body,
           'get'
         )
@@ -170,7 +170,7 @@ export class ModalPdfComponent {
           if (res.code == 200) {
             this.util.showSWAL(
               'Mensaje Enviado.',
-              'El Documento Tributario Electrónico fue enviado Correctamente al teléfono indicado',
+              'El documento fue enviado correctamente por WhatsApp.',
               'OK',
               'success'
             );
@@ -180,7 +180,7 @@ export class ModalPdfComponent {
     } else {
       this.util.showSWAL(
         'ERROR',
-        'Por favor, Digite Teléfono Válido',
+        'Por favor, digite un teléfono válido.',
         'OK',
         'error'
       );
@@ -189,37 +189,31 @@ export class ModalPdfComponent {
 
   zoomIn() {
     this.zoom += 0.1;
-    console.log("zoom in", this.zoom)
   }
 
   zoomOut() {
-    if (this.zoom > 0.2) {
-      this.zoom -= 0.1;
-    }
-    console.log("zoom out", this.zoom)
-
+    if (this.zoom > 0.2) this.zoom -= 0.1;
   }
 
   async loadPdf() {
-    try {
-      this.http
-        .get(
-          this.apiUrl +
-          '/dte/reporte/pdf/' +
-          this.mostrarElemento.codigoGeneracion,
+    const token = localStorage.getItem('token');
 
-          { responseType: 'text' }
-        )
-        .subscribe(
-          (response: string) => {
-            this.pdfSRC = 'data:application/pdf;base64,' + response;
-          },
-          (error) => {
-            console.error('Error al obtener el PDF:', error);
-          }
-        );
-    } catch (error) {
-      console.error('Error loading PDF', error);
-    }
+    if (!token) return this.util.showSWAL('Error', 'Token no encontrado.', 'OK', 'error');
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http
+      .get(
+        `${this.apiUrl}/dte/reporte/pdf/${this.mostrarElemento.codigoGeneracion}`,
+        { responseType: 'text', headers }
+      )
+      .subscribe(
+        (response: string) => {
+          this.pdfSRC = 'data:application/pdf;base64,' + response;
+        },
+        (error) => {
+          console.error('Error al obtener el PDF:', error);
+        }
+      );
   }
 }

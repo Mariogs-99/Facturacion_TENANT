@@ -56,6 +56,7 @@ export class LoginComponent {
         localStorage.setItem('cnr-info', JSON.stringify(res.data));
         localStorage.setItem('menu', JSON.stringify(res.data.menu));
         this.auth.token = res.data.token;
+        localStorage.setItem('token', res.data.token);
         this.auth.userName = res.data.username;
 
         return this.router.navigateByUrl('pages').then(() => {
