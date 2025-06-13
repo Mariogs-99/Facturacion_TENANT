@@ -3,6 +3,99 @@
 }
 
 mat-toolbar {
-  background-color: #3c4557;
+  background-color: #3c4557 !important;
   color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72px;
+  height: 72px;
+  padding: calc(env(safe-area-inset-top, 24px) + 8px) 40px 8px 24px;
+  box-sizing: border-box;
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  font-size: 1.15rem;
+  transition: height 0.2s, padding 0.2s, font-size 0.2s;
+  position: relative;
+  z-index: 1001;
+  overflow: visible !important;
+}
+
+mat-toolbar .mat-icon {
+  font-size: 24px;
+}
+
+mat-toolbar button, mat-toolbar span {
+  font-size: 1.08rem;
+  min-width: 0;
+  padding: 0 8px;
+  overflow: visible !important;
+}
+
+/* Ajuste para el botón de usuario a la derecha */
+mat-toolbar button:last-of-type {
+  margin-right: 24px;
+  padding-right: 8px;
+}
+
+mat-toolbar button.user-btn {
+  font-size: 1rem;
+  margin-right: 32px;
+  padding-right: 8px;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  mat-toolbar {
+    height: 76px;
+    min-height: 66px;
+    padding: calc(env(safe-area-inset-top, 16px) + 4px) 20px 6px 12px;
+    font-size: 1rem;
+    border-radius: 0; /* Esquinas cuadradas */
+  }
+  .example-spacer {
+    display: none;
+  }
+  mat-toolbar .mat-icon {
+    font-size: 24px;
+  }
+  mat-toolbar button, mat-toolbar span {
+    font-size: 0.98rem;
+    padding: 0 4px;
+  }
+  mat-toolbar button.user-btn {
+    font-size: 0.95rem;
+    margin-right: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  mat-toolbar {
+    height: 80px; /* Más alto para móviles */
+    min-height: 70px;
+    padding: calc(env(safe-area-inset-top, 8px) + 2px) 12px 4px 6px;
+    font-size: 0.95rem;
+    border-radius: 0; /* Esquinas cuadradas */
+  }
+  mat-toolbar .mat-icon {
+    font-size: 24px;
+  }
+  mat-toolbar button, mat-toolbar span {
+    font-size: 0.92rem;
+    padding: 0 2px;
+  }
+  mat-toolbar button.user-btn {
+    font-size: 0.9rem;
+    margin-right: 8px;
+  }
+}
+
+.mat-menu-panel {
+  z-index: 2000 !important;
+}
+
+:host {
+  overflow: visible !important;
 }

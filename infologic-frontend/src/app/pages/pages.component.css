@@ -1,9 +1,22 @@
 .example-container {
   position: fixed;
-  top: 60px;
+  /* Ajusta el top para que no tape el navbar */
+  top: 72px; /* Altura del navbar en desktop */
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+@media (max-width: 900px) {
+  .example-container {
+    top: 76px; /* Altura del navbar en tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .example-container {
+    top: 80px; /* Altura del navbar en móviles */
+  }
 }
 
 .example-sidenav {
